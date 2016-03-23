@@ -66,11 +66,11 @@ public class GenericCalculateProjection
 			} else {
 				i=p.x; j=p.y;
 			}
-			 System.out.println("GCP loop "+i+" "+j+" d "+d);
-			 if(d<-2*adx) System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+//			 System.out.println("GCP loop "+i+" "+j+" d "+d);
+//			 if(d<-2*adx) System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			if(i>adx || j>ady) // searching outside range
 			{
-				System.out.println("Outside range "+i+" "+j+" "+adx+" "+ady);
+//				System.out.println("Outside range "+i+" "+j+" "+adx+" "+ady);
 				break;
 			}
 			
@@ -83,10 +83,10 @@ public class GenericCalculateProjection
 				(i * signX + startX),
 				(j * signY + startY)));
 			}
-			System.out.println("Added to path "+path.lastElement());
+//			System.out.println("Added to path "+path.lastElement());
 			if(i==adx && j==ady)//end reached and recorded
 			{
-				System.out.println("End reached and recorded ");
+//				System.out.println("End reached and recorded ");
 				break;
 			}
 			
@@ -169,10 +169,10 @@ public class GenericCalculateProjection
 			}
 			if (fb.wasVisited(p.x, p.y) || /* end */ (i==adx && j==ady))
 			{
-				System.out.println("GCP y++ "+i+" "+j+" last "+lasti+" "+lastj);
-				if (lasti == i - 1 && lastj == j)// last step was 1 to the
+//				System.out.println("GCP y++ "+i+" "+j+" last "+lasti+" "+lastj);
+//				if (lasti == i - 1 && lastj == j)// last step was 1 to the
 					// right
-					System.out.println("<<- GenericCalculateProj check code");
+//					System.out.println("<<- GenericCalculateProj check code");
 				// this step is 1 step to up,
 				// together 1 diagonal
 				// => we dont need last point
