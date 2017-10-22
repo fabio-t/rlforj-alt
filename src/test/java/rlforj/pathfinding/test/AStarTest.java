@@ -1,16 +1,15 @@
 package rlforj.pathfinding.test;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import org.junit.Test;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import rlforj.math.Point2I;
 import rlforj.pathfinding.AStar;
 import rlforj.util.Directions;
 
+import java.util.ArrayList;
+import java.util.Random;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class AStarTest
 {
@@ -22,9 +21,9 @@ public class AStarTest
      * 1. It is a valid path (all points are adjacent to each other)
      * 2. No point on the path is an obstacle.
      * 3. If pathfindfind fails, floodfill the map startinf from the start point.
-     *    If endpoint is not the same color, path does not exist. Hence check
-     *    pathfinding failure.
-     *
+     * If endpoint is not the same color, path does not exist. Hence check
+     * pathfinding failure.
+     * <p>
      * Not tested:
      * 1. It is the shortest path.
      */
@@ -50,12 +49,14 @@ public class AStarTest
             }
             MockBoard m = new MockBoard(sb.toString());
 
-            int startx=-1, starty=-1, endx=-1, endy=-1;
+            int startx = -1, starty = -1, endx = -1, endy = -1;
 
-            while(true)// We will find 2 points pretty quickly for low % coverage.
+            while (true)// We will find 2 points pretty quickly for low % coverage.
             {
-                startx = rand.nextInt(w); starty = rand.nextInt(h);
-                endx = rand.nextInt(w); endy = rand.nextInt(h);
+                startx = rand.nextInt(w);
+                starty = rand.nextInt(h);
+                endx = rand.nextInt(w);
+                endy = rand.nextInt(h);
 
                 if (!m.isObstacle(startx, starty) && !m.isObstacle(endx, endy))
                     break;
@@ -66,14 +67,14 @@ public class AStarTest
             if (path != null)
             {
                 // Check path
-                for (Point2I step: path)
+                for (Point2I step : path)
                 {
                     assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
                 }
 
                 // Check continuity
                 Point2I lastStep = null;
-                for (Point2I step: path)
+                for (Point2I step : path)
                 {
                     if (lastStep == null)
                     {
@@ -82,16 +83,15 @@ public class AStarTest
                     }
 
                     assertTrue("Discontinuous path in A*",
-                               step.x - lastStep.x <=1 && step.x - lastStep.x >= -1
-                               && step.y - lastStep.y <=1 && step.y - lastStep.y >= -1);
+                               step.x - lastStep.x <= 1 && step.x - lastStep.x >= -1 && step.y - lastStep.y <= 1 &&
+                               step.y - lastStep.y >= -1);
 
                     lastStep = step;
                 }
             }
             else
             {
-                assertFalse("Path existed but A* failed",
-                            floodFillTest(m, startx, starty, endx, endy));
+                assertFalse("Path existed but A* failed", floodFillTest(m, startx, starty, endx, endy));
             }
         }
     }
@@ -99,6 +99,7 @@ public class AStarTest
     /**
      * FloodFill the board from point 1 and see if point2 is same color. If not,
      * points are not reachable from each other.
+     *
      * @param mb
      * @param x1
      * @param y1
@@ -108,11 +109,11 @@ public class AStarTest
      */
     private boolean floodFillTest(MockBoard mb, int x1, int y1, int x2, int y2)
     {
-        final int EMPTY=0, FULL=1, COLOR=2;
-        int width = mb.getWidth();
-        int height = mb.getHeight();
-        int[][] board = new int[width][];
-        for (int i = 0; i< width; i++)
+        final int EMPTY  = 0, FULL = 1, COLOR = 2;
+        int       width  = mb.getWidth();
+        int       height = mb.getHeight();
+        int[][]   board  = new int[width][];
+        for (int i = 0; i < width; i++)
         {
 
             board[i] = new int[height];
@@ -127,12 +128,12 @@ public class AStarTest
 
         ArrayList<Point2I> l = new ArrayList<Point2I>(width * height);
         l.add(new Point2I(x1, y1));
-        while(!l.isEmpty())
+        while (!l.isEmpty())
         {
             Point2I p1 = l.remove(l.size() - 1);
-            for(Directions d: Directions.N8)
+            for (Directions d : Directions.N8)
             {
-                Point2I p2 = new Point2I(p1.x+d.dx(), p1.y+d.dy());
+                Point2I p2 = new Point2I(p1.x + d.dx(), p1.y + d.dy());
                 if (!mb.contains(p2.x, p2.y) || board[p2.x][p2.y] != EMPTY)
                     continue;
 

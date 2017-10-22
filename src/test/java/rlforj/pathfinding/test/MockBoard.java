@@ -3,10 +3,12 @@ package rlforj.pathfinding.test;
 import rlforj.los.ILosBoard;
 
 /**
-* A simple board for testing LOS, Pathfinding, etc
-* @author vic
-*/
-class MockBoard implements ILosBoard {
+ * A simple board for testing LOS, Pathfinding, etc
+ *
+ * @author vic
+ */
+class MockBoard implements ILosBoard
+{
 
     private boolean[][] obstacle;
 
@@ -15,10 +17,10 @@ class MockBoard implements ILosBoard {
         String[] mapText = map.split("\n");
         obstacle = new boolean[mapText.length][];
         int lineNo = 0;
-        for (String line: mapText)
+        for (String line : mapText)
         {
             boolean[] lineTiles = new boolean[line.length()];
-            for (int i=0; i<line.length(); i++)
+            for (int i = 0; i < line.length(); i++)
             {
                 lineTiles[i] = line.charAt(i) == '#';
             }
@@ -36,7 +38,21 @@ class MockBoard implements ILosBoard {
         return obstacle[y][x];
     }
 
-    public void visit(int x, int y) { }
+    @Override
+    public boolean blocksLight(final int x, final int y)
+    {
+        return isObstacle(x, y);
+    }
+
+    @Override
+    public boolean blocksStep(final int x, final int y)
+    {
+        return isObstacle(x, y);
+    }
+
+    public void visit(int x, int y)
+    {
+    }
 
     public int getWidth()
     {

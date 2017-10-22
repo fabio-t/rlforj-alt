@@ -5,8 +5,8 @@ import rlforj.los.PrecisePermissive;
 public class PrecisePermissiveLosTest extends LosTest
 {
 
-	public PrecisePermissiveLosTest()
-	{
-		a=new PrecisePermissive();
-	}
+    public PrecisePermissiveLosTest()
+    {
+        a = new PrecisePermissive();
+    }
 }

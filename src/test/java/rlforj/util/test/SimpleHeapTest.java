@@ -1,15 +1,14 @@
 package rlforj.util.test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+import rlforj.util.HeapNode;
+import rlforj.util.SimpleHeap;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import org.junit.Test;
-
-import rlforj.util.HeapNode;
-import rlforj.util.SimpleHeap;
+import static org.junit.Assert.assertEquals;
 
 /**
  * SimpleHeap Test
@@ -20,42 +19,6 @@ public class SimpleHeapTest
 {
     // NOTE: JUnit 4 guideline is no longer to use TestCase but use annotations.
     // assert* can be static imported from org.junit.Assert.
-
-    private static class A implements HeapNode
-    {
-        int a;
-
-        int idx;
-
-        public A(final int i)
-        {
-            a = i;
-        }
-
-        public int compareTo(final Object o)
-        {
-            if (this == o)
-                return 0;
-            final A a2 = (A) o;
-            if (a == a2.a)
-                return 0;
-            else if (a < a2.a)
-                return -1;
-            else
-                return 1; // Explicit comparison handles all values of integers better.
-            // return a - a2.a;
-        }
-
-        public int getHeapIndex()
-        {
-            return idx;
-        }
-
-        public void setHeapIndex(final int heapIndex)
-        {
-            idx = heapIndex;
-        }
-    }
 
     @Test
     public void testIndex()
@@ -115,15 +78,15 @@ public class SimpleHeapTest
     /**
      * Test that SimleHeap behaves like a heap. The top of the heap is always
      * the same as the first element in a sorted list.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testHeapFunctionality() throws Exception
     {
-        final Random rand = new Random();
-        final SimpleHeap<A> h = new SimpleHeap<A>(50);
-        final ArrayList<A> arr = new ArrayList<A>(1000);
+        final Random        rand = new Random();
+        final SimpleHeap<A> h    = new SimpleHeap<A>(50);
+        final ArrayList<A>  arr  = new ArrayList<A>(1000);
         for (int i = 0; i < 1000; i++)
         {
             final A a = new A(rand.nextInt());
@@ -155,15 +118,15 @@ public class SimpleHeapTest
     /**
      * Test that heap properties are maintained in face of property changes and
      * adjustments.
-     * 
+     *
      * @throws Exception
      */
     @Test
     public void testHeapAdjust() throws Exception
     {
-        final Random rand = new Random();
-        final SimpleHeap<A> h = new SimpleHeap<A>(50);
-        final ArrayList<A> arr = new ArrayList<A>(1000);
+        final Random        rand = new Random();
+        final SimpleHeap<A> h    = new SimpleHeap<A>(50);
+        final ArrayList<A>  arr  = new ArrayList<A>(1000);
         for (int i = 0; i < 1000; i++)
         {
             final A a = new A(rand.nextInt());
@@ -189,7 +152,7 @@ public class SimpleHeapTest
             {
                 // Make sure SimpleHeap works in the face of random adjusts.
                 final int idx = rand.nextInt(h.size());
-                final A a = h.getElementAt(idx);
+                final A   a   = h.getElementAt(idx);
                 a.a = rand.nextInt();
 
                 h.adjust(a);
@@ -204,6 +167,42 @@ public class SimpleHeapTest
         for (int i = 0; i < h.size(); i++)
         {
             assertEquals(i, (h.getElementAt(i)).idx);
+        }
+    }
+
+    private static class A implements HeapNode
+    {
+        int a;
+
+        int idx;
+
+        public A(final int i)
+        {
+            a = i;
+        }
+
+        public int compareTo(final Object o)
+        {
+            if (this == o)
+                return 0;
+            final A a2 = (A) o;
+            if (a == a2.a)
+                return 0;
+            else if (a < a2.a)
+                return -1;
+            else
+                return 1; // Explicit comparison handles all values of integers better.
+            // return a - a2.a;
+        }
+
+        public int getHeapIndex()
+        {
+            return idx;
+        }
+
+        public void setHeapIndex(final int heapIndex)
+        {
+            idx = heapIndex;
         }
     }
 

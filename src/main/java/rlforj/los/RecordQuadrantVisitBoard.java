@@ -1,79 +1,90 @@
 package rlforj.los;
 
+import rlforj.math.Point2I;
+
 import java.util.HashSet;
 import java.util.Set;
 
-import rlforj.math.Point2I;
-
 /**
- * A LOS board that records points that were visited, while using another 
+ * A LOS board that records points that were visited, while using another
  * board to decide obstacles.
- * @author sdatta
  *
+ * @author sdatta
  */
-public class RecordQuadrantVisitBoard implements ILosBoard, 
-			GenericCalculateProjection.VisitedBoard
+public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProjection.VisitedBoard
 {
 
-	ILosBoard b;
+    ILosBoard b;
 
-	int sx, sy, sxy;
+    int sx, sy, sxy;
 
-	int targetX, targetY;
+    int targetX, targetY;
 
-	// int manhattanDist;
-	Set<Point2I> visitedNotObs = new HashSet<Point2I>();
+    // int manhattanDist;
+    Set<Point2I> visitedNotObs = new HashSet<Point2I>();
 
-	boolean endVisited = false;
+    boolean endVisited = false;
 
-	boolean calculateProject;
+    boolean calculateProject;
+    private Point2I visitedCheck = new Point2I(0, 0);
 
-	public RecordQuadrantVisitBoard(ILosBoard b, int sx, int sy, int dx, int dy,
-			boolean calculateProject)
-	{
-		super();
-		this.b = b;
-		this.sx = sx;
-		this.sy = sy;
-		sxy = sx + sy;
-		this.targetX = dx;
-		this.targetY = dy;
+    public RecordQuadrantVisitBoard(ILosBoard b, int sx, int sy, int dx, int dy, boolean calculateProject)
+    {
+        super();
+        this.b = b;
+        this.sx = sx;
+        this.sy = sy;
+        sxy = sx + sy;
+        this.targetX = dx;
+        this.targetY = dy;
 
-		this.calculateProject = calculateProject;
-	}
+        this.calculateProject = calculateProject;
+    }
 
-	public boolean contains(int x, int y)
-	{
-		return b.contains(x, y);
-	}
+    public boolean contains(int x, int y)
+    {
+        return b.contains(x, y);
+    }
 
-	public boolean isObstacle(int x, int y)
-	{
-		return b.isObstacle(x, y);
-	}
+    public boolean isObstacle(int x, int y)
+    {
+        return b.isObstacle(x, y);
+    }
 
-	public void visit(int x, int y)
-	{
-		//			System.out.println("visited "+x+" "+y);
-		if (x == targetX && y == targetY)
-			endVisited = true;
-		if (calculateProject && !b.isObstacle(x, y))
-		{
-			int dx = x - sx;
-			dx = dx > 0 ? dx : -dx;
-			int dy = y - sy;
-			dy = dy > 0 ? dy : -dy;
-			visitedNotObs.add(new Point2I(dx, dy));
-		}
-		//DEBUG
-//		b.visit(x, y);
-	}
+    @Override
+    public boolean blocksLight(final int x, final int y)
+    {
+        return b.blocksLight(x, y);
+    }
 
-	private Point2I visitedCheck=new Point2I(0, 0);
-	public boolean wasVisited(int x, int y)
-	{
-		visitedCheck.x=x; visitedCheck.y=y;
-		return visitedNotObs.contains(visitedCheck);
-	}
+    @Override
+    public boolean blocksStep(final int x, final int y)
+    {
+        return b.blocksStep(x, y);
+    }
+
+    public void visit(int x, int y)
+    {
+        //			System.out.println("visited "+x+" "+y);
+        if (x == targetX && y == targetY)
+            endVisited = true;
+        if (calculateProject && !b.blocksLight(x, y))
+        {
+            int dx = x - sx;
+            dx = dx > 0 ? dx : -dx;
+            int dy = y - sy;
+            dy = dy > 0 ? dy : -dy;
+            visitedNotObs.add(new Point2I(dx, dy));
+        }
+        //DEBUG
+        //		b.visit(x, y);
+    }
+
+    public boolean wasVisited(int x, int y)
+    {
+        visitedCheck.x = x;
+        visitedCheck.y = y;
+        return visitedNotObs.contains(visitedCheck);
+    }
 
 }

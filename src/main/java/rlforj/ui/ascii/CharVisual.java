@@ -1,78 +1,80 @@
 package rlforj.ui.ascii;
 
-import java.awt.Color;
-import java.awt.Font;
-
 import rlforj.ui.Visual;
 
+import java.awt.*;
+
 /**
- * A displayable character to be displayed as a tile, 
- * along with color and font in case it needs special 
+ * A displayable character to be displayed as a tile,
+ * along with color and font in case it needs special
  * displays.
  * Unicode characters are allowed.
- * 
+ * <p>
  * TODO: Make it more flexible
- * @author sdatta
  *
+ * @author sdatta
  */
 public class CharVisual extends Visual
 {
-	public static CharVisual BLANK=new CharVisual(' ', Color.black),
-							 TRANSPARENT=null;
-	
-	/**
-	 * the character to display
-	 */
-	public char disp=' ';
-	/**
-	 * The color which to use to display.
-	 */
-	public Color col=Color.WHITE;
-	
-	/**
-	 * The special font to use to display.
-	 * Null=> default
-	 */
-	public Font font=null;
+    public static CharVisual BLANK = new CharVisual(' ', Color.black), TRANSPARENT = null;
 
-	/**
-	 * Background color
-	 */
-	public Color bgCol = Color.black;
-	
-	/**
-	 * Create a character of a specified color.
-	 * @param disp
-	 */
-	public CharVisual(char disp, Color col)
-	{
-		this.disp = disp;
-		this.col=col;
-	}
-	
-	public CharVisual(char disp, Color col, Color bgCol)
+    /**
+     * the character to display
+     */
+    public char  disp = ' ';
+    /**
+     * The color which to use to display.
+     */
+    public Color col  = Color.WHITE;
+
+    /**
+     * The special font to use to display.
+     * Null=> default
+     */
+    public Font font = null;
+
+    /**
+     * Background color
+     */
+    public Color bgCol = Color.black;
+
+    /**
+     * Create a character of a specified color.
+     *
+     * @param disp
+     */
+    public CharVisual(char disp, Color col)
+    {
+        this.disp = disp;
+        this.col = col;
+    }
+
+    public CharVisual(char disp, Color col, Color bgCol)
     {
         this(disp, col);
         this.bgCol = bgCol;
     }
-	
-	public CharVisual(CharVisual cvis) {
-		this(cvis.disp, cvis.col);
-	}
 
-	/**
-	 * A darker charvisual for display when invisible
-	 * @return
-	 */
-	public CharVisual darker() {
-		return new CharVisual(disp, col.darker());
-	}
+    public CharVisual(CharVisual cvis)
+    {
+        this(cvis.disp, cvis.col);
+    }
 
-	@Override
+    /**
+     * A darker charvisual for display when invisible
+     *
+     * @return
+     */
+    public CharVisual darker()
+    {
+        return new CharVisual(disp, col.darker());
+    }
+
+    @Override
     public int hashCode()
     {
-        final int prime = 31;
-        int result = 1;
+        final int prime  = 31;
+        int       result = 1;
         result = prime * result + ((bgCol == null) ? 0 : bgCol.hashCode());
         result = prime * result + ((col == null) ? 0 : col.hashCode());
         result = prime * result + disp;
@@ -80,7 +82,7 @@ public class CharVisual extends Visual
         return result;
     }
 
-	@Override
+    @Override
     public boolean equals(Object obj)
     {
         if (this == obj)
@@ -94,13 +96,15 @@ public class CharVisual extends Visual
         {
             if (other.bgCol != null)
                 return false;
-        } else if (!bgCol.equals(other.bgCol))
+        }
+        else if (!bgCol.equals(other.bgCol))
             return false;
         if (col == null)
         {
             if (other.col != null)
                 return false;
-        } else if (!col.equals(other.col))
+        }
+        else if (!col.equals(other.col))
             return false;
         if (disp != other.disp)
             return false;
@@ -108,13 +112,15 @@ public class CharVisual extends Visual
         {
             if (other.font != null)
                 return false;
-        } else if (!font.equals(other.font))
+        }
+        else if (!font.equals(other.font))
             return false;
         return true;
     }
-	
-	public String toString() {
-		return "CharVisual( "+disp+", "+col+", "+bgCol+ " )";
-	}
-	
+
+    public String toString()
+    {
+        return "CharVisual( " + disp + ", " + col + ", " + bgCol + " )";
+    }
+
 }

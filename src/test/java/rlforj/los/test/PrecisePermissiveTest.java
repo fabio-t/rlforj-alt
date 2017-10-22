@@ -5,9 +5,10 @@ import rlforj.los.PrecisePermissive;
 public class PrecisePermissiveTest extends FovTest
 {
 
-	public PrecisePermissiveTest() {
-		super();
-		a=new PrecisePermissive();
-	}
-	
+    public PrecisePermissiveTest()
+    {
+        super();
+        a = new PrecisePermissive();
+    }
+
 }

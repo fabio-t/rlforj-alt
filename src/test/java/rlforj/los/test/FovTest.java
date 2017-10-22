@@ -1,22 +1,21 @@
 package rlforj.los.test;
 
-import java.util.Random;
-
 import junit.framework.TestCase;
 import rlforj.los.IFovAlgorithm;
+import rlforj.los.PrecisePermissive;
 import rlforj.math.Point2I;
+
+import java.util.Random;
 
 /**
  * Testing FOV algorithms
  *
  * @author sdatta
- *
  */
 public class FovTest extends TestCase
 {
     // IFovAlgorithm a=new ShadowCasting();
-    // IFovAlgorithm a = new PrecisePermissive();
-    IFovAlgorithm a;
+    IFovAlgorithm a = new PrecisePermissive();
 
     public void testEmpty()
     {

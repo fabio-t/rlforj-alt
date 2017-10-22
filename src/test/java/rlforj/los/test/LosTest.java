@@ -2,7 +2,9 @@ package rlforj.los.test;
 
 import junit.framework.TestCase;
 import rlforj.los.ILosAlgorithm;
-import rlforj.math.Point2I;;
+import rlforj.math.Point2I;
+
+;
 
 public class LosTest extends TestCase
 {
