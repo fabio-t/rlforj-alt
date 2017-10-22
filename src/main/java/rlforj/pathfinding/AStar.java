@@ -9,11 +9,10 @@ import java.util.ArrayList;
 
 public class AStar
 {
-    private final ILosBoard    map;
-    private final int          boardWidth;
-    private final int          boardHeight;
-    private final boolean      allowDiagonal;
-    public        PathNode[][] dbg_savedMap;
+    private final ILosBoard map;
+    private final int       boardWidth;
+    private final int       boardHeight;
+    private final boolean   allowDiagonal;
 
     public AStar(final ILosBoard map, final int boardWidth, final int boardHeight)
     {
@@ -30,31 +29,56 @@ public class AStar
 
     public Point2I[] findPath(final int x, final int y, final int x1, final int y1)
     {
-        final PathNode[][] nodeHash;
-        if (!this.map.contains(x, y))
+        return findPath(x, y, x1, y1, 0);
+    }
+
+    public Point2I[] findPath(final int x, final int y, final int x1, final int y1, final int radius)
+    {
+        if (!this.map.contains(x, y) || !this.map.contains(x1, y1))
         {
             return null;
         }
-        if (!this.map.contains(x1, y1))
+
+        final int width;
+        final int height;
+        final int minX, minY, maxX, maxY;
+
+        if (radius <= 0)
         {
-            return null;
+            width = boardWidth;
+            height = boardHeight;
+
+            minX = 0;
+            minY = 0;
+            maxX = boardWidth;
+            maxY = boardHeight;
         }
-        this.dbg_savedMap = nodeHash = new PathNode[this.boardWidth][this.boardHeight];
-        final SimpleHeap<HeapNode> open      = new SimpleHeap<HeapNode>(1000);
+        else
+        {
+            width = radius * 2;
+            height = radius * 2;
+
+            minX = Math.max(0, x - radius);
+            minY = Math.max(0, y - radius);
+            maxX = Math.min(boardWidth, x + radius);
+            maxY = Math.min(boardHeight, y + radius);
+        }
+
+        final PathNode[][]         nodeHash  = new PathNode[width][height];
+        final SimpleHeap<HeapNode> open      = new SimpleHeap<>(1000);
         final PathNode             startNode = new PathNode(x, y, 0.0);
         startNode.h = this.computeHeuristics(startNode, x1, y1, x, y);
         startNode.calcCost();
-        open.add((HeapNode) startNode);
-        nodeHash[x][y] = startNode;
-        // int dbg_expanded = 0;
+        open.add(startNode);
+        nodeHash[x-minX][y-minY] = startNode;
         while (open.size() > 0)
         {
             final PathNode step = (PathNode) open.poll();
-            // ++dbg_expanded;
             if (step.x == x1 && step.y == y1)
             {
                 return this.createPath(step);
             }
+
             int dx = -1;
             while (dx <= 1)
             {
@@ -65,36 +89,36 @@ public class AStar
                     {
                         final int cx = step.x + dx;
                         final int cy = step.y + dy;
-                        if (cx >= 0 && cy >= 0 && cx < this.boardWidth && cy < this.boardHeight &&
+                        if (cx >= minX && cy >= minY && cx < maxX && cy < maxY &&
                             this.map.contains(cx, cy) && !this.map.isObstacle(cx, cy))
                         {
                             final PathNode n1;
                             double         this_cost = 0.0;
                             this_cost = dx != 0 && dy != 0 ? 1.1 : 1.0;
-                            if (nodeHash[cx][cy] == null)
+                            if (nodeHash[cx-minX][cy-minY] == null)
                             {
                                 n1 = new PathNode(cx, cy, step.g + this_cost);
                                 n1.prev = step;
                                 n1.h = this.computeHeuristics(n1, x1, y1, x, y);
                                 n1.calcCost();
-                                open.add((HeapNode) n1);
-                                nodeHash[cx][cy] = n1;
+                                open.add(n1);
+                                nodeHash[cx-minX][cy-minY] = n1;
                             }
                             else
                             {
-                                n1 = nodeHash[cx][cy];
+                                n1 = nodeHash[cx-minX][cy-minY];
                                 if (n1.g > step.g + this_cost)
                                 {
                                     n1.g = step.g + this_cost;
                                     n1.calcCost();
                                     n1.prev = step;
-                                    if (open.contains((HeapNode) n1))
+                                    if (open.contains(n1))
                                     {
-                                        open.adjust((HeapNode) n1);
+                                        open.adjust(n1);
                                     }
                                     else
                                     {
-                                        open.add((HeapNode) n1);
+                                        open.add(n1);
                                     }
                                 }
                             }
@@ -120,7 +144,7 @@ public class AStar
 
     private Point2I[] createPath(PathNode end)
     {
-        final ArrayList<Point2I> v = new ArrayList<Point2I>();
+        final ArrayList<Point2I> v = new ArrayList<>();
         while (end != null)
         {
             v.add(new Point2I(end.x, end.y));
@@ -131,7 +155,7 @@ public class AStar
         int             i   = 0;
         while (i < sz)
         {
-            ret[i] = (Point2I) v.get(sz - i - 1);
+            ret[i] = v.get(sz - i - 1);
             ++i;
         }
         return ret;
@@ -147,14 +171,14 @@ public class AStar
         PathNode prev;
         int      heapIndex;
 
-        public PathNode(final int x, final int y, double g)
+        public PathNode(final int x, final int y, final double g)
         {
             this.x = x;
             this.y = y;
             this.g = g;
         }
 
-        public PathNode(int x, int y)
+        public PathNode(final int x, final int y)
         {
             this.x = x;
             this.y = y;
@@ -165,7 +189,7 @@ public class AStar
             this.cost = this.h + this.g;
         }
 
-        public int compareTo(Object o)
+        public int compareTo(final Object o)
         {
             return (int) Math.signum(this.cost - ((PathNode) o).cost);
         }
@@ -175,7 +199,7 @@ public class AStar
             return this.heapIndex;
         }
 
-        public void setHeapIndex(int heapIndex)
+        public void setHeapIndex(final int heapIndex)
         {
             this.heapIndex = heapIndex;
         }

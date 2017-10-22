@@ -30,13 +30,13 @@ public class AStarTest
     @Test
     public void testAStarBasic()
     {
-        Random rand = new Random();
+        final Random rand = new Random();
         for (int i = 0; i < 1000; i++)
         {
-            int w = rand.nextInt(80) + 20; //20 - 100
-            int h = rand.nextInt(80) + 20; //20 - 100
+            final int w = rand.nextInt(80) + 20; //20 - 100
+            final int h = rand.nextInt(80) + 20; //20 - 100
 
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             // Create mockboard
             for (int k = 0; k < h; k++)
             {
@@ -47,7 +47,7 @@ public class AStarTest
                         sb.append(' ');
                 sb.append('\n');
             }
-            MockBoard m = new MockBoard(sb.toString());
+            final MockBoard m = new MockBoard(sb.toString());
 
             int startx = -1, starty = -1, endx = -1, endy = -1;
 
@@ -61,20 +61,20 @@ public class AStarTest
                 if (!m.isObstacle(startx, starty) && !m.isObstacle(endx, endy))
                     break;
             }
-            AStar algo = new AStar(m, w, h);
+            final AStar algo = new AStar(m, w, h);
 
-            Point2I[] path = algo.findPath(startx, starty, endx, endy);
+            final Point2I[] path = algo.findPath(startx, starty, endx, endy);
             if (path != null)
             {
                 // Check path
-                for (Point2I step : path)
+                for (final Point2I step : path)
                 {
                     assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
                 }
 
                 // Check continuity
                 Point2I lastStep = null;
-                for (Point2I step : path)
+                for (final Point2I step : path)
                 {
                     if (lastStep == null)
                     {
@@ -107,12 +107,12 @@ public class AStarTest
      * @param y2
      * @return
      */
-    private boolean floodFillTest(MockBoard mb, int x1, int y1, int x2, int y2)
+    private boolean floodFillTest(final MockBoard mb, final int x1, final int y1, final int x2, final int y2)
     {
         final int EMPTY  = 0, FULL = 1, COLOR = 2;
-        int       width  = mb.getWidth();
-        int       height = mb.getHeight();
-        int[][]   board  = new int[width][];
+        final int       width  = mb.getWidth();
+        final int       height = mb.getHeight();
+        final int[][]   board  = new int[width][];
         for (int i = 0; i < width; i++)
         {
 
@@ -126,14 +126,14 @@ public class AStarTest
             }
         }
 
-        ArrayList<Point2I> l = new ArrayList<Point2I>(width * height);
+        final ArrayList<Point2I> l = new ArrayList<Point2I>(width * height);
         l.add(new Point2I(x1, y1));
         while (!l.isEmpty())
         {
-            Point2I p1 = l.remove(l.size() - 1);
-            for (Directions d : Directions.N8)
+            final Point2I p1 = l.remove(l.size() - 1);
+            for (final Directions d : Directions.N8)
             {
-                Point2I p2 = new Point2I(p1.x + d.dx(), p1.y + d.dy());
+                final Point2I p2 = new Point2I(p1.x + d.dx(), p1.y + d.dy());
                 if (!mb.contains(p2.x, p2.y) || board[p2.x][p2.y] != EMPTY)
                     continue;
 
