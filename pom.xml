@@ -4,7 +4,7 @@
 
     <groupId>rlforj.sourceforge.net</groupId>
     <artifactId>rlfjorj</artifactId>
-    <version>0.3-SNAPSHOT</version>
+    <version>0.4</version>
     <packaging>jar</packaging>
 
     <name>Roguelike Library For Java</name>
