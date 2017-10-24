@@ -4,11 +4,11 @@ import junit.framework.TestCase;
 import rlforj.los.ILosAlgorithm;
 import rlforj.math.Point2I;
 
-;
-
-public class LosTest extends TestCase
+/**
+ * Testing Los algorithms
+ */
+public abstract class LosTest extends TestCase
 {
-    // ILosAlgorithm a = new PrecisePermissive();
     ILosAlgorithm a;
 
     public void testEmpty()

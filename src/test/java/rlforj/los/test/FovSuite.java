@@ -8,19 +8,18 @@ import junit.framework.TestSuite;
  *
  * @author sdatta
  */
-public class FovLosSuite extends TestSuite
+public class FovSuite extends TestSuite
 {
-
-    public FovLosSuite()
+    public FovSuite()
     {
-        addTestSuite(PrecisePermissiveTest.class);
+        addTestSuite(FovPrecisePermissiveTest.class);
     }
 
     public static Test suite()
     {
         TestSuite s = new TestSuite();
-        s.addTestSuite(PrecisePermissiveTest.class);
-        s.addTestSuite(ShadowCastingTest.class);
+        s.addTestSuite(FovPrecisePermissiveTest.class);
+        s.addTestSuite(FovShadowCastingTest.class);
         return s;
     }
 }
