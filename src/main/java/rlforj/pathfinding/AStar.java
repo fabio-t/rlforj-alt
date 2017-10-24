@@ -55,13 +55,13 @@ public class AStar
         }
         else
         {
-            width = radius * 2;
-            height = radius * 2;
-
             minX = Math.max(0, x - radius);
             minY = Math.max(0, y - radius);
             maxX = Math.min(boardWidth, x + radius);
             maxY = Math.min(boardHeight, y + radius);
+
+            width = maxX - minX;
+            height = maxY - minY;
         }
 
         final PathNode[][]         nodeHash  = new PathNode[width][height];
@@ -70,7 +70,7 @@ public class AStar
         startNode.h = this.computeHeuristics(startNode, x1, y1, x, y);
         startNode.calcCost();
         open.add(startNode);
-        nodeHash[x-minX][y-minY] = startNode;
+        nodeHash[x - minX][y - minY] = startNode;
         while (open.size() > 0)
         {
             final PathNode step = (PathNode) open.poll();
@@ -89,24 +89,23 @@ public class AStar
                     {
                         final int cx = step.x + dx;
                         final int cy = step.y + dy;
-                        if (cx >= minX && cy >= minY && cx < maxX && cy < maxY &&
-                            this.map.contains(cx, cy) && !this.map.isObstacle(cx, cy))
+                        if (cx >= minX && cy >= minY && cx < maxX && cy < maxY && this.map.contains(cx, cy) &&
+                            !this.map.isObstacle(cx, cy))
                         {
                             final PathNode n1;
-                            double         this_cost = 0.0;
-                            this_cost = dx != 0 && dy != 0 ? 1.1 : 1.0;
-                            if (nodeHash[cx-minX][cy-minY] == null)
+                            final double   this_cost = dx != 0 && dy != 0 ? 1.1 : 1.0;
+                            if (nodeHash[cx - minX][cy - minY] == null)
                             {
                                 n1 = new PathNode(cx, cy, step.g + this_cost);
                                 n1.prev = step;
                                 n1.h = this.computeHeuristics(n1, x1, y1, x, y);
                                 n1.calcCost();
                                 open.add(n1);
-                                nodeHash[cx-minX][cy-minY] = n1;
+                                nodeHash[cx - minX][cy - minY] = n1;
                             }
                             else
                             {
-                                n1 = nodeHash[cx-minX][cy-minY];
+                                n1 = nodeHash[cx - minX][cy - minY];
                                 if (n1.g > step.g + this_cost)
                                 {
                                     n1.g = step.g + this_cost;
@@ -144,6 +143,12 @@ public class AStar
 
     private Point2I[] createPath(PathNode end)
     {
+        if (end == null)
+            return null;
+
+        // last point excluded
+        end = end.prev;
+
         final ArrayList<Point2I> v = new ArrayList<>();
         while (end != null)
         {

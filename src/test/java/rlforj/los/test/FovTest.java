@@ -1,9 +1,7 @@
 package rlforj.los.test;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import junit.framework.TestCase;
 import rlforj.los.IFovAlgorithm;
-import rlforj.los.PrecisePermissive;
 import rlforj.math.Point2I;
 
 import java.util.Random;

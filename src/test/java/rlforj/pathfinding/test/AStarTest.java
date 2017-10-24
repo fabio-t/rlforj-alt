@@ -8,8 +8,7 @@ import rlforj.util.Directions;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AStarTest
 {
@@ -51,25 +50,34 @@ public class AStarTest
 
             int startx = -1, starty = -1, endx = -1, endy = -1;
 
-            while (true)// We will find 2 points pretty quickly for low % coverage.
-            {
-                startx = rand.nextInt(w);
-                starty = rand.nextInt(h);
-                endx = rand.nextInt(w);
-                endy = rand.nextInt(h);
+            startx = rand.nextInt(w);
+            starty = rand.nextInt(h);
+            endx = rand.nextInt(w);
+            endy = rand.nextInt(h);
 
-                if (!m.isObstacle(startx, starty) && !m.isObstacle(endx, endy))
-                    break;
-            }
             final AStar algo = new AStar(m, w, h);
 
-            final Point2I[] path = algo.findPath(startx, starty, endx, endy);
+            final Point2I pStart = new Point2I(startx, starty);
+            final Point2I pEnd   = new Point2I(endx, endy);
+
+            // System.out.println("start: " + pStart);
+            // System.out.println("end: " + pEnd);
+
+            final int       radius = 50;
+            final Point2I[] path   = algo.findPath(startx, starty, endx, endy, radius);
             if (path != null)
             {
                 // Check path
-                for (final Point2I step : path)
+                for (int pi = 0; pi < path.length; pi++)
                 {
-                    assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
+                    final Point2I step = path[pi];
+
+                    if (pi == 0)
+                        assertEquals("Path did not start with the starting point", step, pStart);
+                    else if (pi == path.length - 1)
+                        assertNotEquals("Last step of path was equal to the ending point", step, pEnd);
+                    else
+                        assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
                 }
 
                 // Check continuity
@@ -91,7 +99,7 @@ public class AStarTest
             }
             else
             {
-                assertFalse("Path existed but A* failed", floodFillTest(m, startx, starty, endx, endy));
+                assertFalse("Path existed but A* failed", floodFillTest(m, startx, starty, endx, endy, radius));
             }
         }
     }
@@ -107,26 +115,49 @@ public class AStarTest
      * @param y2
      * @return
      */
-    private boolean floodFillTest(final MockBoard mb, final int x1, final int y1, final int x2, final int y2)
+    private boolean floodFillTest(final MockBoard mb, final int x1, final int y1, final int x2, final int y2, final int radius)
     {
-        final int EMPTY  = 0, FULL = 1, COLOR = 2;
-        final int       width  = mb.getWidth();
-        final int       height = mb.getHeight();
-        final int[][]   board  = new int[width][];
+        final int     EMPTY  = 0, FULL = 1, COLOR = 2;
+
+        final int width;
+        final int height;
+        final int minX, minY, maxX, maxY;
+
+        if (radius <= 0)
+        {
+            width = mb.getWidth();
+            height = mb.getHeight();
+
+            minX = 0;
+            minY = 0;
+            maxX = width;
+            maxY = height;
+        }
+        else
+        {
+            minX = Math.max(0, x1 - radius);
+            minY = Math.max(0, y1 - radius);
+            maxX = Math.min(mb.getWidth(), x1 + radius);
+            maxY = Math.min(mb.getHeight(), y1 + radius);
+
+            width = maxX - minX;
+            height = maxY - minY;
+        }
+
+        final int[][] board  = new int[width][];
         for (int i = 0; i < width; i++)
         {
-
             board[i] = new int[height];
             for (int j = 0; j < height; j++)
             {
-                if (mb.isObstacle(i, j))
+                if (mb.isObstacle(minX+i, minY+j))
                     board[i][j] = FULL;
                 else
                     board[i][j] = EMPTY;
             }
         }
 
-        final ArrayList<Point2I> l = new ArrayList<Point2I>(width * height);
+        final ArrayList<Point2I> l = new ArrayList<>(width * height);
         l.add(new Point2I(x1, y1));
         while (!l.isEmpty())
         {

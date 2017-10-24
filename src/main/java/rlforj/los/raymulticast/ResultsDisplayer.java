@@ -29,40 +29,40 @@ public class ResultsDisplayer extends JPanel
     }
 
     // Example main method.
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
-        Random randGen = new Random(System.currentTimeMillis());
+        final Random randGen = new Random(System.currentTimeMillis());
 
         // set up a World to use, and add some obstructions to it
-        int   size    = 60;
-        World testMap = new SimpleWorld(size);
+        final int   size    = 60;
+        final World testMap = new SimpleWorld(size);
         for (int i = 0; i < 100; i++)
         {
             testMap.addObstruction(randGen.nextInt(size), randGen.nextInt(size));
         }
 
         // determine the point from which to cast rays
-        int originX = randGen.nextInt(size);
-        int originY = randGen.nextInt(size);
+        final int originX = randGen.nextInt(size);
+        final int originY = randGen.nextInt(size);
 
         // set up the ray casting object and perform the search
-        MultiRaysCaster caster = null;
+        final MultiRaysCaster caster = null;
         //		=new MultiRaysCaster(testMap, originX, originY);
         caster.castRays();
 
         // create a ResultsDisplayer to show the results
-        ResultsDisplayer displayer = new ResultsDisplayer();
-        final Point2I p = caster.getOrigin();
+        final ResultsDisplayer displayer = new ResultsDisplayer();
+        final Point2I    p         = caster.getOrigin();
         displayer.assignData(testMap, caster.getResults(), new Point(p.x, p.y));
 
         // uncomment the line below to print results data to system out
         //		displayer.displayText();
 
         // create a container to hold the ResultsDisplayer
-        javax.swing.JFrame container = new javax.swing.JFrame("Rays");
-        WindowAdapter closeAdapter = new WindowAdapter()
+        final javax.swing.JFrame container = new javax.swing.JFrame("Rays");
+        final WindowAdapter closeAdapter = new WindowAdapter()
         {
-            public void windowClosing(java.awt.event.WindowEvent event)
+            public void windowClosing(final java.awt.event.WindowEvent event)
             {
                 System.exit(1);
             }
@@ -74,7 +74,7 @@ public class ResultsDisplayer extends JPanel
         container.repaint();
     }
 
-    public void assignData(World map, RayData[][] results, Point origin)
+    public void assignData(final World map, final RayData[][] results, final Point origin)
     {
         this.mapData = map;
         this.resultData = results;
@@ -88,7 +88,7 @@ public class ResultsDisplayer extends JPanel
      */
     public void displayText()
     {
-        StringBuilder displayText = new StringBuilder();
+        final StringBuilder displayText = new StringBuilder();
         for (int y = 0; y < mapData.getSize(); y++)
         {
             for (int x = 0; x < mapData.getSize(); x++)
@@ -107,7 +107,7 @@ public class ResultsDisplayer extends JPanel
         System.out.println(displayText.toString());
     }
 
-    public void paintComponent(Graphics g)
+    public void paintComponent(final Graphics g)
     {
         if (mapData == null)
             return;
@@ -138,7 +138,7 @@ public class ResultsDisplayer extends JPanel
     }
 
     // Handles painting of a single tile.
-    private void paintData(RayData rayData, int mapX, int mapY, Graphics g)
+    private void paintData(final RayData rayData, final int mapX, final int mapY, final Graphics g)
     {
         boolean obscure = false;
 

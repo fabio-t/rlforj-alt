@@ -32,11 +32,10 @@ public interface ILosBoard
      * it will probably use this method. LoS/FoV might just want to know
      * about light blocking.
      *
-     * @see AStar
-     *
      * @param x
      * @param y
      * @return
+     * @see AStar
      */
     default boolean isObstacle(int x, int y)
     {
