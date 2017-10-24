@@ -2,11 +2,12 @@ package rlforj.los.test;
 
 import rlforj.los.PrecisePermissive;
 
-public class PrecisePermissiveLosTest extends LosTest
+public class FovPrecisePermissiveTest extends FovTest
 {
-
-    public PrecisePermissiveLosTest()
+    public FovPrecisePermissiveTest()
     {
+        super();
         a = new PrecisePermissive();
     }
+
 }

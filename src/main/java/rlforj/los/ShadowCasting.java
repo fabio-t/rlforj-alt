@@ -18,9 +18,9 @@ import static java.lang.Math.floor;
  */
 public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
 {
+    public static final int MAX_CACHED_RADIUS = 40;
 
-    public static final int                                   MAX_CACHED_RADIUS = 40;
-    static              HashMap<Integer, ArrayList<ArcPoint>> circles           = new HashMap<Integer, ArrayList<ArcPoint>>();
+    static HashMap<Integer, ArrayList<ArcPoint>> circles = new HashMap<Integer, ArrayList<ArcPoint>>();
 
     static
     {

@@ -2,9 +2,9 @@ package rlforj.los.test;
 
 import rlforj.los.ShadowCasting;
 
-public class ShadowCastingTest extends FovTest
+public class FovShadowCastingTest extends FovTest
 {
-    public ShadowCastingTest()
+    public FovShadowCastingTest()
     {
         a = new ShadowCasting();
     }

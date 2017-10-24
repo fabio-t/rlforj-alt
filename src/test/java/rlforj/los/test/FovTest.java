@@ -1,5 +1,6 @@
 package rlforj.los.test;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import junit.framework.TestCase;
 import rlforj.los.IFovAlgorithm;
 import rlforj.los.PrecisePermissive;
@@ -12,10 +13,9 @@ import java.util.Random;
  *
  * @author sdatta
  */
-public class FovTest extends TestCase
+public abstract class FovTest extends TestCase
 {
-    // IFovAlgorithm a=new ShadowCasting();
-    IFovAlgorithm a = new PrecisePermissive();
+    IFovAlgorithm a;
 
     public void testEmpty()
     {

@@ -1,5 +1,7 @@
 package rlforj.los.raymulticast;
 
+import rlforj.math.Point2I;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -50,7 +52,8 @@ public class ResultsDisplayer extends JPanel
 
         // create a ResultsDisplayer to show the results
         ResultsDisplayer displayer = new ResultsDisplayer();
-        displayer.assignData(testMap, caster.getResults(), caster.getOrigin());
+        final Point2I p = caster.getOrigin();
+        displayer.assignData(testMap, caster.getResults(), new Point(p.x, p.y));
 
         // uncomment the line below to print results data to system out
         //		displayer.displayText();
@@ -80,7 +83,7 @@ public class ResultsDisplayer extends JPanel
     }
 
     /**
-     * <p>Prints {@code resultData} to System.out using the {@link RayData.toChar()}
+     * <p>Prints {@code resultData} to System.out using the {@link RayData#toChar()}
      * method.</p>
      */
     public void displayText()
