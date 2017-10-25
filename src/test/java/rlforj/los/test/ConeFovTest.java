@@ -3,7 +3,7 @@ package rlforj.los.test;
 import rlforj.los.ConePrecisePremisive;
 import rlforj.los.IConeFovAlgorithm;
 import rlforj.los.ShadowCasting;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 public class ConeFovTest
 {
@@ -22,9 +22,9 @@ public class ConeFovTest
 
         TestBoard b = new TestBoard(false);
 
-        b.exception.add(new Point2I(15, 15));
-        b.exception.add(new Point2I(15, 16));
-        b.exception.add(new Point2I(16, 15));
+        b.exception.add(new Point(15, 15));
+        b.exception.add(new Point(15, 16));
+        b.exception.add(new Point(16, 15));
 
         IConeFovAlgorithm a = new ConePrecisePremisive();
 

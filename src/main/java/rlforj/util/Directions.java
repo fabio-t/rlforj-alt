@@ -1,6 +1,6 @@
 package rlforj.util;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 /**
  * A class for various directions, their offsets.
@@ -43,13 +43,13 @@ public enum Directions
     }
 
     /**
-     * Get the offsets in a Point2I object
+     * Get the offsets in a Point object
      *
      * @return
      */
-    public Point2I getDir()
+    public Point getDir()
     {
-        return new Point2I(dx[this.ordinal()], dy[this.ordinal()]);
+        return new Point(dx[this.ordinal()], dy[this.ordinal()]);
     }
 
     /**

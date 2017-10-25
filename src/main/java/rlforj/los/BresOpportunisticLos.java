@@ -1,6 +1,6 @@
 package rlforj.los;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 import rlforj.util.BresenhamLine;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.Vector;
 public class BresOpportunisticLos implements ILosAlgorithm
 {
 
-    private Vector<Point2I> path;
+    private Vector<Point> path;
 
     public boolean existsLineOfSight(ILosBoard b, int startX, int startY, int x1, int y1, boolean calculateProject)
     {
@@ -27,7 +27,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
         int len = (adx > ady ? adx : ady) + 1;
 
         if (calculateProject)
-            path = new Vector<Point2I>(len);
+            path = new Vector<Point>(len);
 
         int[] px  = new int[len], py = new int[len];
         int[] px1 = null, py1 = null;
@@ -47,7 +47,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
             {
                 if (calculateProject)
                 {
-                    path.add(new Point2I(px[i], py[i]));
+                    path.add(new Point(px[i], py[i]));
                 }
                 los = true;
                 break;
@@ -56,7 +56,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
             if (alternatePath && !b.blocksLight(px1[len - i - 1], py1[len - i - 1]))
             {
                 if (calculateProject)
-                    path.add(new Point2I(px1[len - i - 1], py1[len - i - 1]));
+                    path.add(new Point(px1[len - i - 1], py1[len - i - 1]));
                 continue;
             }
             else
@@ -67,7 +67,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
             {
                 if (calculateProject)
                 {
-                    path.add(new Point2I(px[i], py[i]));
+                    path.add(new Point(px[i], py[i]));
                 }
                 continue;
             }
@@ -75,19 +75,19 @@ public class BresOpportunisticLos implements ILosAlgorithm
             if (!b.blocksLight(px1[len - i - 1], py1[len - i - 1]))
             {
                 if (calculateProject)
-                    path.add(new Point2I(px1[len - i - 1], py1[len - i - 1]));
+                    path.add(new Point(px1[len - i - 1], py1[len - i - 1]));
                 alternatePath = true;//go on alternate path
                 continue;
             }
             if (calculateProject)
-                path.add(new Point2I(px1[len - i - 1], py1[len - i - 1]));
+                path.add(new Point(px1[len - i - 1], py1[len - i - 1]));
             break;
         }
 
         return los;
     }
 
-    public List<Point2I> getProjectPath()
+    public List<Point> getProjectPath()
     {
         return path;
     }

@@ -1,6 +1,6 @@
 package rlforj.los;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.Vector;
 
@@ -16,9 +16,9 @@ import java.util.Vector;
 public class GenericCalculateProjection
 {
 
-    public static Vector<Point2I> calculateProjecton(int startX, int startY, int x1, int y1, VisitedBoard fb)
+    public static Vector<Point> calculateProjecton(int startX, int startY, int x1, int y1, VisitedBoard fb)
     {
-        Vector<Point2I> path = new Vector<Point2I>();
+        Vector<Point> path = new Vector<Point>();
 
         // calculate usual Bresenham values required.
         int dx = x1 - startX;
@@ -56,12 +56,12 @@ public class GenericCalculateProjection
 
         // System.out.println("adx ady "+adx+" "+ady);
         //calculate the two error values.
-        int     incE  = 2 * ady; //error diff if x++
-        int     incNE = 2 * ady - 2 * adx; // error diff if x++ and y++
-        int     d     = 2 * ady - adx; // starting error
-        Point2I p     = new Point2I(0, 0);
-        int     lasti = 0, lastj = 0;
-        int     j     = 0;
+        int   incE  = 2 * ady; //error diff if x++
+        int   incNE = 2 * ady - 2 * adx; // error diff if x++ and y++
+        int   d     = 2 * ady - adx; // starting error
+        Point p     = new Point(0, 0);
+        int   lasti = 0, lastj = 0;
+        int   j     = 0;
         for (int i = 0; i <= adx; )
         {
             lasti = i;
@@ -86,11 +86,11 @@ public class GenericCalculateProjection
 
             if (axesSwapped)
             {
-                path.add(new Point2I((j * signX + startX), (i * signY + startY)));
+                path.add(new Point((j * signX + startX), (i * signY + startY)));
             }
             else
             {
-                path.add(new Point2I((i * signX + startX), (j * signY + startY)));
+                path.add(new Point((i * signX + startX), (j * signY + startY)));
             }
             //			System.out.println("Added to path "+path.lastElement());
             if (i == adx && j == ady)//end reached and recorded
@@ -201,11 +201,11 @@ public class GenericCalculateProjection
             // no path, end here, after adding last point.
             if (axesSwapped)
             {
-                path.add(new Point2I((j * signX + startX), (i * signY + startY)));
+                path.add(new Point((j * signX + startX), (i * signY + startY)));
             }
             else
             {
-                path.add(new Point2I((i * signX + startX), (j * signY + startY)));
+                path.add(new Point((i * signX + startX), (j * signY + startY)));
             }
             break;
         }

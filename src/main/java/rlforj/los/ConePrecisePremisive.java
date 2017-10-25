@@ -1,6 +1,6 @@
 package rlforj.los;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.LinkedList;
 
@@ -67,32 +67,32 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         // trigonometry.), then we set the active field to be in between them.
         if (startAngle == 0)
         {
-            activeFields.getLast().shallow.near = new Point2I(0, 1);
-            activeFields.getLast().shallow.far = new Point2I(state.extent.x, 0);
+            activeFields.getLast().shallow.near = new Point(0, 1);
+            activeFields.getLast().shallow.far = new Point(state.extent.x, 0);
         }
         else
         {
-            activeFields.getLast().shallow.near = new Point2I(0, 1);
-            activeFields.getLast().shallow.far = new Point2I((int) Math.ceil(
+            activeFields.getLast().shallow.near = new Point(0, 1);
+            activeFields.getLast().shallow.far = new Point((int) Math.ceil(
                 Math.cos(Math.toRadians(startAngle)) * state.extent.x),
-                                                             (int) Math.floor(Math.sin(Math.toRadians(startAngle)) *
+                                                           (int) Math.floor(Math.sin(Math.toRadians(startAngle)) *
                                                                               state.extent.y));
             //			System.out.println(activeFields.getLast().shallow.isAboveOrContains(new offsetT(0, 10)));
         }
         if (finishAngle == 90)
         {
-            activeFields.getLast().steep.near = new Point2I(1, 0);
-            activeFields.getLast().steep.far = new Point2I(0, state.extent.y);
+            activeFields.getLast().steep.near = new Point(1, 0);
+            activeFields.getLast().steep.far = new Point(0, state.extent.y);
         }
         else
         {
-            activeFields.getLast().steep.near = new Point2I(1, 0);
-            activeFields.getLast().steep.far = new Point2I((int) Math.floor(
+            activeFields.getLast().steep.near = new Point(1, 0);
+            activeFields.getLast().steep.far = new Point((int) Math.floor(
                 Math.cos(Math.toRadians(finishAngle)) * state.extent.x),
-                                                           (int) Math.ceil(
+                                                         (int) Math.ceil(
                                                                Math.sin(Math.toRadians(finishAngle)) * state.extent.y));
         }
-        final Point2I dest = new Point2I(0, 0);
+        final Point dest = new Point(0, 0);
 
         //		// Visit the source square exactly once (in quadrant 1).
         //		if (state.quadrant.x == 1 && state.quadrant.y == 1)
@@ -137,7 +137,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
                            final int finishAngle)
     {
         final coneFovState state = new coneFovState();
-        state.source = new Point2I(sourceX, sourceY);
+        state.source = new Point(sourceX, sourceY);
         state.mask = mask;
         state.board = mask.board;
         // state.isBlocked = isBlocked;
@@ -148,11 +148,11 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         state.board.visit(sourceX, sourceY);
 
         final int     quadrantCount = 4;
-        final Point2I quadrants[]   = { new Point2I(1, 1), new Point2I(-1, 1), new Point2I(-1, -1),
-                                        new Point2I(1, -1) };
+        final Point quadrants[]   = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1),
+                                      new Point(1, -1) };
 
-        final Point2I extents[] = { new Point2I(mask.east, mask.north), new Point2I(mask.west, mask.north),
-                                    new Point2I(mask.west, mask.south), new Point2I(mask.east, mask.south) };
+        final Point extents[] = { new Point(mask.east, mask.north), new Point(mask.west, mask.north),
+                                  new Point(mask.west, mask.south), new Point(mask.east, mask.south) };
 
         final int[] angles = new int[12];
         angles[0] = 0;
@@ -253,14 +253,14 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
      * @param shallowBumps
      * @param activeFields
      */
-    void visitConeSquare(final coneFovState state, final Point2I dest, final CLikeIterator<fieldT> currentField,
+    void visitConeSquare(final coneFovState state, final Point dest, final CLikeIterator<fieldT> currentField,
                          final LinkedList<bumpT> steepBumps, final LinkedList<bumpT> shallowBumps,
                          final LinkedList<fieldT> activeFields)
     {
         // System.out.println("visitsq called "+dest);
         // The top-left and bottom-right corners of the destination square.
-        final Point2I topLeft     = new Point2I(dest.x, dest.y + 1);
-        final Point2I bottomRight = new Point2I(dest.x + 1, dest.y);
+        final Point topLeft     = new Point(dest.x, dest.y + 1);
+        final Point bottomRight = new Point(dest.x + 1, dest.y);
         //		System.out.println(dest);
         // fieldT currFld=null;
 
@@ -370,10 +370,10 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
      * @param pos
      * @return
      */
-    boolean actIsBlockedCone(final coneFovState state, final Point2I pos)
+    boolean actIsBlockedCone(final coneFovState state, final Point pos)
     {
-        final Point2I stateQuadrant = state.quadrant;
-        final Point2I adjustedPos = new Point2I(pos.x * stateQuadrant.x + state.source.x,
+        final Point stateQuadrant = state.quadrant;
+        final Point adjustedPos = new Point(pos.x * stateQuadrant.x + state.source.x,
                                                 pos.y * stateQuadrant.y + state.source.y);
 
         //Keep track of which axes are done.

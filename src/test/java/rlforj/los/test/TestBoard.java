@@ -1,7 +1,7 @@
 package rlforj.los.test;
 
 import rlforj.los.ILosBoard;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,17 +13,17 @@ public class TestBoard implements ILosBoard
 
     public boolean def; // true => obstacle
 
-    public Set<Point2I> exception = new HashSet<Point2I>();
+    public Set<Point> exception = new HashSet<Point>();
 
-    public Set<Point2I> visited = new HashSet<Point2I>();
+    public Set<Point> visited = new HashSet<Point>();
 
-    public Set<Point2I> chkb4visit = new HashSet<Point2I>();
+    public Set<Point> chkb4visit = new HashSet<Point>();
 
-    public Set<Point2I> visiterr = new HashSet<Point2I>();
+    public Set<Point> visiterr = new HashSet<Point>();
 
-    public Set<Point2I> prjPath = new HashSet<Point2I>();
+    public Set<Point> prjPath = new HashSet<Point>();
 
-    public Map<Point2I, Character> marks = new HashMap<Point2I, Character>();
+    public Map<Point, Character> marks = new HashMap<Point, Character>();
 
     public TestBoard(boolean defaultObscured)
     {
@@ -32,7 +32,7 @@ public class TestBoard implements ILosBoard
 
     public void mark(int x, int y, char c)
     {
-        marks.put(new Point2I(x, y), c);
+        marks.put(new Point(x, y), c);
     }
 
     public boolean contains(int x, int y)
@@ -42,10 +42,10 @@ public class TestBoard implements ILosBoard
 
     public boolean isObstacle(int x, int y)
     {
-        Point2I p = new Point2I(x, y);
+        Point p = new Point(x, y);
         if (!visited.contains(p))
             chkb4visit.add(p);
-        return def ^ exception.contains(new Point2I(x, y));
+        return def ^ exception.contains(new Point(x, y));
     }
 
     @Override
@@ -62,10 +62,10 @@ public class TestBoard implements ILosBoard
 
     public void visit(int x, int y)
     {
-        Point2I p = new Point2I(x, y);
+        Point p = new Point(x, y);
         if (visited.contains(p))
             visiterr.add(p);
-        visited.add(new Point2I(x, y));
+        visited.add(new Point(x, y));
     }
 
     public void print(int fromx, int tox, int fromy, int toy)
@@ -74,7 +74,7 @@ public class TestBoard implements ILosBoard
         {
             for (int x = fromx; x <= tox; x++)
             {
-                Point2I   point = new Point2I(x, y);
+                Point     point = new Point(x, y);
                 Character c     = marks.get(point);
                 if (c == null)
                 {

@@ -1,7 +1,7 @@
 package rlforj.examples;
 
 import rlforj.los.ILosBoard;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class ExampleBoard implements ILosBoard
     int w, h;
     boolean[][] obstacles;
     boolean[][] visited;
-    Map<Point2I, Character> marks = new HashMap<Point2I, Character>();
+    Map<Point, Character> marks = new HashMap<Point, Character>();
 
     public ExampleBoard(int w, int h)
     {
@@ -32,7 +32,7 @@ public class ExampleBoard implements ILosBoard
 
     public void mark(int x, int y, char c)
     {
-        marks.put(new Point2I(x, y), c);
+        marks.put(new Point(x, y), c);
     }
 
     public void setObstacle(int x, int y)
@@ -69,7 +69,7 @@ public class ExampleBoard implements ILosBoard
 
     public void print(int ox, int oy)
     {
-        Point2I p = new Point2I(0, 0);
+        Point p = new Point(0, 0);
         for (int j = 0; j < h; j++)
         {
             for (int i = 0; i < w; i++)

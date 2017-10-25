@@ -2,7 +2,7 @@ package rlforj.los.test;
 
 import rlforj.los.ILosAlgorithm;
 import rlforj.los.ShadowCasting;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.List;
 import java.util.Random;
@@ -17,21 +17,18 @@ public class ProjectionTest
 
         for (int i = 0; i < 50; i++)
         {
-            tb.exception.add(new Point2I(rand.nextInt(21), rand.nextInt(21)));
+            tb.exception.add(new Point(rand.nextInt(21), rand.nextInt(21)));
         }
 
         int x1 = rand.nextInt(21), y1 = rand.nextInt(21);
-        //		int x1=45, y1=10;
-        //		tb.exception.add(new Point2I(7, 11));
-        //		tb.exception.add(new Point2I(13, 12));
 
         //		ILosAlgorithm alg = new PrecisePermissive();
         ILosAlgorithm alg = new ShadowCasting();
 
-        boolean       losExists = alg.existsLineOfSight(tb, 10, 10, x1, y1, true);
-        List<Point2I> path      = alg.getProjectPath();
+        boolean     losExists = alg.existsLineOfSight(tb, 10, 10, x1, y1, true);
+        List<Point> path      = alg.getProjectPath();
 
-        for (Point2I p : path)
+        for (Point p : path)
         {
             int xx = p.x, yy = p.y;
             tb.mark(xx, yy, '-');

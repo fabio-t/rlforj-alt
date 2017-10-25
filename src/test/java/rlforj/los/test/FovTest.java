@@ -2,7 +2,7 @@ package rlforj.los.test;
 
 import junit.framework.TestCase;
 import rlforj.los.IFovAlgorithm;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.Random;
 
@@ -23,11 +23,11 @@ public abstract class FovTest extends TestCase
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
-        assertTrue(b.visited.contains(new Point2I(11, 11)));
-        assertTrue(b.visited.contains(new Point2I(10, 11)));
-        assertTrue(b.visited.contains(new Point2I(11, 10)));
-        assertTrue(b.visited.contains(new Point2I(10, 15)));
-        assertTrue(b.visited.contains(new Point2I(15, 10)));
+        assertTrue(b.visited.contains(new Point(11, 11)));
+        assertTrue(b.visited.contains(new Point(10, 11)));
+        assertTrue(b.visited.contains(new Point(11, 10)));
+        assertTrue(b.visited.contains(new Point(10, 15)));
+        assertTrue(b.visited.contains(new Point(15, 10)));
     }
 
     public void testFull()
@@ -38,11 +38,11 @@ public abstract class FovTest extends TestCase
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
-        assertTrue(b.visited.contains(new Point2I(11, 11)));
-        assertTrue(b.visited.contains(new Point2I(10, 11)));
-        assertTrue(b.visited.contains(new Point2I(11, 10)));
-        assertFalse(b.visited.contains(new Point2I(10, 15)));
-        assertFalse(b.visited.contains(new Point2I(15, 10)));
+        assertTrue(b.visited.contains(new Point(11, 11)));
+        assertTrue(b.visited.contains(new Point(10, 11)));
+        assertTrue(b.visited.contains(new Point(11, 10)));
+        assertFalse(b.visited.contains(new Point(10, 15)));
+        assertFalse(b.visited.contains(new Point(15, 10)));
     }
 
     public void testLine()
@@ -51,46 +51,46 @@ public abstract class FovTest extends TestCase
 
         for (int i = 5; i < 11; i++)
         {
-            b.exception.add(new Point2I(i, 10));
+            b.exception.add(new Point(i, 10));
         }
 
         a.visitFieldOfView(b, 10, 10, 5);
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
-        assertTrue(b.visited.contains(new Point2I(11, 11)));
-        assertTrue(b.visited.contains(new Point2I(10, 11)));
-        assertTrue(b.visited.contains(new Point2I(11, 10)));
-        assertTrue(b.visited.contains(new Point2I(5, 10)));
-        assertFalse(b.visited.contains(new Point2I(15, 10)));
+        assertTrue(b.visited.contains(new Point(11, 11)));
+        assertTrue(b.visited.contains(new Point(10, 11)));
+        assertTrue(b.visited.contains(new Point(11, 10)));
+        assertTrue(b.visited.contains(new Point(5, 10)));
+        assertFalse(b.visited.contains(new Point(15, 10)));
     }
 
     public void testAcrossPillar()
     {
         final TestBoard b = new TestBoard(false);
 
-        b.exception.add(new Point2I(10, 10));
+        b.exception.add(new Point(10, 10));
 
         a.visitFieldOfView(b, 9, 9, 5);
         // b.print(4, 14, 4, 14);
         // System.out.println();
 
-        assertTrue(b.visited.contains(new Point2I(10, 11)));
-        assertFalse(b.visited.contains(new Point2I(11, 11)));
+        assertTrue(b.visited.contains(new Point(10, 11)));
+        assertFalse(b.visited.contains(new Point(11, 11)));
     }
 
     public void testDiagonalWall()
     {
         final TestBoard b = new TestBoard(false);
 
-        b.exception.add(new Point2I(11, 11));
-        b.exception.add(new Point2I(10, 10));
+        b.exception.add(new Point(11, 11));
+        b.exception.add(new Point(10, 10));
 
         a.visitFieldOfView(b, 10, 11, 5);
         // b.print(5, 15, 6, 16);
         // System.out.println();
 
-        assertTrue(b.visited.contains(new Point2I(11, 10)));
+        assertTrue(b.visited.contains(new Point(11, 10)));
     }
 
     public void testLarge()
@@ -100,7 +100,7 @@ public abstract class FovTest extends TestCase
         final Random rand = new Random();
         for (int i = 0; i < 100; i++)
         {
-            b.exception.add(new Point2I(rand.nextInt(81) + 60, rand.nextInt(81) + 60));
+            b.exception.add(new Point(rand.nextInt(81) + 60, rand.nextInt(81) + 60));
         }
 
         final long t1 = System.currentTimeMillis();

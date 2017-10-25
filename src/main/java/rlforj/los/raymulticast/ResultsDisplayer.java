@@ -1,6 +1,6 @@
 package rlforj.los.raymulticast;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +18,10 @@ public class ResultsDisplayer extends JPanel
     private static final String END_LINE       = System.getProperty("line.separator");
     private static final int    PREFERRED_SIZE = 600;
 
-    private int         tileSize;
-    private World       mapData;
-    private RayData[][] resultData;
-    private Point       origin;
+    private int            tileSize;
+    private World          mapData;
+    private RayData[][]    resultData;
+    private java.awt.Point origin;
 
     public ResultsDisplayer()
     {
@@ -52,8 +52,8 @@ public class ResultsDisplayer extends JPanel
 
         // create a ResultsDisplayer to show the results
         final ResultsDisplayer displayer = new ResultsDisplayer();
-        final Point2I    p         = caster.getOrigin();
-        displayer.assignData(testMap, caster.getResults(), new Point(p.x, p.y));
+        final Point            p         = caster.getOrigin();
+        displayer.assignData(testMap, caster.getResults(), new java.awt.Point(p.x, p.y));
 
         // uncomment the line below to print results data to system out
         //		displayer.displayText();
@@ -74,7 +74,7 @@ public class ResultsDisplayer extends JPanel
         container.repaint();
     }
 
-    public void assignData(final World map, final RayData[][] results, final Point origin)
+    public void assignData(final World map, final RayData[][] results, final java.awt.Point origin)
     {
         this.mapData = map;
         this.resultData = results;

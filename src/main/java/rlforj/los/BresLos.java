@@ -1,6 +1,6 @@
 package rlforj.los;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 import rlforj.util.BresenhamLine;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class BresLos implements ILosAlgorithm
 
     boolean symmetricEnabled = false;
 
-    private Vector<Point2I> path;
+    private Vector<Point> path;
 
     public BresLos(boolean symmetric)
     {
@@ -34,7 +34,7 @@ public class BresLos implements ILosAlgorithm
         int len = (adx > ady ? adx : ady) + 1;//Max number of points on the path.
 
         if (calculateProject)
-            path = new Vector<Point2I>(len);
+            path = new Vector<Point>(len);
 
         // array to store path.
         int[] px = new int[len], py = new int[len];
@@ -47,7 +47,7 @@ public class BresLos implements ILosAlgorithm
         {
             if (calculateProject)
             {
-                path.add(new Point2I(px[i], py[i]));
+                path.add(new Point(px[i], py[i]));
             }
             if (px[i] == x1 && py[i] == y1)
             {
@@ -67,13 +67,13 @@ public class BresLos implements ILosAlgorithm
             // finish to start path.
             BresenhamLine.plot(x1, y1, startX, startY, px1, py1);
 
-            Vector<Point2I> oldpath = path;
-            path = new Vector<Point2I>(len);
+            Vector<Point> oldpath = path;
+            path = new Vector<Point>(len);
             for (int i = len - 1; i > -1; i--)
             {
                 if (calculateProject)
                 {
-                    path.add(new Point2I(px1[i], py1[i]));
+                    path.add(new Point(px1[i], py1[i]));
                 }
                 if (px1[i] == x1 && py1[i] == y1)
                 {
@@ -91,7 +91,7 @@ public class BresLos implements ILosAlgorithm
         return los;
     }
 
-    public List<Point2I> getProjectPath()
+    public List<Point> getProjectPath()
     {
         return path;
     }

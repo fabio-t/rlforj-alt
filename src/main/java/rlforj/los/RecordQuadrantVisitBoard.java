@@ -1,6 +1,6 @@
 package rlforj.los;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +13,6 @@ import java.util.Set;
  */
 public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProjection.VisitedBoard
 {
-
     ILosBoard b;
 
     int sx, sy, sxy;
@@ -21,12 +20,12 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
     int targetX, targetY;
 
     // int manhattanDist;
-    Set<Point2I> visitedNotObs = new HashSet<Point2I>();
+    Set<Point> visitedNotObs = new HashSet<Point>();
 
     boolean endVisited = false;
 
     boolean calculateProject;
-    private Point2I visitedCheck = new Point2I(0, 0);
+    private Point visitedCheck = new Point(0, 0);
 
     public RecordQuadrantVisitBoard(ILosBoard b, int sx, int sy, int dx, int dy, boolean calculateProject)
     {
@@ -74,7 +73,7 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
             dx = dx > 0 ? dx : -dx;
             int dy = y - sy;
             dy = dy > 0 ? dy : -dy;
-            visitedNotObs.add(new Point2I(dx, dy));
+            visitedNotObs.add(new Point(dx, dy));
         }
         //DEBUG
         //		b.visit(x, y);

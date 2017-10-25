@@ -1,7 +1,7 @@
 package rlforj.examples;
 
 import rlforj.los.*;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.List;
 import java.util.Random;
@@ -38,8 +38,8 @@ public class ProjectionExample
      */
     private static void displayProjection(ILosAlgorithm a, String algoName, ExampleBoard b, int x1, int y1)
     {
-        boolean       los;
-        List<Point2I> path;
+        boolean     los;
+        List<Point> path;
         b.resetVisitedAndMarks();
         System.out.println(algoName);
         los = a.existsLineOfSight(b, 10, 10, x1, y1, true);
@@ -55,7 +55,7 @@ public class ProjectionExample
         b.print(10, 10);
     }
 
-    private static void markProjectPath(ExampleBoard b, List<Point2I> path)
+    private static void markProjectPath(ExampleBoard b, List<Point> path)
     {
         if (path.size() < 1)
             return;
@@ -63,8 +63,8 @@ public class ProjectionExample
         int lastx = path.get(0).x, lasty = path.get(0).y;
         for (int i = 1; i < path.size(); i++)
         {
-            Point2I p = path.get(i);
-            int     x = p.x, y = p.y;
+            Point p = path.get(i);
+            int   x = p.x, y = p.y;
             if (x != lastx)
             {
                 if (y != lasty)

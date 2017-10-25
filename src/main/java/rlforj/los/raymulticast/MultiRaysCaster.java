@@ -2,7 +2,7 @@ package rlforj.los.raymulticast;
 
 import rlforj.los.IFovAlgorithm;
 import rlforj.los.ILosBoard;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -27,9 +27,9 @@ public class MultiRaysCaster implements IFovAlgorithm
 {
 
     private ILosBoard      world;     // holds obstruction data
-    private Point2I        origin;    // the point at which the rays will be
+    private Point          origin;    // the point at which the rays will be
     // cast from
-    private Point2I        offset;    // offset for storing in results
+    private Point          offset;    // offset for storing in results
     private Queue<RayData> perimeter; // rays currently on the search frontier
     private RayData[][]    results;   // stores calculated data for external use
     private int            dsq;
@@ -37,11 +37,11 @@ public class MultiRaysCaster implements IFovAlgorithm
     public MultiRaysCaster(ILosBoard world, int originX, int originY, int radius)
     {
         this.world = world;
-        this.origin = new Point2I(originX, originY);
+        this.origin = new Point(originX, originY);
         this.perimeter = new LinkedList<>();
         this.results = new RayData[2 * radius + 1][2 * radius + 1];
 
-        offset = new Point2I(radius, radius);
+        offset = new Point(radius, radius);
         dsq = radius * radius;
     }
 
@@ -54,18 +54,18 @@ public class MultiRaysCaster implements IFovAlgorithm
     public void visitFieldOfView(ILosBoard b, int x, int y, int distance)
     {
         this.world = b;
-        this.origin = new Point2I(x, y);
+        this.origin = new Point(x, y);
         this.perimeter = new LinkedList<>();
         this.results = new RayData[2 * distance + 1][2 * distance + 1];
 
-        offset = new Point2I(distance, distance);
+        offset = new Point(distance, distance);
         dsq = distance * distance;
         b.visit(x, y);
         castRays();
         // printResults();
     }
 
-    public Point2I getOrigin()
+    public Point getOrigin()
     {
         return this.origin;
     }
@@ -286,51 +286,4 @@ public class MultiRaysCaster implements IFovAlgorithm
         }
         System.out.println();
     }
-
-    // public static void main(String[] args)
-    // {
-    // TestBoard1 b=new TestBoard1(false);
-    // b.exception.add(new Point2I(11, 11));
-    // b.exception.add(new Point2I(7, 8));
-    // MultiRaysCaster m=new MultiRaysCaster();
-    // m.visitFieldOfView(b, 10, 10, 10);
-    // System.out.println(b.obsNotVisited);
-    // b.mark(10, 10, '@');
-    // b.print(0, 20, 0, 20);
-    //
-    //// System.out.println(b.chkb4visit);
-    //
-    //// b.visited.clear();
-    //// IFovAlgorithm pp=new ShadowCasting();
-    //// pp.visitFieldOfView(b, 10, 10, 3);
-    //// b.mark(10, 10, '@');
-    //// b.print(0, 20, 0, 20);
-    // }
-    //
-    // private static class TestBoard1 extends TestBoard {
-    //
-    // public Set<Point2I> obsNotVisited=new HashSet<Point2I>();
-    //
-    // public TestBoard1(boolean defaultObscured)
-    // {
-    // super(defaultObscured);
-    // }
-    //
-    // @Override
-    // public void visit(int x, int y)
-    // {
-    // super.visit(x, y);
-    // System.out.println("Visiting "+x+" "+y);
-    // obsNotVisited.remove(new Point2I(x, y));
-    // }
-    //
-    // @Override
-    // public boolean isObstacle(int x, int y)
-    // {
-    // System.out.println("isObs "+x+" "+y);
-    // obsNotVisited.add(new Point2I(x, y));
-    // return super.isObstacle(x, y);
-    // }
-    // }
-
 }

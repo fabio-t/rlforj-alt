@@ -1,49 +1,49 @@
 package rlforj.math;
 
 /**
- * A Eucleidian 2D line class represented by integers.
+ * A Euclidean 2D line class represented by integers.
  *
  * @author Jonathan Duerig
  */
 public class Line2I
 {
-    public Point2I near;
+    public Point near;
 
-    public Point2I far;
+    public Point far;
 
-    public Line2I(Point2I newNear, Point2I newFar)
+    public Line2I(final Point newNear, final Point newFar)
     {
         near = newNear;
         far = newFar;
     }
 
-    public Line2I(int x1, int y1, int x2, int y2)
+    public Line2I(final int x1, final int y1, final int x2, final int y2)
     {
-        near = new Point2I(x1, y1);
-        far = new Point2I(x2, y2);
+        near = new Point(x1, y1);
+        far = new Point(x2, y2);
     }
 
-    public boolean isBelow(final Point2I point)
+    public boolean isBelow(final Point point)
     {
         return relativeSlope(point) > 0;
     }
 
-    public boolean isBelowOrContains(final Point2I point)
+    public boolean isBelowOrContains(final Point point)
     {
         return relativeSlope(point) >= 0;
     }
 
-    public boolean isAbove(final Point2I point)
+    public boolean isAbove(final Point point)
     {
         return relativeSlope(point) < 0;
     }
 
-    public boolean isAboveOrContains(final Point2I point)
+    public boolean isAboveOrContains(final Point point)
     {
         return relativeSlope(point) <= 0;
     }
 
-    public boolean doesContain(final Point2I point)
+    public boolean doesContain(final Point point)
     {
         return relativeSlope(point) == 0;
     }
@@ -51,7 +51,7 @@ public class Line2I
     // negative if the line is above the point.
     // positive if the line is below the point.
     // 0 if the line is on the point.
-    public int relativeSlope(final Point2I point)
+    public int relativeSlope(final Point point)
     {
         return (far.y - near.y) * (far.x - point.x) - (far.y - point.y) * (far.x - near.x);
     }

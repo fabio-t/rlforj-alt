@@ -20,5 +20,5 @@ public interface IConeFovAlgorithm extends IFovAlgorithm
      * @param startAngle
      * @param finishAngle
      */
-    public void visitConeFieldOfView(ILosBoard b, int x, int y, int distance, int startAngle, int finishAngle);
+    void visitConeFieldOfView(ILosBoard b, int x, int y, int distance, int startAngle, int finishAngle);
 }
