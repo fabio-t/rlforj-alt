@@ -50,18 +50,18 @@ public class AStar
 
             minX = 0;
             minY = 0;
-            maxX = boardWidth;
-            maxY = boardHeight;
+            maxX = boardWidth - 1;
+            maxY = boardHeight - 1;
         }
         else
         {
             minX = Math.max(0, x - radius);
             minY = Math.max(0, y - radius);
-            maxX = Math.min(boardWidth, x + radius);
-            maxY = Math.min(boardHeight, y + radius);
+            maxX = Math.min(boardWidth - 1, x + radius);
+            maxY = Math.min(boardHeight - 1, y + radius);
 
-            width = maxX - minX;
-            height = maxY - minY;
+            width = maxX - minX + 1;
+            height = maxY - minY + 1;
         }
 
         final PathNode[][]         nodeHash  = new PathNode[width][height];
@@ -79,19 +79,21 @@ public class AStar
                 return this.createPath(step);
             }
 
-            int dx = -1;
-            while (dx <= 1)
+            for (int dx = -1; dx <= 1; dx++)
             {
-                int dy = -1;
-                while (dy <= 1)
+                for (int dy = -1; dy <= 1; dy++)
                 {
-                    if (!(dx == 0 && dy == 0 || dx != 0 && dy != 0 && !this.allowDiagonal))
+                    // exclude the current point, as well as diagonals if not allowed
+                    if (!((dx == 0 && dy == 0) || (dx != 0 && dy != 0 && !this.allowDiagonal)))
                     {
                         final int cx = step.x + dx;
                         final int cy = step.y + dy;
-                        if (cx >= minX && cy >= minY && cx < maxX && cy < maxY && this.map.contains(cx, cy) &&
-                            !this.map.isObstacle(cx, cy))
+                        if (cx >= minX && cy >= minY && cx <= maxX && cy <= maxY && this.map.contains(cx, cy))
                         {
+                            // the only allowed obstacle is the end point
+                            if ((cx != x1 || cy != y1) && this.map.isObstacle(cx, cy))
+                                continue;
+
                             final PathNode n1;
                             final double   this_cost = dx != 0 && dy != 0 ? 1.1 : 1.0;
                             if (nodeHash[cx - minX][cy - minY] == null)
@@ -123,9 +125,7 @@ public class AStar
                             }
                         }
                     }
-                    ++dy;
                 }
-                ++dx;
             }
         }
         return null;
@@ -145,9 +145,6 @@ public class AStar
     {
         if (end == null)
             return null;
-
-        // last point excluded
-        end = end.prev;
 
         final ArrayList<Point2I> v = new ArrayList<>();
         while (end != null)
