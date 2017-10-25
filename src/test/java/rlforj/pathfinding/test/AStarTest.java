@@ -8,8 +8,7 @@ import rlforj.util.Directions;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class AStarTest
 {
@@ -51,25 +50,31 @@ public class AStarTest
 
             int startx = -1, starty = -1, endx = -1, endy = -1;
 
-            while (true)// We will find 2 points pretty quickly for low % coverage.
-            {
-                startx = rand.nextInt(w);
-                starty = rand.nextInt(h);
-                endx = rand.nextInt(w);
-                endy = rand.nextInt(h);
+            startx = rand.nextInt(w);
+            starty = rand.nextInt(h);
+            endx = rand.nextInt(w);
+            endy = rand.nextInt(h);
 
-                if (!m.isObstacle(startx, starty) && !m.isObstacle(endx, endy))
-                    break;
-            }
             final AStar algo = new AStar(m, w, h);
 
-            final Point2I[] path = algo.findPath(startx, starty, endx, endy);
+            final Point2I pStart = new Point2I(startx, starty);
+            final Point2I pEnd   = new Point2I(endx, endy);
+
+            final int       radius = rand.nextInt(50) + 20; // 20-70
+            final Point2I[] path   = algo.findPath(startx, starty, endx, endy, radius);
             if (path != null)
             {
                 // Check path
-                for (final Point2I step : path)
+                for (int pi = 0; pi < path.length; pi++)
                 {
-                    assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
+                    final Point2I step = path[pi];
+
+                    if (pi == 0)
+                        assertEquals("Path did not start with the starting point", step, pStart);
+                    else if (pi == path.length - 1)
+                        assertNotEquals("Last step of path was equal to the ending point", step, pEnd);
+                    else
+                        assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
                 }
 
                 // Check continuity
@@ -91,7 +96,7 @@ public class AStarTest
             }
             else
             {
-                assertFalse("Path existed but A* failed", floodFillTest(m, startx, starty, endx, endy));
+                assertFalse("Path existed but A* failed", floodFillTest(m, pStart, pEnd, radius));
             }
         }
     }
@@ -101,21 +106,21 @@ public class AStarTest
      * points are not reachable from each other.
      *
      * @param mb
-     * @param x1
-     * @param y1
-     * @param x2
-     * @param y2
+     * @param start
+     * @param end
+     * @param radius
      * @return
      */
-    private boolean floodFillTest(final MockBoard mb, final int x1, final int y1, final int x2, final int y2)
+    private boolean floodFillTest(final MockBoard mb, final Point2I start, final Point2I end, final int radius)
     {
-        final int EMPTY  = 0, FULL = 1, COLOR = 2;
-        final int       width  = mb.getWidth();
-        final int       height = mb.getHeight();
-        final int[][]   board  = new int[width][];
+        final int EMPTY = 0, FULL = 1, COLOR = 2;
+
+        final int width = mb.getWidth();
+        final int height = mb.getHeight();
+
+        final int[][] board  = new int[width][];
         for (int i = 0; i < width; i++)
         {
-
             board[i] = new int[height];
             for (int j = 0; j < height; j++)
             {
@@ -126,15 +131,15 @@ public class AStarTest
             }
         }
 
-        final ArrayList<Point2I> l = new ArrayList<Point2I>(width * height);
-        l.add(new Point2I(x1, y1));
+        final ArrayList<Point2I> l = new ArrayList<>(width * height);
+        l.add(start);
         while (!l.isEmpty())
         {
             final Point2I p1 = l.remove(l.size() - 1);
             for (final Directions d : Directions.N8)
             {
                 final Point2I p2 = new Point2I(p1.x + d.dx(), p1.y + d.dy());
-                if (!mb.contains(p2.x, p2.y) || board[p2.x][p2.y] != EMPTY)
+                if (start.distance(p2) >= radius || !mb.contains(p2.x, p2.y) || board[p2.x][p2.y] != EMPTY)
                     continue;
 
                 board[p2.x][p2.y] = COLOR;
@@ -142,6 +147,7 @@ public class AStarTest
             }
         }
 
-        return (board[x1][y1] == board[x2][y2] && board[x1][y1] == COLOR);
+        // if start and end point are both coloured, a path exists in the start-point radius
+        return (board[start.x][start.y] == COLOR && board[end.x][end.y] == COLOR);
     }
 }

@@ -13,7 +13,8 @@ import java.util.LinkedList;
 public class ConePrecisePremisive extends PrecisePermissive implements IConeFovAlgorithm
 {
 
-    public void visitConeFieldOfView(ILosBoard b, int x, int y, int distance, int startAngle, int finishAngle)
+    public void visitConeFieldOfView(final ILosBoard b, final int x, final int y, final int distance, int startAngle,
+                                     int finishAngle)
     {
         if (startAngle % 90 == 0 && startAngle % 360 != 0)
             startAngle--;//we dont like to start at 90, 180, 270
@@ -36,7 +37,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         if (finishAngle > 360)
             finishAngle %= 360;
 
-        permissiveMaskT mask = new permissiveMaskT();
+        final permissiveMaskT mask = new permissiveMaskT();
         mask.east = mask.north = mask.south = mask.west = distance;
         mask.mask = null;
         mask.fovType = FovType.CIRCLE;
@@ -52,14 +53,14 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
      * @param startAngle
      * @param finishAngle
      */
-    void calculateConeFovQuadrant(final coneFovState state, int startAngle, int finishAngle)
+    void calculateConeFovQuadrant(final coneFovState state, final int startAngle, final int finishAngle)
     {
         //		 System.out.println("calcfovq called " + state.quadrantIndex + " "
         //				+ startAngle + " " + finishAngle);
-        LinkedList<bumpT> steepBumps   = new LinkedList<bumpT>();
-        LinkedList<bumpT> shallowBumps = new LinkedList<bumpT>();
+        final LinkedList<bumpT> steepBumps   = new LinkedList<bumpT>();
+        final LinkedList<bumpT> shallowBumps = new LinkedList<bumpT>();
         // activeFields is sorted from shallow-to-steep.
-        LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
+        final LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
         activeFields.addLast(new fieldT());
 
         // We decide the farthest cells that can be seen by the cone ( using
@@ -91,7 +92,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
                                                            (int) Math.ceil(
                                                                Math.sin(Math.toRadians(finishAngle)) * state.extent.y));
         }
-        Point2I dest = new Point2I(0, 0);
+        final Point2I dest = new Point2I(0, 0);
 
         //		// Visit the source square exactly once (in quadrant 1).
         //		if (state.quadrant.x == 1 && state.quadrant.y == 1)
@@ -102,12 +103,12 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         CLikeIterator<fieldT> currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
         int                   i            = 0;
         int                   j            = 0;
-        int                   maxI         = state.extent.x + state.extent.y;
+        final int             maxI         = state.extent.x + state.extent.y;
         // For each square outline
         for (i = 1; i <= maxI && !activeFields.isEmpty(); ++i)
         {
-            int startJ = max(0, i - state.extent.x);
-            int maxJ   = min(i, state.extent.y);
+            final int startJ = max(0, i - state.extent.x);
+            final int maxJ   = min(i, state.extent.y);
             // System.out.println("Startj "+startJ+" maxj "+maxJ);
             // Visit the nodes in the outline
             for (j = startJ; j <= maxJ && !currentField.isAtEnd(); ++j)
@@ -122,19 +123,20 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         }
     }
 
-    private final int max(int i, int j)
+    private final int max(final int i, final int j)
     {
         return i > j ? i : j;
     }
 
-    private final int min(int i, int j)
+    private final int min(final int i, final int j)
     {
         return i < j ? i : j;
     }
 
-    void permissiveConeFov(int sourceX, int sourceY, permissiveMaskT mask, int startAngle, int finishAngle)
+    void permissiveConeFov(final int sourceX, final int sourceY, final permissiveMaskT mask, final int startAngle,
+                           final int finishAngle)
     {
-        coneFovState state = new coneFovState();
+        final coneFovState state = new coneFovState();
         state.source = new Point2I(sourceX, sourceY);
         state.mask = mask;
         state.board = mask.board;
@@ -149,10 +151,10 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         final Point2I quadrants[]   = { new Point2I(1, 1), new Point2I(-1, 1), new Point2I(-1, -1),
                                         new Point2I(1, -1) };
 
-        Point2I extents[] = { new Point2I(mask.east, mask.north), new Point2I(mask.west, mask.north),
-                              new Point2I(mask.west, mask.south), new Point2I(mask.east, mask.south) };
+        final Point2I extents[] = { new Point2I(mask.east, mask.north), new Point2I(mask.west, mask.north),
+                                    new Point2I(mask.west, mask.south), new Point2I(mask.east, mask.south) };
 
-        int[] angles = new int[12];
+        final int[] angles = new int[12];
         angles[0] = 0;
         angles[1] = 90;
         angles[2] = 180;
@@ -201,7 +203,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         {
             if (angles[i] == finishAngle)
                 break;
-            int quadrantIndex = angles[i] / 90;
+            final int quadrantIndex = angles[i] / 90;
             switch (quadrantIndex)
             {
                 case 0:
@@ -251,13 +253,14 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
      * @param shallowBumps
      * @param activeFields
      */
-    void visitConeSquare(final coneFovState state, final Point2I dest, CLikeIterator<fieldT> currentField,
-                         LinkedList<bumpT> steepBumps, LinkedList<bumpT> shallowBumps, LinkedList<fieldT> activeFields)
+    void visitConeSquare(final coneFovState state, final Point2I dest, final CLikeIterator<fieldT> currentField,
+                         final LinkedList<bumpT> steepBumps, final LinkedList<bumpT> shallowBumps,
+                         final LinkedList<fieldT> activeFields)
     {
         // System.out.println("visitsq called "+dest);
         // The top-left and bottom-right corners of the destination square.
-        Point2I topLeft     = new Point2I(dest.x, dest.y + 1);
-        Point2I bottomRight = new Point2I(dest.x + 1, dest.y);
+        final Point2I topLeft     = new Point2I(dest.x, dest.y + 1);
+        final Point2I bottomRight = new Point2I(dest.x + 1, dest.y);
         //		System.out.println(dest);
         // fieldT currFld=null;
 
@@ -312,7 +315,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         // The square is between the lines in some way. This means that we
         // need to visit it and determine whether it is blocked.
 
-        boolean isBlocked = actIsBlockedCone(state, dest);
+        final boolean isBlocked = actIsBlockedCone(state, dest);
         if (!isBlocked)
         {
             // We don't care what case might be left, because this square does
@@ -345,8 +348,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
             // case BETWEEN
             // The square intersects neither line. We need to split into two
             // fields.
-            fieldT steeperField   = new fieldT(currentField.getCurrent());
-            fieldT shallowerField = currentField.getCurrent();
+            final fieldT steeperField   = new fieldT(currentField.getCurrent());
+            final fieldT shallowerField = currentField.getCurrent();
             currentField.insertBeforeCurrent(steeperField);
             // System.out.println("activeFields "+activeFields);
             addSteepBump(bottomRight, shallowerField, steepBumps, shallowBumps);
@@ -370,8 +373,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
     boolean actIsBlockedCone(final coneFovState state, final Point2I pos)
     {
         final Point2I stateQuadrant = state.quadrant;
-        Point2I adjustedPos = new Point2I(pos.x * stateQuadrant.x + state.source.x,
-                                          pos.y * stateQuadrant.y + state.source.y);
+        final Point2I adjustedPos = new Point2I(pos.x * stateQuadrant.x + state.source.x,
+                                                pos.y * stateQuadrant.y + state.source.y);
 
         //Keep track of which axes are done.
         if ((pos.x == 0 && stateQuadrant.y > 0 && !state.axisDone[1]) ||

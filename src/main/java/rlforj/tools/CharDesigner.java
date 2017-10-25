@@ -77,7 +77,6 @@ public class CharDesigner
 
         cvc.addMouseWheelListener(new MouseWheelListener()
         {
-
             public void mouseWheelMoved(MouseWheelEvent e)
             {
                 if (e.getWheelRotation() > 0)

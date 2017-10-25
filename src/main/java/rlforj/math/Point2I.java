@@ -1,8 +1,5 @@
 package rlforj.math;
 
-import java.awt.*;
-import java.io.Serializable;
-
 /**
  * A class encapsulating a 2D point, as integers
  * <p>
