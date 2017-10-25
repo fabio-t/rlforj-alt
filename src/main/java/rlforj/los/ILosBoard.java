@@ -23,7 +23,7 @@ public interface ILosBoard
      * @param y
      * @return
      */
-    public boolean contains(int x, int y);
+    boolean contains(int x, int y);
 
     /**
      * Is the location (x, y) an obstacle? Generic obstacles may block
@@ -51,7 +51,7 @@ public interface ILosBoard
      * @param y
      * @return
      */
-    public boolean blocksLight(int x, int y);
+    boolean blocksLight(int x, int y);
 
     /**
      * Does the location (x, y) block movement? Some implementations might
@@ -62,7 +62,7 @@ public interface ILosBoard
      * @param y
      * @return
      */
-    public boolean blocksStep(int x, int y);
+    boolean blocksStep(int x, int y);
 
     /**
      * Location (x,y) is visible
@@ -74,6 +74,5 @@ public interface ILosBoard
      * @param x
      * @param y
      */
-    public void visit(int x, int y);
-
+    void visit(int x, int y);
 }

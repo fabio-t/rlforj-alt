@@ -25,6 +25,6 @@ public interface IFovAlgorithm
      * @param y        Starting location:y
      * @param distance How far can this Field of View go
      */
-    public void visitFieldOfView(ILosBoard b, int x, int y, int distance);
+    void visitFieldOfView(ILosBoard b, int x, int y, int distance);
 
 }

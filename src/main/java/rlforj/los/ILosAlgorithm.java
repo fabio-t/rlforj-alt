@@ -1,6 +1,6 @@
 package rlforj.los;
 
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.List;
 
@@ -25,8 +25,7 @@ public interface ILosAlgorithm
      *                         source to the target.
      * @return
      */
-    public abstract boolean existsLineOfSight(ILosBoard b, int startX, int startY, int x1, int y1,
-                                              boolean calculateProject);
+    boolean existsLineOfSight(ILosBoard b, int startX, int startY, int x1, int y1, boolean calculateProject);
 
     /**
      * Obtain the path of the projection calculated during the last call
@@ -34,6 +33,6 @@ public interface ILosAlgorithm
      *
      * @return
      */
-    public abstract List<Point2I> getProjectPath();
+    List<Point> getProjectPath();
 
 }

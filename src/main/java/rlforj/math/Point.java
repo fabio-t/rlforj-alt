@@ -1,19 +1,16 @@
 package rlforj.math;
 
 /**
- * A class encapsulating a 2D point, as integers
- * <p>
- * (Reason for existance: java.awt.Point uses double
- * and I wanted speed.)
+ * A class encapsulating a 2D point, as integers.
  *
  * @author sdatta
  */
-public class Point2I
+public class Point
 {
     public int x;
     public int y;
 
-    public Point2I(final int x, final int y)
+    public Point(final int x, final int y)
     {
         this.x = x;
         this.y = y;
@@ -21,10 +18,10 @@ public class Point2I
 
     public String toString()
     {
-        return "Point2I[" + x + ", " + y + "]";
+        return "(" + x + "," + y + ")";
     }
 
-    public int distance(final Point2I p)
+    public int distance(final Point p)
     {
         return distance(p.x, p.y);
     }
@@ -42,11 +39,11 @@ public class Point2I
         if (o == null || getClass() != o.getClass())
             return false;
 
-        final Point2I point2I = (Point2I) o;
+        final Point point = (Point) o;
 
-        if (x != point2I.x)
+        if (x != point.x)
             return false;
-        return y == point2I.y;
+        return y == point.y;
     }
 
     @Override

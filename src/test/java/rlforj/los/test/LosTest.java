@@ -2,7 +2,7 @@ package rlforj.los.test;
 
 import junit.framework.TestCase;
 import rlforj.los.ILosAlgorithm;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 /**
  * Testing Los algorithms
@@ -45,7 +45,7 @@ public abstract class LosTest extends TestCase
 
         for (int i = 5; i < 11; i++)
         {
-            b.exception.add(new Point2I(i, 10));
+            b.exception.add(new Point(i, 10));
         }
 
         // b.print(5, 15, 5, 15);
@@ -62,7 +62,7 @@ public abstract class LosTest extends TestCase
     {
         final TestBoard b = new TestBoard(false);
 
-        b.exception.add(new Point2I(10, 10));
+        b.exception.add(new Point(10, 10));
 
         // b.print(4, 14, 4, 14);
         // System.out.println();
@@ -75,8 +75,8 @@ public abstract class LosTest extends TestCase
     {
         final TestBoard b = new TestBoard(false);
 
-        b.exception.add(new Point2I(11, 11));
-        b.exception.add(new Point2I(10, 10));
+        b.exception.add(new Point(11, 11));
+        b.exception.add(new Point(10, 10));
 
         // b.print(5, 15, 6, 16);
         // System.out.println();

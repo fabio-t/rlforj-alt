@@ -1,7 +1,7 @@
 package rlforj.pathfinding.test;
 
 import org.junit.Test;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 import rlforj.pathfinding.AStar;
 import rlforj.util.Directions;
 
@@ -70,17 +70,17 @@ public class AStarTest
 
             final AStar algo = new AStar(m, w, h);
 
-            final Point2I pStart = new Point2I(startx, starty);
-            final Point2I pEnd   = new Point2I(endx, endy);
+            final Point pStart = new Point(startx, starty);
+            final Point pEnd   = new Point(endx, endy);
 
-            final int       radius = rand.nextInt(80) + 20; // 20-100
-            final Point2I[] path   = algo.findPath(startx, starty, endx, endy, radius);
+            final int     radius = rand.nextInt(80) + 20; // 20-100
+            final Point[] path   = algo.findPath(startx, starty, endx, endy, radius);
             if (path != null)
             {
                 // Check path
                 for (int pi = 0; pi < path.length; pi++)
                 {
-                    final Point2I step = path[pi];
+                    final Point step = path[pi];
 
                     if (pi == 0)
                         assertEquals("Path did not start with the starting point", step, pStart);
@@ -91,8 +91,8 @@ public class AStarTest
                 }
 
                 // Check continuity
-                Point2I lastStep = null;
-                for (final Point2I step : path)
+                Point lastStep = null;
+                for (final Point step : path)
                 {
                     if (lastStep == null)
                     {
@@ -124,7 +124,7 @@ public class AStarTest
      * @param radius
      * @return
      */
-    private boolean floodFillTest(final MockBoard mb, final Point2I start, final Point2I end, final int radius)
+    private boolean floodFillTest(final MockBoard mb, final Point start, final Point end, final int radius)
     {
         final int EMPTY = 0, FULL = 1, COLOR = 2;
 
@@ -150,14 +150,14 @@ public class AStarTest
             }
         }
 
-        final ArrayList<Point2I> l = new ArrayList<>(width * height);
+        final ArrayList<Point> l = new ArrayList<>(width * height);
         l.add(start);
         while (!l.isEmpty())
         {
-            final Point2I p1 = l.remove(l.size() - 1);
+            final Point p1 = l.remove(l.size() - 1);
             for (final Directions d : Directions.N8)
             {
-                final Point2I p2 = new Point2I(p1.x + d.dx(), p1.y + d.dy());
+                final Point p2 = new Point(p1.x + d.dx(), p1.y + d.dy());
                 if (start.distance(p2) >= radius || !mb.contains(p2.x, p2.y) || board[p2.x][p2.y] != EMPTY)
                     continue;
 

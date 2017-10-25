@@ -1,7 +1,7 @@
 package rlforj.pathfinding;
 
 import rlforj.los.ILosBoard;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 import rlforj.util.HeapNode;
 import rlforj.util.SimpleHeap;
 
@@ -27,12 +27,12 @@ public class AStar
         this.allowDiagonal = allowDiagonal;
     }
 
-    public Point2I[] findPath(final int x, final int y, final int x1, final int y1)
+    public Point[] findPath(final int x, final int y, final int x1, final int y1)
     {
         return findPath(x, y, x1, y1, 0);
     }
 
-    public Point2I[] findPath(final int x, final int y, final int x1, final int y1, final int radius)
+    public Point[] findPath(final int x, final int y, final int x1, final int y1, final int radius)
     {
         if (!this.map.contains(x, y) || !this.map.contains(x1, y1))
         {
@@ -141,20 +141,20 @@ public class AStar
                (double) Math.abs((node.x - x1) * (starty - y1) - (node.y - y1) * (startx - x1)) * 0.01;
     }
 
-    private Point2I[] createPath(PathNode end)
+    private Point[] createPath(PathNode end)
     {
         if (end == null)
             return null;
 
-        final ArrayList<Point2I> v = new ArrayList<>();
+        final ArrayList<Point> v = new ArrayList<>();
         while (end != null)
         {
-            v.add(new Point2I(end.x, end.y));
+            v.add(new Point(end.x, end.y));
             end = end.prev;
         }
-        final int       sz  = v.size();
-        final Point2I[] ret = new Point2I[sz];
-        int             i   = 0;
+        final int     sz  = v.size();
+        final Point[] ret = new Point[sz];
+        int           i   = 0;
         while (i < sz)
         {
             ret[i] = v.get(sz - i - 1);

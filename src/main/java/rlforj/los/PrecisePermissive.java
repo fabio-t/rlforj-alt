@@ -1,7 +1,7 @@
 package rlforj.los;
 
 import rlforj.math.Line2I;
-import rlforj.math.Point2I;
+import rlforj.math.Point;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,29 +22,9 @@ import java.util.Vector;
  */
 public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
 {
+    private Vector<Point> path;
 
-    private Vector<Point2I> path;
-
-    //	class offsetT
-    //	{
-    //		public offsetT(int newX, int newY)
-    //		{
-    //			x = newX;
-    //			y = newY;
-    //		}
-    //
-    //		public int x;
-    //
-    //		public int y;
-    //
-    //		public String toString()
-    //		{
-    //			return "(" + x + ", " + y + ")";
-    //		}
-    //	}
     private final ILosAlgorithm fallBackLos = new BresLos(true);
-
-    ;
 
     void calculateFovQuadrant(final fovStateT state)
     {
@@ -54,12 +34,12 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         // activeFields is sorted from shallow-to-steep.
         final LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
         activeFields.addLast(new fieldT());
-        activeFields.getLast().shallow.near = new Point2I(0, 1);
-        activeFields.getLast().shallow.far = new Point2I(state.extent.x, 0);
-        activeFields.getLast().steep.near = new Point2I(1, 0);
-        activeFields.getLast().steep.far = new Point2I(0, state.extent.y);
+        activeFields.getLast().shallow.near = new Point(0, 1);
+        activeFields.getLast().shallow.far = new Point(state.extent.x, 0);
+        activeFields.getLast().steep.near = new Point(1, 0);
+        activeFields.getLast().steep.far = new Point(0, state.extent.y);
 
-        final Point2I dest = new Point2I(0, 0);
+        final Point dest = new Point(0, 0);
 
         // Visit the source square exactly once (in quadrant 1).
         if (state.quadrant.x == 1 && state.quadrant.y == 1)
@@ -100,15 +80,15 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         return i < j ? i : j;
     }
 
-    void visitSquare(final fovStateT state, final Point2I dest, final CLikeIterator<fieldT> currentField,
+    void visitSquare(final fovStateT state, final Point dest, final CLikeIterator<fieldT> currentField,
                      final LinkedList<bumpT> steepBumps, final LinkedList<bumpT> shallowBumps,
                      final LinkedList<fieldT> activeFields)
     {
         //		System.out.println("-> "+steepBumps+" - "+shallowBumps);
         // System.out.println("visitsq called "+dest);
         // The top-left and bottom-right corners of the destination square.
-        final Point2I topLeft     = new Point2I(dest.x, dest.y + 1);
-        final Point2I bottomRight = new Point2I(dest.x + 1, dest.y);
+        final Point topLeft     = new Point(dest.x, dest.y + 1);
+        final Point bottomRight = new Point(dest.x + 1, dest.y);
 
         // fieldT currFld=null;
 
@@ -196,7 +176,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         boolean      ret     = false;
 
         if (currFld.shallow.doesContain(currFld.steep.near) && currFld.shallow.doesContain(currFld.steep.far) &&
-            (currFld.shallow.doesContain(new Point2I(0, 1)) || currFld.shallow.doesContain(new Point2I(1, 0))))
+            (currFld.shallow.doesContain(new Point(0, 1)) || currFld.shallow.doesContain(new Point(1, 0))))
         {
             //			System.out.println("removing "+currentField.getCurrent());
             currentField.removeCurrent();
@@ -206,7 +186,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         return ret;
     }
 
-    void addShallowBump(final Point2I point, final fieldT currFld, final LinkedList<bumpT> steepBumps,
+    void addShallowBump(final Point point, final fieldT currFld, final LinkedList<bumpT> steepBumps,
                         final LinkedList<bumpT> shallowBumps)
     {
         //		System.out.println("Adding shallow "+point);
@@ -232,7 +212,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         }
     }
 
-    void addSteepBump(final Point2I point, final fieldT currFld, final LinkedList<bumpT> steepBumps,
+    void addSteepBump(final Point point, final fieldT currFld, final LinkedList<bumpT> steepBumps,
                       final LinkedList<bumpT> shallowBumps)
     {
         //		System.out.println("Adding steep "+point);
@@ -254,9 +234,9 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         }
     }
 
-    boolean actIsBlocked(final fovStateT state, final Point2I pos)
+    boolean actIsBlocked(final fovStateT state, final Point pos)
     {
-        final Point2I adjustedPos = new Point2I(pos.x * state.quadrant.x + state.source.x,
+        final Point adjustedPos = new Point(pos.x * state.quadrant.x + state.source.x,
                                                 pos.y * state.quadrant.y + state.source.y);
 
         if (!state.board.contains(adjustedPos.x, adjustedPos.y))
@@ -303,7 +283,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
     void permissiveFov(final int sourceX, final int sourceY, final permissiveMaskT mask)
     {
         final fovStateT state = new fovStateT();
-        state.source = new Point2I(sourceX, sourceY);
+        state.source = new Point(sourceX, sourceY);
         state.mask = mask;
         state.board = mask.board;
         // state.isBlocked = isBlocked;
@@ -311,11 +291,11 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         // state.context = context;
 
         final int     quadrantCount = 4;
-        final Point2I quadrants[]   = { new Point2I(1, 1), new Point2I(-1, 1), new Point2I(-1, -1),
-                                        new Point2I(1, -1) };
+        final Point quadrants[]   = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1),
+                                      new Point(1, -1) };
 
-        final Point2I extents[] = { new Point2I(mask.east, mask.north), new Point2I(mask.west, mask.north),
-                                    new Point2I(mask.west, mask.south), new Point2I(mask.east, mask.south) };
+        final Point extents[] = { new Point(mask.east, mask.north), new Point(mask.west, mask.north),
+                                  new Point(mask.west, mask.south), new Point(mask.east, mask.south) };
         int quadrantIndex = 0;
         for (; quadrantIndex < quadrantCount; ++quadrantIndex)
         {
@@ -355,7 +335,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
      * Algorithm inspired by
      * http://groups.google.com/group/rec.games.roguelike.development/browse_thread/thread/f3506215be9d9f9a/2e543127f705a278#2e543127f705a278
      *
-     * @see rlforj.los.ILosAlgorithm1#existsLineOfSight(rlforj.los.ILosBoard, int, * int, int, int, boolean)
+     * @see rlforj.los.ILosAlgorithm#existsLineOfSight(rlforj.los.ILosBoard, int, int, int, int, boolean)
      */
     public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1,
                                      final boolean calculateProject)
@@ -374,11 +354,11 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         mask.board = fb;
 
         final fovStateT state = new fovStateT();
-        state.source = new Point2I(startX, startY);
+        state.source = new Point(startX, startY);
         state.mask = mask;
         state.board = fb;
         state.isLos = true;
-        state.quadrant = new Point2I(dx < 0 ? -1 : 1, dy < 0 ? -1 : 1);
+        state.quadrant = new Point(dx < 0 ? -1 : 1, dy < 0 ? -1 : 1);
         state.quadrantIndex = 0;
 
         final LinkedList<bumpT> steepBumps   = new LinkedList<bumpT>();
@@ -386,17 +366,17 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         // activeFields is sorted from shallow-to-steep.
         final LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
         activeFields.addLast(new fieldT());
-        activeFields.getLast().shallow.near = new Point2I(0, 1);
-        activeFields.getLast().shallow.far = new Point2I(adx + 1, 0);
-        activeFields.getLast().steep.near = new Point2I(1, 0);
-        activeFields.getLast().steep.far = new Point2I(0, ady + 1);
+        activeFields.getLast().shallow.near = new Point(0, 1);
+        activeFields.getLast().shallow.far = new Point(adx + 1, 0);
+        activeFields.getLast().steep.near = new Point(1, 0);
+        activeFields.getLast().steep.far = new Point(0, ady + 1);
 
-        final Point2I dest = new Point2I(0, 0);
+        final Point dest = new Point(0, 0);
 
-        final Line2I stopLine = new Line2I(new Point2I(0, 1),
-                                           new Point2I(adx, ady + 1)), startLine = new Line2I(new Point2I(1, 0),
-                                                                                              new Point2I(adx + 1,
-                                                                                                          ady));
+        final Line2I stopLine = new Line2I(new Point(0, 1),
+                                           new Point(adx, ady + 1)), startLine = new Line2I(new Point(1, 0),
+                                                                                            new Point(adx + 1,
+                                                                                                      ady));
 
         // Visit the source square exactly once (in quadrant 1).
         actIsBlocked(state, dest);
@@ -404,8 +384,8 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         CLikeIterator<fieldT> currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
         final int             maxI         = adx + ady;
         // For each square outline
-        int           lastStartJ = -1;
-        final Point2I topLeft    = new Point2I(0, 0), bottomRight = new Point2I(0, 0);
+        int         lastStartJ = -1;
+        final Point topLeft    = new Point(0, 0), bottomRight = new Point(0, 0);
         for (int i = 1; i <= maxI && !activeFields.isEmpty(); ++i)
         {
             // System.out.println("i "+i);
@@ -459,7 +439,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
             else
             {
                 fallBackLos.existsLineOfSight(b, startX, startY, x1, y1, true);
-                path = (Vector<Point2I>) fallBackLos.getProjectPath();
+                path = (Vector<Point>) fallBackLos.getProjectPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
         }
@@ -471,7 +451,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
      *
      * @see sid.los.ILosAlgorithm1#getProjectPath()
      */
-    public List<Point2I> getProjectPath()
+    public List<Point> getProjectPath()
     {
         return path;
     }
@@ -497,17 +477,17 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
     {
         public int quadrantIndex;
         public boolean isLos = false;
-        Point2I         source;
+        Point           source;
         permissiveMaskT mask;
         Object          context;
-        Point2I         quadrant;
-        Point2I         extent;
+        Point           quadrant;
+        Point           extent;
         ILosBoard       board;
     }
 
     class bumpT
     {
-        Point2I location;
+        Point location;
         bumpT parent = null;
 
         public bumpT()
@@ -522,16 +502,16 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
 
     class fieldT
     {
-        Line2I steep   = new Line2I(new Point2I(0, 0), new Point2I(0, 0));
-        Line2I shallow = new Line2I(new Point2I(0, 0), new Point2I(0, 0));
+        Line2I steep   = new Line2I(new Point(0, 0), new Point(0, 0));
+        Line2I shallow = new Line2I(new Point(0, 0), new Point(0, 0));
         bumpT steepBump;
         bumpT shallowBump;
 
         public fieldT(final fieldT f)
         {
-            steep = new Line2I(new Point2I(f.steep.near.x, f.steep.near.y), new Point2I(f.steep.far.x, f.steep.far.y));
-            shallow = new Line2I(new Point2I(f.shallow.near.x, f.shallow.near.y),
-                                 new Point2I(f.shallow.far.x, f.shallow.far.y));
+            steep = new Line2I(new Point(f.steep.near.x, f.steep.near.y), new Point(f.steep.far.x, f.steep.far.y));
+            shallow = new Line2I(new Point(f.shallow.near.x, f.shallow.near.y),
+                                 new Point(f.shallow.far.x, f.shallow.far.y));
             steepBump = f.steepBump;
             shallowBump = f.shallowBump;
         }
@@ -546,21 +526,4 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
             return "[ steep " + steep + ",  shallow " + shallow + "]";
         }
     }
-
-    //	public static void main(String[] args)
-    //	{
-    //		ILosAlgorithm pp = new PrecisePermissive();
-    //		TestBoard b = new TestBoard(false);
-    //		// b.exception.add(new Point2I(10, 11));
-    //		// b.exception.add(new Point2I(11, 10));
-    //		// b.exception.add(new Point2I(14, 15));
-    //		b.exception.add(new Point2I(14, 18));
-    //		System.out.println(pp.existsLineOfSight(b, -10, -10, -19, -15, true));
-    //
-    //		System.out.println(pp.getProjectPathX());
-    //		System.out.println(pp.getProjectPathY());
-    //
-    //		System.out.println(b.visited);
-    //	}
-
 }
