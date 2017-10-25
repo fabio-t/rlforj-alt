@@ -50,17 +50,30 @@ public class AStarTest
 
             int startx = -1, starty = -1, endx = -1, endy = -1;
 
-            startx = rand.nextInt(w);
-            starty = rand.nextInt(h);
-            endx = rand.nextInt(w);
-            endy = rand.nextInt(h);
+            // we want to check all possible cases of start and end point being, or not, obstacles
+            final boolean startNoObstacle = rand.nextBoolean();
+            final boolean endNoObstacle   = rand.nextBoolean();
+            while (true)
+            {
+                startx = rand.nextInt(w);
+                starty = rand.nextInt(h);
+                endx = rand.nextInt(w);
+                endy = rand.nextInt(h);
+
+                if ((startNoObstacle && m.isObstacle(startx, starty)) ||
+                    (!startNoObstacle && !m.isObstacle(startx, starty)))
+                    break;
+
+                if ((endNoObstacle && m.isObstacle(endx, endy)) || (!endNoObstacle && !m.isObstacle(endx, endy)))
+                    break;
+            }
 
             final AStar algo = new AStar(m, w, h);
 
             final Point2I pStart = new Point2I(startx, starty);
             final Point2I pEnd   = new Point2I(endx, endy);
 
-            final int       radius = rand.nextInt(50) + 20; // 20-70
+            final int       radius = rand.nextInt(80) + 20; // 20-100
             final Point2I[] path   = algo.findPath(startx, starty, endx, endy, radius);
             if (path != null)
             {
@@ -72,7 +85,7 @@ public class AStarTest
                     if (pi == 0)
                         assertEquals("Path did not start with the starting point", step, pStart);
                     else if (pi == path.length - 1)
-                        assertNotEquals("Last step of path was equal to the ending point", step, pEnd);
+                        assertEquals("Path did not end with the ending point", step, pEnd);
                     else
                         assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
                 }
@@ -115,16 +128,22 @@ public class AStarTest
     {
         final int EMPTY = 0, FULL = 1, COLOR = 2;
 
-        final int width = mb.getWidth();
+        final int width  = mb.getWidth();
         final int height = mb.getHeight();
 
-        final int[][] board  = new int[width][];
+        final int[][] board = new int[width][];
         for (int i = 0; i < width; i++)
         {
             board[i] = new int[height];
             for (int j = 0; j < height; j++)
             {
-                if (mb.isObstacle(i, j))
+                // Special handling for start and end point: start it's always coloured,
+                // while end is always empty, even if they are both obstacles
+                if (start.x == i && start.y == j)
+                    board[i][j] = COLOR;
+                else if (end.x == i && end.y == j)
+                    board[i][j] = EMPTY;
+                else if (mb.isObstacle(i, j))
                     board[i][j] = FULL;
                 else
                     board[i][j] = EMPTY;
@@ -147,7 +166,7 @@ public class AStarTest
             }
         }
 
-        // if start and end point are both coloured, a path exists in the start-point radius
-        return (board[start.x][start.y] == COLOR && board[end.x][end.y] == COLOR);
+        // if the end point is coloured, then there's a path between the start and end point
+        return board[end.x][end.y] == COLOR;
     }
 }
