@@ -17,6 +17,31 @@ the development of roguelikes and other games:
   
 Some terrain generation utilities will also be available in the future.
 
+Installation
+------------
+
+1. First add Jitpack as a repository inside your pom.xml
+
+```$xslt
+<repositories>
+  <repository>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
+  </repository>
+</repositories>
+```
+
+2. Then add `rlforj-alt` as a dependency (make sure to change `version` to one of the
+[releases](https://github.com/fabioticconi/rlforj-alt/releases)):
+
+```$xslt
+<dependency>
+    <groupId>com.github.fabioticconi</groupId>
+    <artifactId>rlforj-alt</artifactId>
+    <version>version</version>
+</dependency>
+```
+
 Disclaimer
 ---------
 
