@@ -73,8 +73,8 @@
     </build>
 
     <scm>
-        <connection>scm:git:git@fabioticconi/rlforj.git</connection>
-        <url>scm:git:git@fabioticconi/rlforj.git</url>
-        <developerConnection>scm:git:git@fabioticconi/rlforj.git</developerConnection>
+        <connection>scm:git:git@fabioticconi/rlforj-alt.git</connection>
+        <url>scm:git:git@fabioticconi/rlforj-alt.git</url>
+        <developerConnection>scm:git:git@fabioticconi/rlforj-alt.git</developerConnection>
     </scm>
 </project>
