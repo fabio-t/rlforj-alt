@@ -4,7 +4,7 @@
 
     <groupId>com.github.fabioticconi</groupId>
     <artifactId>rlforj-alt</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Roguelike Library For Java (Alternative version)</name>
