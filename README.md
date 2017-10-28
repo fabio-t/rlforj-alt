@@ -1,6 +1,8 @@
 rlforj-alt
 =========
 
+[![Build Status](https://travis-ci.org/fabioticconi/rlforj-alt.svg?branch=master)](https://travis-ci.org/fabioticconi/rlforj-alt)
+
 Roguelike Library For Java (Alternative version).
 
 The main aim of this library is to provide a set of simple, yet efficient, algorithms for common problems in
