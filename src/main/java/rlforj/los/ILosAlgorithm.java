@@ -23,7 +23,7 @@ public interface ILosAlgorithm
      * @param y1               Target location:y
      * @param calculateProject Whether to also calculate the path from the
      *                         source to the target.
-     * @return
+     * @return true if a line of sight could be established
      */
     boolean existsLineOfSight(ILosBoard b, int startX, int startY, int x1, int y1, boolean calculateProject);
 
@@ -31,7 +31,7 @@ public interface ILosAlgorithm
      * Obtain the path of the projection calculated during the last call
      * to existsLineOfSight.
      *
-     * @return
+     * @return null if no los was established so far, or a list of points if a los found
      */
     List<Point> getProjectPath();
 

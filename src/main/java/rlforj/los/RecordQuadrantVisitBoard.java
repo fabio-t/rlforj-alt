@@ -20,14 +20,14 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
     int targetX, targetY;
 
     // int manhattanDist;
-    Set<Point> visitedNotObs = new HashSet<Point>();
+    Set<Point> visitedNotObs = new HashSet<>();
 
     boolean endVisited = false;
 
     boolean calculateProject;
-    private Point visitedCheck = new Point(0, 0);
+    private final Point visitedCheck = new Point(0, 0);
 
-    public RecordQuadrantVisitBoard(ILosBoard b, int sx, int sy, int dx, int dy, boolean calculateProject)
+    public RecordQuadrantVisitBoard(final ILosBoard b, final int sx, final int sy, final int dx, final int dy, final boolean calculateProject)
     {
         super();
         this.b = b;
@@ -40,12 +40,12 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
         this.calculateProject = calculateProject;
     }
 
-    public boolean contains(int x, int y)
+    public boolean contains(final int x, final int y)
     {
         return b.contains(x, y);
     }
 
-    public boolean isObstacle(int x, int y)
+    public boolean isObstacle(final int x, final int y)
     {
         return b.isObstacle(x, y);
     }
@@ -62,7 +62,7 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
         return b.blocksStep(x, y);
     }
 
-    public void visit(int x, int y)
+    public void visit(final int x, final int y)
     {
         //			System.out.println("visited "+x+" "+y);
         if (x == targetX && y == targetY)
@@ -79,7 +79,7 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
         //		b.visit(x, y);
     }
 
-    public boolean wasVisited(int x, int y)
+    public boolean wasVisited(final int x, final int y)
     {
         visitedCheck.x = x;
         visitedCheck.y = y;

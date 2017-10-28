@@ -17,7 +17,7 @@ public class FovSuite extends TestSuite
 
     public static Test suite()
     {
-        TestSuite s = new TestSuite();
+        final TestSuite s = new TestSuite();
         s.addTestSuite(FovPrecisePermissiveTest.class);
         s.addTestSuite(FovShadowCastingTest.class);
         return s;

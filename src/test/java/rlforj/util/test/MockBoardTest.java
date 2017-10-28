@@ -12,7 +12,7 @@ public class MockBoardTest extends TestCase
 
     public void testConstructor_empty()
     {
-        MockBoard board = new MockBoard("   ");
+        final MockBoard board = new MockBoard("   ");
 
         assertEquals(3, board.getWidth());
         assertEquals(1, board.getHeight());
@@ -23,7 +23,7 @@ public class MockBoardTest extends TestCase
 
     public void testConstructor_N()
     {
-        MockBoard board = new MockBoard("#########\n" + "#       #\n" + "####### #\n" + "#       #\n" + "#########");
+        final MockBoard board = new MockBoard("#########\n" + "#       #\n" + "####### #\n" + "#       #\n" + "#########");
 
         assertEquals(9, board.getWidth());
         assertEquals(5, board.getHeight());

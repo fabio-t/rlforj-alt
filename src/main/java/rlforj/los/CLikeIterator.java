@@ -5,7 +5,7 @@ import java.util.ListIterator;
 /**
  * An iterator that behaves like C iterators
  *
- * @param <T>
+ * @param <T> class of elements in iterator
  * @author sdatta
  */
 public class CLikeIterator<T>
@@ -15,7 +15,7 @@ public class CLikeIterator<T>
     T               curr;
     boolean atEnd = false, atBegin = false;
 
-    public CLikeIterator(ListIterator<T> it)
+    public CLikeIterator(final ListIterator<T> it)
     {
         super();
         this.it = it;
@@ -85,7 +85,7 @@ public class CLikeIterator<T>
         gotoNext();
     }
 
-    public void insertBeforeCurrent(T t)
+    public void insertBeforeCurrent(final T t)
     {
         it.previous();
         it.add(t);

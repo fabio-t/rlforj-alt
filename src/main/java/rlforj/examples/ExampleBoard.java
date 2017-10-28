@@ -13,9 +13,9 @@ public class ExampleBoard implements ILosBoard
     int w, h;
     boolean[][] obstacles;
     boolean[][] visited;
-    Map<Point, Character> marks = new HashMap<Point, Character>();
+    Map<Point, Character> marks = new HashMap<>();
 
-    public ExampleBoard(int w, int h)
+    public ExampleBoard(final int w, final int h)
     {
         this.w = w;
         this.h = h;
@@ -30,22 +30,22 @@ public class ExampleBoard implements ILosBoard
         visited = new boolean[w][h];
     }
 
-    public void mark(int x, int y, char c)
+    public void mark(final int x, final int y, final char c)
     {
         marks.put(new Point(x, y), c);
     }
 
-    public void setObstacle(int x, int y)
+    public void setObstacle(final int x, final int y)
     {
         obstacles[x][y] = true;
     }
 
-    public boolean contains(int x, int y)
+    public boolean contains(final int x, final int y)
     {
         return x >= 0 && y >= 0 && x < w && y < h;
     }
 
-    public boolean isObstacle(int x, int y)
+    public boolean isObstacle(final int x, final int y)
     {
         return obstacles[x][y];
     }
@@ -62,21 +62,21 @@ public class ExampleBoard implements ILosBoard
         return isObstacle(x, y);
     }
 
-    public void visit(int x, int y)
+    public void visit(final int x, final int y)
     {
         visited[x][y] = true;
     }
 
-    public void print(int ox, int oy)
+    public void print(final int ox, final int oy)
     {
-        Point p = new Point(0, 0);
+        final Point p = new Point(0, 0);
         for (int j = 0; j < h; j++)
         {
             for (int i = 0; i < w; i++)
             {
                 p.x = i;
                 p.y = j;
-                Character c = marks.get(p);
+                final Character c = marks.get(p);
                 if (c != null)
                     System.out.print(c);
                 else if (i == ox && j == oy)

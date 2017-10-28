@@ -100,7 +100,7 @@ public class ResultsDisplayer extends JPanel
                 else if (resultData[x][y] == null)
                     displayText.append(". ");
                 else
-                    displayText.append(resultData[x][y].toChar() + " ");
+                    displayText.append(resultData[x][y].toChar()).append(" ");
             }
             displayText.append(END_LINE);
         }

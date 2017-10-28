@@ -19,7 +19,7 @@ public class SimpleHeap<T extends HeapNode>
     Object[] queue; // package-level for testing purpose
     private int size = 0;
 
-    public SimpleHeap(int initialCapacity)
+    public SimpleHeap(final int initialCapacity)
     {
         this.queue = new Object[initialCapacity];
     }
@@ -27,14 +27,14 @@ public class SimpleHeap<T extends HeapNode>
     /**
      * Add a new value. Null cannot be added.
      *
-     * @param e
-     * @return
+     * @param e value to add
+     * @return true if could add, false if failed (can never happen)
      */
-    public boolean add(T e)
+    public boolean add(final T e)
     {
         if (e == null)
             throw new NullPointerException();
-        int i = size;
+        final int i = size;
         if (i >= queue.length)
             grow(i + 1);
         size = i + 1;
@@ -50,13 +50,13 @@ public class SimpleHeap<T extends HeapNode>
         return true;
     }
 
-    private void siftUp(int k, T x)
+    private void siftUp(int k, final T x)
     {
-        Comparable<? super T> key = (Comparable<? super T>) x;
+        final Comparable<? super T> key = (Comparable<? super T>) x;
         while (k > 0)
         {
-            int parent = (k - 1) >>> 1;
-            T   e      = (T) queue[parent];
+            final int parent = (k - 1) >>> 1;
+            final T   e      = (T) queue[parent];
             if (key.compareTo(e) >= 0)
                 break;
             queue[k] = e;
@@ -67,15 +67,15 @@ public class SimpleHeap<T extends HeapNode>
         x.setHeapIndex(k);
     }
 
-    private void siftDown(int k, T x)
+    private void siftDown(int k, final T x)
     {
-        Comparable<? super T> key  = (Comparable<? super T>) x;
-        int                   half = size >>> 1;        // loop while a non-leaf
+        final Comparable<? super T> key  = (Comparable<? super T>) x;
+        final int                   half = size >>> 1;        // loop while a non-leaf
         while (k < half)
         {
             int child = (k << 1) + 1; // assume left child is least
             T   c     = (T) queue[child];
-            int right = child + 1;
+            final int right = child + 1;
             if (right < size && c.compareTo(queue[right]) > 0)
                 c = (T) queue[child = right];
             if (key.compareTo(c) <= 0)
@@ -92,15 +92,15 @@ public class SimpleHeap<T extends HeapNode>
      * Get the top element from the heap, removing it from the heap.
      * Returns null if none are left.
      *
-     * @return
+     * @return element removed from heap, or null if empty
      */
     public T poll()
     {
         if (size == 0)
             return null;
-        int s      = --size;
-        T   result = (T) queue[0];
-        T   x      = (T) queue[s];
+        final int s      = --size;
+        final T   result = (T) queue[0];
+        final T   x      = (T) queue[s];
         queue[s] = null;
         if (s != 0)
             siftDown(0, x);
@@ -108,7 +108,7 @@ public class SimpleHeap<T extends HeapNode>
         return result;
     }
 
-    public void adjust(T x)
+    public void adjust(final T x)
     {
         if (x.getHeapIndex() < 0 || x.getHeapIndex() >= size)
             return;
@@ -116,7 +116,7 @@ public class SimpleHeap<T extends HeapNode>
         siftDown(x.getHeapIndex(), x);
     }
 
-    public boolean contains(T x)
+    public boolean contains(final T x)
     {
         return x.getHeapIndex() >= 0 && x.getHeapIndex() < size && queue[x.getHeapIndex()] == x;
     }
@@ -144,18 +144,18 @@ public class SimpleHeap<T extends HeapNode>
     //        return null;
     //    }
 
-    private void grow(int minCapacity)
+    private void grow(final int minCapacity)
     {
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError();
-        int oldCapacity = queue.length;
+        final int oldCapacity = queue.length;
         // Double size if small; else grow by 50%
         int newCapacity = ((oldCapacity < 64) ? ((oldCapacity + 1) * 2) : ((oldCapacity / 2) * 3));
         if (newCapacity < 0) // overflow
             newCapacity = Integer.MAX_VALUE;
         if (newCapacity < minCapacity)
             newCapacity = minCapacity;
-        Object[] oldQueue = queue;
+        final Object[] oldQueue = queue;
         queue = new Object[newCapacity];
         System.arraycopy(oldQueue, 0, queue, 0, oldQueue.length);
     }
@@ -175,10 +175,10 @@ public class SimpleHeap<T extends HeapNode>
     /**
      * Meant for testing rather than actual use.
      *
-     * @param index
-     * @return
+     * @param index index in internal queue
+     * @return element at index, or null if invalid
      */
-    public T getElementAt(int index)
+    public T getElementAt(final int index)
     {
         if (index >= 0 && index < queue.length)
             return (T) queue[index];

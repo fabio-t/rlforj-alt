@@ -9,16 +9,17 @@ import java.util.Random;
 public class ConeFovExample
 {
 
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
-        ExampleBoard b    = new ExampleBoard(21, 21);
-        Random       rand = new Random();
+        final ExampleBoard b    = new ExampleBoard(21, 21);
+        final Random       rand = new Random();
         for (int i = 0; i < 30; i++)
         {
             b.setObstacle(rand.nextInt(21), rand.nextInt(21));
         }
         //		int startAngle=rand.nextInt(360), finishAngle=rand.nextInt(360);
-        int startAngle = 30, finishAngle = 70;
+        final int startAngle  = 30;
+        final int finishAngle = 70;
         System.out.println(startAngle + " degrees to " + finishAngle + " degrees");
         System.out.println("ShadowCasting");
         IConeFovAlgorithm a = new ShadowCasting();

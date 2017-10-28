@@ -16,7 +16,7 @@ public class LosSuite extends TestSuite
 
     public static Test suite()
     {
-        TestSuite s = new TestSuite();
+        final TestSuite s = new TestSuite();
         s.addTestSuite(LosPrecisePermissiveTest.class);
         // s.addTestSuite(LosShadowCastingTest.class);
         return s;

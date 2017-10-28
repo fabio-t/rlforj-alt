@@ -36,15 +36,11 @@ package rlforj.util;
  */
 public final class BresenhamLine
 {
-
     /**
      * General case algorithm
      */
     private static final BresenhamLine bresenham = new BresenhamLine();
-    /**
-     * The start and end of the line
-     */
-    private int x1, y1, x2, y2;
+
     /**
      * Used for calculation
      */
@@ -60,12 +56,18 @@ public final class BresenhamLine
     /**
      * Plot a line between (x1,y1) and (x2,y2). The results are placed in x[] and y[], which must be large enough.
      *
+     * @param x1 x start position
+     * @param y1 y start position
+     * @param x2 x end position
+     * @param y2 y end position
+     * @param x array where output x values are put
+     * @param y array where output y values are put
      * @return the length of the line or the length of x[]/y[], whichever is smaller
      */
     public static final int plot(final int x1, final int y1, final int x2, final int y2, final int x[], final int y[])
     {
 
-        int length = Math.min(x.length, Math.min(y.length, bresenham.plot(x1, y1, x2, y2)));
+        final int length = Math.min(x.length, Math.min(y.length, bresenham.plot(x1, y1, x2, y2)));
         for (int i = 0; i < length; i++)
         {
             x[i] = bresenham.getX();
@@ -78,16 +80,9 @@ public final class BresenhamLine
 
     /**
      * Plot a line between (x1,y1) and (x2,y2). To step through the line use next().
-     *
-     * @return the length of the line (which will be 1 more than you are expecting).
      */
-    public int plot(int x1, int y1, int x2, int y2)
+    private int plot(final int x1, final int y1, final int x2, final int y2)
     {
-        this.x1 = x1;
-        this.x2 = x2;
-        this.y1 = y1;
-        this.y2 = y2;
-
         // compute horizontal and vertical deltas
         dx = x2 - x1;
         dy = y2 - y1;
@@ -133,10 +128,8 @@ public final class BresenhamLine
      * previous invocation of next() returned false.
      * <p>
      * Retrieve the X and Y coordinates of the line with getX() and getY().
-     *
-     * @return true if there is another point to come.
      */
-    public boolean next()
+    private void next()
     {
         // now based on which delta is greater we can draw the line
         if (dx > dy)
@@ -175,13 +168,12 @@ public final class BresenhamLine
         }
 
         count++;
-        return count < length;
     }
 
     /**
      * @return the current X coordinate
      */
-    public int getX()
+    private int getX()
     {
         return xx;
     }
@@ -189,7 +181,7 @@ public final class BresenhamLine
     /**
      * @return the current Y coordinate
      */
-    public int getY()
+    private int getY()
     {
         return yy;
     }

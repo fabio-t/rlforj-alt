@@ -9,37 +9,38 @@ import java.util.Random;
 public class ProjectionExample
 {
 
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
-        ExampleBoard b    = new ExampleBoard(21, 21);
-        Random       rand = new Random();
+        final ExampleBoard b    = new ExampleBoard(21, 21);
+        final Random       rand = new Random();
         for (int i = 0; i < 30; i++)
         {
             b.setObstacle(rand.nextInt(21), rand.nextInt(21));
         }
-        int x1 = rand.nextInt(21), y1 = rand.nextInt(21);
+        final int x1 = rand.nextInt(21);
+        final int y1 = rand.nextInt(21);
         b.invisibleFloor = '.';
         b.invisibleWall = '#';
 
         displayProjection(new ShadowCasting(), "Shadowcasting", b, x1, y1);
         displayProjection(new PrecisePermissive(), "Precise Permissive", b, x1, y1);
         displayProjection(new BresLos(false), "Bresenham", b, x1, y1);
-        BresLos bl = new BresLos(true);
+        final BresLos bl = new BresLos(true);
         displayProjection(bl, "Symmetric Bresenham", b, x1, y1);
         displayProjection(new BresOpportunisticLos(), "Opportunistic Bresenham", b, x1, y1);
     }
 
     /**
+     * @param a algorithm instance
      * @param algoName The name of the algorithm
-     * @param a
-     * @param b
-     * @param x1
-     * @param y1
+     * @param b board
+     * @param x1 x position
+     * @param y1 y position
      */
-    private static void displayProjection(ILosAlgorithm a, String algoName, ExampleBoard b, int x1, int y1)
+    private static void displayProjection(final ILosAlgorithm a, final String algoName, final ExampleBoard b, final int x1, final int y1)
     {
-        boolean     los;
-        List<Point> path;
+        final boolean     los;
+        final List<Point> path;
         b.resetVisitedAndMarks();
         System.out.println(algoName);
         los = a.existsLineOfSight(b, 10, 10, x1, y1, true);
@@ -55,7 +56,7 @@ public class ProjectionExample
         b.print(10, 10);
     }
 
-    private static void markProjectPath(ExampleBoard b, List<Point> path)
+    private static void markProjectPath(final ExampleBoard b, final List<Point> path)
     {
         if (path.size() < 1)
             return;
@@ -63,8 +64,9 @@ public class ProjectionExample
         int lastx = path.get(0).x, lasty = path.get(0).y;
         for (int i = 1; i < path.size(); i++)
         {
-            Point p = path.get(i);
-            int   x = p.x, y = p.y;
+            final Point p = path.get(i);
+            final int   x = p.x;
+            final int   y = p.y;
             if (x != lastx)
             {
                 if (y != lasty)

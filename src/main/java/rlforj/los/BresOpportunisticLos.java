@@ -20,17 +20,20 @@ public class BresOpportunisticLos implements ILosAlgorithm
 
     private Vector<Point> path;
 
-    public boolean existsLineOfSight(ILosBoard b, int startX, int startY, int x1, int y1, boolean calculateProject)
+    public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1, final boolean calculateProject)
     {
-        int dx  = startX - x1, dy = startY - y1;
-        int adx = dx > 0 ? dx : -dx, ady = dy > 0 ? dy : -dy;
-        int len = (adx > ady ? adx : ady) + 1;
+        final int dx  = startX - x1;
+        final int dy  = startY - y1;
+        final int adx = dx > 0 ? dx : -dx;
+        final int ady = dy > 0 ? dy : -dy;
+        final int len = (adx > ady ? adx : ady) + 1;
 
         if (calculateProject)
-            path = new Vector<Point>(len);
+            path = new Vector<>(len);
 
-        int[] px  = new int[len], py = new int[len];
-        int[] px1 = null, py1 = null;
+        final int[] px  = new int[len];
+        final int[] py  = new int[len];
+        int[]       px1, py1;
         px1 = new int[len];
         py1 = new int[len];
 

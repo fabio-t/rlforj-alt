@@ -34,7 +34,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     private RayData[][]    results;   // stores calculated data for external use
     private int            dsq;
 
-    public MultiRaysCaster(ILosBoard world, int originX, int originY, int radius)
+    public MultiRaysCaster(final ILosBoard world, final int originX, final int originY, final int radius)
     {
         this.world = world;
         this.origin = new Point(originX, originY);
@@ -51,7 +51,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     }
 
     @Override
-    public void visitFieldOfView(ILosBoard b, int x, int y, int distance)
+    public void visitFieldOfView(final ILosBoard b, final int x, final int y, final int distance)
     {
         this.world = b;
         this.origin = new Point(x, y);
@@ -102,7 +102,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     // Expands by the unit length in each component's current direction.
     // If a component has no direction, then it is expanded in both of its
     // positive and negative directions.
-    private void expandPerimeterFrom(RayData from)
+    private void expandPerimeterFrom(final RayData from)
     {
         if (from.xLoc >= 0)
             processRay(new RayData(from.xLoc + 1, from.yLoc), from);
@@ -116,13 +116,13 @@ public class MultiRaysCaster implements IFovAlgorithm
 
     // Does bounds checking, marks obstructions, assigns inputs, and adds the
     // ray to the perimeter if it is valid.
-    private void processRay(RayData newRay, RayData inputRay)
+    private void processRay(RayData newRay, final RayData inputRay)
     {
         if (dsq < newRay.xLoc * newRay.xLoc + newRay.yLoc * newRay.yLoc)
             return;
 
-        int mapX = (origin.x + newRay.xLoc);
-        int mapY = (origin.y + newRay.yLoc);
+        final int mapX = (origin.x + newRay.xLoc);
+        final int mapY = (origin.y + newRay.yLoc);
 
         // bounds check
         if (!world.contains(mapX, mapY))
@@ -138,7 +138,7 @@ public class MultiRaysCaster implements IFovAlgorithm
             newRay = results[mapX - origin.x + offset.x][mapY - origin.y + offset.y];
 
         // Setting the reference from the new ray to this input ray.
-        boolean isXInput = (newRay.yLoc == inputRay.yLoc);
+        final boolean isXInput = (newRay.yLoc == inputRay.yLoc);
         if (isXInput)
             newRay.xInput = inputRay;
         else
@@ -156,7 +156,7 @@ public class MultiRaysCaster implements IFovAlgorithm
 
     // Once all inputs are known to be assigned, mergeInputs performs the key
     // task of populating the new ray with the correct data.
-    private void mergeInputs(RayData newRay)
+    private void mergeInputs(final RayData newRay)
     {
 
         // if(newRay.obscure())
@@ -164,8 +164,8 @@ public class MultiRaysCaster implements IFovAlgorithm
         // Obstructions must propagate obscurity.
         if (world.blocksLight((origin.x + newRay.xLoc), (origin.y + newRay.yLoc)))
         {
-            int absXLoc = Math.abs(newRay.xLoc);
-            int absYLoc = Math.abs(newRay.yLoc);
+            final int absXLoc = Math.abs(newRay.xLoc);
+            final int absYLoc = Math.abs(newRay.yLoc);
             newRay.xObsc = absXLoc;
             newRay.yObsc = absYLoc;
             newRay.xErrObsc = newRay.xObsc;
@@ -173,10 +173,10 @@ public class MultiRaysCaster implements IFovAlgorithm
             return;
         }
 
-        RayData xInput     = newRay.xInput;
-        RayData yInput     = newRay.yInput;
-        boolean xInputNull = (xInput == null);
-        boolean yInputNull = (yInput == null);
+        final RayData xInput     = newRay.xInput;
+        final RayData yInput     = newRay.yInput;
+        final boolean xInputNull = (xInput == null);
+        final boolean yInputNull = (yInput == null);
 
         // Process individual input information.
         if (!xInputNull)
@@ -205,7 +205,6 @@ public class MultiRaysCaster implements IFovAlgorithm
             if (xInput.obscure() && yInput.obscure())
             {
                 newRay.ignore = true;
-                return;
             }
         }
     } // END mergeInputs(RayData)
@@ -213,7 +212,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     // The X input can provide two main pieces of information:
     // 1. Progressive X obscurity.
     // 2. Recessive Y obscurity.
-    private void processXInput(RayData newRay, RayData xInput)
+    private void processXInput(final RayData newRay, final RayData xInput)
     {
         if ((xInput.xObsc == 0) && (xInput.yObsc == 0))
             return;
@@ -245,7 +244,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     // The Y input can provide two main pieces of information:
     // 1. Progressive Y obscurity.
     // 2. Recessive X obscurity.
-    private void processYInput(RayData newRay, RayData yInput)
+    private void processYInput(final RayData newRay, final RayData yInput)
     {
         if ((yInput.xObsc == 0) && (yInput.yObsc == 0))
             return;
@@ -276,9 +275,9 @@ public class MultiRaysCaster implements IFovAlgorithm
 
     public void printResults()
     {
-        for (RayData[] rdr : results)
+        for (final RayData[] rdr : results)
         {
-            for (RayData rd : rdr)
+            for (final RayData rd : rdr)
             {
                 System.out.print(rd == null ? "N" : rd.toChar());
             }

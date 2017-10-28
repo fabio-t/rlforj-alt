@@ -3,7 +3,7 @@ package rlforj.examples;
 public class Demo
 {
 
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
         System.out.println("Field of Vision Example \n");
         FovExample.main(new String[0]);

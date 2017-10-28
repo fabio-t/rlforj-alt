@@ -48,7 +48,7 @@ public class AStarTest
             }
             final MockBoard m = new MockBoard(sb.toString());
 
-            int startx = -1, starty = -1, endx = -1, endy = -1;
+            int startx, starty, endx, endy;
 
             // we want to check all possible cases of start and end point being, or not, obstacles
             final boolean startNoObstacle = rand.nextBoolean();
@@ -118,11 +118,11 @@ public class AStarTest
      * FloodFill the board from point 1 and see if point2 is same color. If not,
      * points are not reachable from each other.
      *
-     * @param mb
-     * @param start
-     * @param end
-     * @param radius
-     * @return
+     * @param mb board
+     * @param start start point (can be a obstacle)
+     * @param end end point (can be a obstacle)
+     * @param radius radius of search
+     * @return true if there exists a path between start and end point, false otherwise
      */
     private boolean floodFillTest(final MockBoard mb, final Point start, final Point end, final int radius)
     {

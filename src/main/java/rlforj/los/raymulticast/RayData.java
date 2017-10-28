@@ -13,7 +13,7 @@ package rlforj.los.raymulticast;
  * the data can be generated. These aren't necessary, since one could look them up
  * elsewhere (perhaps from an array), but they are convenient.
  * <p>
- * The {@link #method obscure()} method contains the visibility (obscurity) function
+ * The {@link RayData#obscure()} method contains the visibility (obscurity) function
  * which is somewhat arbitrary. If the {@code ignore} flag is true, then this object
  * should also be treated as non-visible.
  */
@@ -33,7 +33,7 @@ public final class RayData
     boolean added; // true if we have added this to the perimeter
     boolean ignore; // true if there is no need to expand this ray
 
-    public RayData(int xLoc, int yLoc)
+    public RayData(final int xLoc, final int yLoc)
     {
         this.xLoc = xLoc;
         this.yLoc = yLoc;
@@ -46,28 +46,25 @@ public final class RayData
 
     public String toString()
     {
-        StringBuilder data = new StringBuilder();
-        data.append("(" + xLoc + "," + yLoc + ") ");
-        data.append(": " + xObsc + "|" + yObsc + "|" + xErrObsc + "|" + yErrObsc);
-        return data.toString();
+        return "(" + xLoc + "," + yLoc + ") " + ": " + xObsc + "|" + yObsc + "|" + xErrObsc + "|" + yErrObsc;
     }
 
     /**
      * <p>A useful method for printing results in text form.</p>
      *
      * @return A character representing the status of this object.
-     * 'I' -> ignored
-     * 'X' -> obscured from x only
-     * 'Y' -> obscured from y only
-     * 'Z' -> obscured from both x and y
-     * 'A' -> not obscure with recessive x obscurity
-     * 'B' -> not obscure with recessive y obscurity
-     * 'C' -> not obscure with both recessive x and y obscurity
+     * <p>'I': ignored</p>
+     * <p>'X': obscured from x only</p>
+     * <p>'Y': obscured from y only</p>
+     * <p>'Z': obscured from both x and y</p>
+     * <p>'A': not obscure with recessive x obscurity</p>
+     * <p>'B': not obscure with recessive y obscurity</p>
+     * <p>'C': not obscure with both recessive x and y obscurity</p>
      */
     public char toChar()
     {
-        boolean xObscure = ((xErrObsc > 0) && (xErrObsc <= xObsc));
-        boolean yObscure = ((yErrObsc > 0) && (yErrObsc <= yObsc));
+        final boolean xObscure = ((xErrObsc > 0) && (xErrObsc <= xObsc));
+        final boolean yObscure = ((yErrObsc > 0) && (yErrObsc <= yObsc));
         if (ignore)
             return 'I';
         else if (xObscure && yObscure)
@@ -78,8 +75,8 @@ public final class RayData
             return 'Y';
         else
         {
-            boolean xRecessive = (xErrObsc <= 0) && (xObsc > 0);
-            boolean yRecessive = (yErrObsc <= 0) && (yObsc > 0);
+            final boolean xRecessive = (xErrObsc <= 0) && (xObsc > 0);
+            final boolean yRecessive = (yErrObsc <= 0) && (yObsc > 0);
             if (xRecessive && yRecessive)
                 return 'C';
             else if (xRecessive)

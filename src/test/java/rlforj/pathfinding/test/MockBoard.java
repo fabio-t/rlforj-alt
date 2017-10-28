@@ -10,16 +10,16 @@ import rlforj.los.ILosBoard;
 class MockBoard implements ILosBoard
 {
 
-    private boolean[][] obstacle;
+    private final boolean[][] obstacle;
 
-    public MockBoard(String map)
+    public MockBoard(final String map)
     {
-        String[] mapText = map.split("\n");
+        final String[] mapText = map.split("\n");
         obstacle = new boolean[mapText.length][];
         int lineNo = 0;
-        for (String line : mapText)
+        for (final String line : mapText)
         {
-            boolean[] lineTiles = new boolean[line.length()];
+            final boolean[] lineTiles = new boolean[line.length()];
             for (int i = 0; i < line.length(); i++)
             {
                 lineTiles[i] = line.charAt(i) == '#';
@@ -28,12 +28,12 @@ class MockBoard implements ILosBoard
         }
     }
 
-    public boolean contains(int x, int y)
+    public boolean contains(final int x, final int y)
     {
         return x >= 0 && x < obstacle[0].length && y >= 0 && y < obstacle.length;
     }
 
-    public boolean isObstacle(int x, int y)
+    public boolean isObstacle(final int x, final int y)
     {
         return obstacle[y][x];
     }
@@ -50,7 +50,7 @@ class MockBoard implements ILosBoard
         return isObstacle(x, y);
     }
 
-    public void visit(int x, int y)
+    public void visit(final int x, final int y)
     {
     }
 

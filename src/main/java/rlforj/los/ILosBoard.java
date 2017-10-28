@@ -3,7 +3,7 @@ package rlforj.los;
 import rlforj.pathfinding.AStar;
 
 /**
- * An interface board that allows visibility alogithms to
+ * An interface board that allows visibility algorithms to
  * decide which points are in the board, which points are
  * obstacles to this form of visibility, and visit those points
  * on the board.
@@ -12,16 +12,15 @@ import rlforj.pathfinding.AStar;
  */
 public interface ILosBoard
 {
-
     /**
      * Is the location (x, y) inside the board ?
      * Note: If a point is outside, any radially
      * outward points are not checked, so the area must
      * be concave.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return true if point is inside board, false otherwise
      */
     boolean contains(int x, int y);
 
@@ -32,12 +31,12 @@ public interface ILosBoard
      * it will probably use this method. LoS/FoV might just want to know
      * about light blocking.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return true if cell at position either blocks light, or movement, or both
      * @see AStar
      */
-    default boolean isObstacle(int x, int y)
+    default boolean isObstacle(final int x, final int y)
     {
         return blocksLight(x, y) || blocksStep(x, y);
     }
@@ -47,9 +46,11 @@ public interface ILosBoard
      * by the FOV/LoS algorithms, since they don't care if you can step
      * there or not: just if you see it.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return true if cell at position blocks light
+     * @see ILosAlgorithm
+     * @see IFovAlgorithm
      */
     boolean blocksLight(int x, int y);
 
@@ -58,9 +59,9 @@ public interface ILosBoard
      * not care about light, for example if we have an "X-ray view" creature we'll
      * want to use special pathfinding/los/fov algorithms that only call blocksStep.
      *
-     * @param x
-     * @param y
-     * @return
+     * @param x x coordinate
+     * @param y y coordinate
+     * @return true if cell at position blocks movement
      */
     boolean blocksStep(int x, int y);
 
@@ -69,10 +70,10 @@ public interface ILosBoard
      * Visit the location (x,y)
      * <p>
      * This can involve saving the points in a collection,
-     * setting flags on a 2D map etc.
+     * setting flags on a 2D map etc.</p>
      *
-     * @param x
-     * @param y
+     * @param x x coordinate
+     * @param y y coordinate
      */
     void visit(int x, int y);
 }

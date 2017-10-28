@@ -41,9 +41,7 @@ public class Point
 
         final Point point = (Point) o;
 
-        if (x != point.x)
-            return false;
-        return y == point.y;
+        return x == point.x && y == point.y;
     }
 
     @Override

@@ -16,15 +16,16 @@ import java.util.Vector;
 public class GenericCalculateProjection
 {
 
-    public static Vector<Point> calculateProjecton(int startX, int startY, int x1, int y1, VisitedBoard fb)
+    public static Vector<Point> calculateProjecton(final int startX, final int startY, final int x1, final int y1, final VisitedBoard fb)
     {
-        Vector<Point> path = new Vector<Point>();
+        final Vector<Point> path = new Vector<>();
 
         // calculate usual Bresenham values required.
-        int dx = x1 - startX;
-        int dy = y1 - startY;
-        int signX, signY;
-        int adx, ady;
+        final int dx = x1 - startX;
+        final int dy = y1 - startY;
+        final int signX;
+        final int signY;
+        int       adx, ady;
         if (dx > 0)
         {
             adx = dx;
@@ -56,16 +57,13 @@ public class GenericCalculateProjection
 
         // System.out.println("adx ady "+adx+" "+ady);
         //calculate the two error values.
-        int   incE  = 2 * ady; //error diff if x++
-        int   incNE = 2 * ady - 2 * adx; // error diff if x++ and y++
-        int   d     = 2 * ady - adx; // starting error
-        Point p     = new Point(0, 0);
-        int   lasti = 0, lastj = 0;
-        int   j     = 0;
+        final int   incE  = 2 * ady; //error diff if x++
+        final int   incNE = 2 * ady - 2 * adx; // error diff if x++ and y++
+        int         d     = 2 * ady - adx; // starting error
+        final Point p     = new Point(0, 0);
+        int         j;
         for (int i = 0; i <= adx; )
         {
-            lasti = i;
-            lastj = j;
             if (axesSwapped)
             {
                 i = p.y;
@@ -213,8 +211,8 @@ public class GenericCalculateProjection
         return path;
     }
 
-    public static interface VisitedBoard
+    public interface VisitedBoard
     {
-        public boolean wasVisited(int x, int y);
+        boolean wasVisited(int x, int y);
     }
 }

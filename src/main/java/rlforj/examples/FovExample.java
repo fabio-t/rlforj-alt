@@ -9,17 +9,15 @@ import java.util.Random;
 public class FovExample
 {
 
-    /**
+    /*
      * Each time creates a 21x21 area with random obstacles and
-     * runs ShadowCasting and Precise Permissive algoritms
+     * runs ShadowCasting and Precise Permissive algorithms
      * on it, printing out the results in stdout.
-     *
-     * @param args
      */
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
-        ExampleBoard b    = new ExampleBoard(21, 21);
-        Random       rand = new Random();
+        final ExampleBoard b    = new ExampleBoard(21, 21);
+        final Random       rand = new Random();
         for (int i = 0; i < 30; i++)
         {
             b.setObstacle(rand.nextInt(21), rand.nextInt(21));

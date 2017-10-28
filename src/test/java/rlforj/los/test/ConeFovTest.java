@@ -10,9 +10,10 @@ public class ConeFovTest
     /*
      * TODO : convert to TestCase
      */
-    public static void main(String[] args)
+    public static void main(final String[] args)
     {
-        int startAngle = -10, finishAngle = 100;
+        final int startAngle  = -10;
+        final int finishAngle = 100;
         //		if(startAngle<0) {startAngle%=360; startAngle+=360; }
         //		if(finishAngle<0) {finishAngle%=360; finishAngle+=360; }
         //
@@ -20,7 +21,7 @@ public class ConeFovTest
         //		if(finishAngle>360) finishAngle%=360;
         //		System.out.println(startAngle+" "+finishAngle);
 
-        TestBoard b = new TestBoard(false);
+        final TestBoard b = new TestBoard(false);
 
         b.exception.add(new Point(15, 15));
         b.exception.add(new Point(15, 16));

@@ -20,12 +20,11 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
 {
     public static final int MAX_CACHED_RADIUS = 40;
 
-    static HashMap<Integer, ArrayList<ArcPoint>> circles = new HashMap<Integer, ArrayList<ArcPoint>>();
+    static HashMap<Integer, ArrayList<ArcPoint>> circles = new HashMap<>();
 
     static
     {
         final Point origin = new Point(0, 0);
-        final long  t1     = System.currentTimeMillis();
 
         final int radius = MAX_CACHED_RADIUS;
 
@@ -39,12 +38,7 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
                 // If not filled, require that floor(distance) == radius
                 if (distance <= radius)
                 {
-                    ArrayList<ArcPoint> circ = circles.get(distance);
-                    if (circ == null)
-                    {
-                        circ = new ArrayList<ArcPoint>();
-                        circles.put(distance, circ);
-                    }
+                    final ArrayList<ArcPoint> circ = circles.computeIfAbsent(distance, k -> new ArrayList<>());
                     circ.add(new ArcPoint(i, j));
                 }
             }
@@ -125,15 +119,9 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
                 // start a new run from our start to this point's right side
                 else if (foundClear)
                 {
-                    final double runEndTheta   = arcPoint.leading;
-                    final double runStartTheta = th1;
-                    // System.out.println("Spawn obstacle at " + arcPoint);
+
                     if (r < maxDistance)
-                        go(board, ctr, r + 1, maxDistance, runStartTheta, runEndTheta);
-                    wasObstacle = true;
-                    // System.out.println("Continuing..." + (runs++) + ": "
-                    // + r + "," + (int)(th1) +
-                    // ":" + (int)(th2));
+                        go(board, ctr, r + 1, maxDistance, th1, arcPoint.leading);
                 }
                 else
                 {
@@ -214,11 +202,6 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         // }
 
         // return points;
-    }
-
-    public void visitMultiTileLineOfSight(final int x, final int y, final int dx, final int dy, final int distance, final ILosBoard b)
-    {
-        throw new LosException("Function not implemented yet");
     }
 
     public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1, final boolean calculateProject)
@@ -405,14 +388,17 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             return theta > ((ArcPoint) o).theta ? 1 : -1;
         }
 
+        @Override
         public boolean equals(final Object o)
         {
-            return theta == ((ArcPoint) o).theta;
-        }
+            if (this == o)
+                return true;
+            if (o == null || getClass() != o.getClass())
+                return false;
 
-        public int hashCode()
-        {
-            return x * y;
+            final ArcPoint arcPoint = (ArcPoint) o;
+
+            return theta == arcPoint.theta;
         }
     }
 

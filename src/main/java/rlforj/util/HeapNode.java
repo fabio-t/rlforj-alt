@@ -19,7 +19,7 @@ package rlforj.util;
  */
 public interface HeapNode extends Comparable
 {
-    public int getHeapIndex();
+    int getHeapIndex();
 
-    public void setHeapIndex(int heapIndex);
+    void setHeapIndex(int heapIndex);
 }

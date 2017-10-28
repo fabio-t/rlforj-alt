@@ -32,30 +32,9 @@ public enum Directions
     public static final Directions[] N8 = { NORTH, NW, WEST, SW, SOUTH, SE, EAST, NE };
 
     /**
-     * Get the Ith direction.
-     *
-     * @param i
-     * @return
-     */
-    public static Directions getDirection(int i)
-    {
-        return values()[i];
-    }
-
-    /**
-     * Get the offsets in a Point object
-     *
-     * @return
-     */
-    public Point getDir()
-    {
-        return new Point(dx[this.ordinal()], dy[this.ordinal()]);
-    }
-
-    /**
      * The x offset
      *
-     * @return
+     * @return x offset of this direction
      */
     public int dx()
     {
@@ -65,7 +44,7 @@ public enum Directions
     /**
      * The y offset
      *
-     * @return
+     * @return y offset of this direction
      */
     public int dy()
     {

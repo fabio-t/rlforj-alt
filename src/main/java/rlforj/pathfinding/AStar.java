@@ -137,7 +137,7 @@ public class AStar
         final int dx        = Math.abs(node.x - x1);
         final int dy        = Math.abs(node.y - y1);
         final int diagsteps = Math.min(dx, dy);
-        return (double) diagsteps * 1.0 + (double) ((Math.max(dx, dy) - diagsteps) * 1) +
+        return (double) diagsteps * 1.0 + (double) ((Math.max(dx, dy) - diagsteps)) +
                (double) Math.abs((node.x - x1) * (starty - y1) - (node.y - y1) * (startx - x1)) * 0.01;
     }
 

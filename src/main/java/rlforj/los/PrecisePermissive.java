@@ -9,14 +9,14 @@ import java.util.Vector;
 
 /**
  * Precise permissive visibility algorithm.
- * <p>
- * Refer to
- * {@link http://roguebasin.roguelikedevelopment.org/index.php?title=Precise_Permissive_Field_of_View}
+ * <p>Refer to
+ * <a href="http://roguebasin.roguelikedevelopment.org/index.php?title=Precise_Permissive_Field_of_View">this page</a>
+ * for examples.</p>
  * Copyright (c) 2007, Jonathon Duerig. Licensed under the BSD
  * license. See LICENSE.txt for details.
  * <p>
  * TODO : Do multitile organism by replacing offsetT(0,1)(1, 0) by offsetT(0,
- * size.y) (size.x, 0). Also need to consider border tiles.
+ * size.y) (size.x, 0). Also need to consider border tiles.</p>
  *
  * @author sdatta
  */
@@ -29,10 +29,10 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
     void calculateFovQuadrant(final fovStateT state)
     {
         // System.out.println("calcfovq called");
-        final LinkedList<bumpT> steepBumps   = new LinkedList<bumpT>();
-        final LinkedList<bumpT> shallowBumps = new LinkedList<bumpT>();
+        final LinkedList<bumpT> steepBumps   = new LinkedList<>();
+        final LinkedList<bumpT> shallowBumps = new LinkedList<>();
         // activeFields is sorted from shallow-to-steep.
-        final LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
+        final LinkedList<fieldT> activeFields = new LinkedList<>();
         activeFields.addLast(new fieldT());
         activeFields.getLast().shallow.near = new Point(0, 1);
         activeFields.getLast().shallow.far = new Point(state.extent.x, 0);
@@ -47,9 +47,9 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
             actIsBlocked(state, dest);
         }
 
-        CLikeIterator<fieldT> currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
-        int                   i            = 0;
-        int                   j            = 0;
+        CLikeIterator<fieldT> currentField = new CLikeIterator<>(activeFields.listIterator());
+        int                   i;
+        int                   j;
         final int             maxI         = state.extent.x + state.extent.y;
         // For each square outline
         for (i = 1; i <= maxI && !activeFields.isEmpty(); ++i)
@@ -66,7 +66,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
                 visitSquare(state, dest, currentField, steepBumps, shallowBumps, activeFields);
             }
             // System.out.println("Activefields size "+activeFields.size());
-            currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
+            currentField = new CLikeIterator<>(activeFields.listIterator());
         }
     }
 
@@ -361,10 +361,10 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         state.quadrant = new Point(dx < 0 ? -1 : 1, dy < 0 ? -1 : 1);
         state.quadrantIndex = 0;
 
-        final LinkedList<bumpT> steepBumps   = new LinkedList<bumpT>();
-        final LinkedList<bumpT> shallowBumps = new LinkedList<bumpT>();
+        final LinkedList<bumpT> steepBumps   = new LinkedList<>();
+        final LinkedList<bumpT> shallowBumps = new LinkedList<>();
         // activeFields is sorted from shallow-to-steep.
-        final LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
+        final LinkedList<fieldT> activeFields = new LinkedList<>();
         activeFields.addLast(new fieldT());
         activeFields.getLast().shallow.near = new Point(0, 1);
         activeFields.getLast().shallow.far = new Point(adx + 1, 0);
@@ -381,7 +381,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         // Visit the source square exactly once (in quadrant 1).
         actIsBlocked(state, dest);
 
-        CLikeIterator<fieldT> currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
+        CLikeIterator<fieldT> currentField = new CLikeIterator<>(activeFields.listIterator());
         final int             maxI         = adx + ady;
         // For each square outline
         int         lastStartJ = -1;
@@ -429,7 +429,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
             }
             lastStartJ = thisStartJ;
             // System.out.println("Activefields size "+activeFields.size());
-            currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
+            currentField = new CLikeIterator<>(activeFields.listIterator());
         }
 
         if (calculateProject)

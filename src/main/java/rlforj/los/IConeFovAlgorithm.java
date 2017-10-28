@@ -13,12 +13,12 @@ public interface IConeFovAlgorithm extends IFovAlgorithm
      * finishAngle.
      * Positive Y axis is downwards.
      *
-     * @param b
-     * @param x
-     * @param y
-     * @param distance
-     * @param startAngle
-     * @param finishAngle
+     * @param b board
+     * @param x x position
+     * @param y y position
+     * @param distance maximum distance of cone of view
+     * @param startAngle start angle
+     * @param finishAngle end angle
      */
     void visitConeFieldOfView(ILosBoard b, int x, int y, int distance, int startAngle, int finishAngle);
 }

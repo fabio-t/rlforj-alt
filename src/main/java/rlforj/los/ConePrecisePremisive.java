@@ -48,19 +48,15 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
 
     /**
      * Process one quadrant.
-     *
-     * @param state
-     * @param startAngle
-     * @param finishAngle
      */
-    void calculateConeFovQuadrant(final coneFovState state, final int startAngle, final int finishAngle)
+    private void calculateConeFovQuadrant(final coneFovState state, final int startAngle, final int finishAngle)
     {
         //		 System.out.println("calcfovq called " + state.quadrantIndex + " "
         //				+ startAngle + " " + finishAngle);
-        final LinkedList<bumpT> steepBumps   = new LinkedList<bumpT>();
-        final LinkedList<bumpT> shallowBumps = new LinkedList<bumpT>();
+        final LinkedList<bumpT> steepBumps   = new LinkedList<>();
+        final LinkedList<bumpT> shallowBumps = new LinkedList<>();
         // activeFields is sorted from shallow-to-steep.
-        final LinkedList<fieldT> activeFields = new LinkedList<fieldT>();
+        final LinkedList<fieldT> activeFields = new LinkedList<>();
         activeFields.addLast(new fieldT());
 
         // We decide the farthest cells that can be seen by the cone ( using
@@ -100,9 +96,9 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         //			actIsBlockedCone(state, dest);
         //		}
 
-        CLikeIterator<fieldT> currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
-        int                   i            = 0;
-        int                   j            = 0;
+        CLikeIterator<fieldT> currentField = new CLikeIterator<>(activeFields.listIterator());
+        int                   i;
+        int                   j;
         final int             maxI         = state.extent.x + state.extent.y;
         // For each square outline
         for (i = 1; i <= maxI && !activeFields.isEmpty(); ++i)
@@ -119,7 +115,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
                 visitConeSquare(state, dest, currentField, steepBumps, shallowBumps, activeFields);
             }
             // System.out.println("Activefields size "+activeFields.size());
-            currentField = new CLikeIterator<fieldT>(activeFields.listIterator());
+            currentField = new CLikeIterator<>(activeFields.listIterator());
         }
     }
 
@@ -133,7 +129,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         return i < j ? i : j;
     }
 
-    void permissiveConeFov(final int sourceX, final int sourceY, final permissiveMaskT mask, final int startAngle,
+    private void permissiveConeFov(final int sourceX, final int sourceY, final permissiveMaskT mask, final int startAngle,
                            final int finishAngle)
     {
         final coneFovState state = new coneFovState();
@@ -147,7 +143,6 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         //visit origin once
         state.board.visit(sourceX, sourceY);
 
-        final int     quadrantCount = 4;
         final Point quadrants[]   = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1),
                                       new Point(1, -1) };
 
@@ -161,7 +156,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         angles[3] = 270;
         for (int i = 4; i < 12; i++)
             angles[i] = 720;//to keep them at the end
-        int i = 0;
+        int i;
         for (i = 0; i < 4; i++)
         {
             if (startAngle < angles[i])
@@ -245,15 +240,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
      * Note : I ( sdatta ) made the function name with Code added since
      * I wasnt sure inheritance was working properly when I was debugging this code.
      * Maybe this code can be simplified ?
-     *
-     * @param state
-     * @param dest
-     * @param currentField
-     * @param steepBumps
-     * @param shallowBumps
-     * @param activeFields
      */
-    void visitConeSquare(final coneFovState state, final Point dest, final CLikeIterator<fieldT> currentField,
+    private void visitConeSquare(final coneFovState state, final Point dest, final CLikeIterator<fieldT> currentField,
                          final LinkedList<bumpT> steepBumps, final LinkedList<bumpT> shallowBumps,
                          final LinkedList<fieldT> activeFields)
     {
@@ -263,8 +251,6 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         final Point bottomRight = new Point(dest.x + 1, dest.y);
         //		System.out.println(dest);
         // fieldT currFld=null;
-
-        boolean specialCase = false;
 
         while (!currentField.isAtEnd() && currentField.getCurrent().steep.isBelowOrContains(bottomRight))
         {
@@ -282,7 +268,6 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
             if (currentField.getCurrent().shallow.isAboveOrContains(bottomRight) &&
                 currentField.getCurrent().steep.isBelowOrContains(topLeft))
             {
-                specialCase = true;
                 break;
             }
 
@@ -365,12 +350,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
 
     /**
      * Visit the square, also decide if it is blocked
-     *
-     * @param state
-     * @param pos
-     * @return
      */
-    boolean actIsBlockedCone(final coneFovState state, final Point pos)
+    private boolean actIsBlockedCone(final coneFovState state, final Point pos)
     {
         final Point stateQuadrant = state.quadrant;
         final Point adjustedPos = new Point(pos.x * stateQuadrant.x + state.source.x,

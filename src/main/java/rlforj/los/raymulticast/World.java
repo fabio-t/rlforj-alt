@@ -6,18 +6,17 @@ package rlforj.los.raymulticast;
 /**
  * <p>A Map object is a simple implementation of a world where some points are
  * impenetrable. Points can be marked as obstructed, and checked for obstruction.</p>
- * <p>
  * <p>The implied contract is that obstructionAt(a,b) is true iff
  * addObstruction(a,b) was called on the object in the past.</p>
  */
 public interface World
 {
 
-    public int getSize();
+    int getSize();
 
-    public void addObstruction(int x, int y);
+    void addObstruction(int x, int y);
 
-    public boolean obstructionAt(int x, int y);
+    boolean obstructionAt(int x, int y);
 
 }
 
@@ -27,9 +26,9 @@ public interface World
 class SimpleWorld implements World
 {
 
-    private boolean[][] obstructions;
+    private final boolean[][] obstructions;
 
-    public SimpleWorld(int size)
+    public SimpleWorld(final int size)
     {
         obstructions = new boolean[size][size];
     }
@@ -39,12 +38,12 @@ class SimpleWorld implements World
         return obstructions.length;
     }
 
-    public void addObstruction(int x, int y)
+    public void addObstruction(final int x, final int y)
     {
         obstructions[x][y] = true;
     }
 
-    public boolean obstructionAt(int x, int y)
+    public boolean obstructionAt(final int x, final int y)
     {
         return obstructions[x][y];
     }

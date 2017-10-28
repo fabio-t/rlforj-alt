@@ -10,15 +10,15 @@ public class MathUtilsTest extends TestCase
     {
         final int LIM = 1000000;
 
-        long start = System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
         for (int i = 0; i < LIM; i++)
         {
-            int j = MathUtils.isqrt(i);
-            int k = (int) Math.floor(Math.sqrt(i));
+            final int j = MathUtils.isqrt(i);
+            final int k = (int) Math.floor(Math.sqrt(i));
 
             assertTrue("Sqrt of " + i + " supposed to be " + k + " but is " + j, j == k);
         }
-        long end = System.currentTimeMillis();
+        final long end = System.currentTimeMillis();
 
         System.out.println("Time taken " + (end - start));
     }

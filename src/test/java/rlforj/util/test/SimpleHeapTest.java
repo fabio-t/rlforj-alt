@@ -25,7 +25,7 @@ public class SimpleHeapTest
     {
         final int[] arr = { 4, 5, 3, 7, 8, 1, 2, 20, 14, 100, -1 };
 
-        final SimpleHeap<A> h = new SimpleHeap<A>(20);
+        final SimpleHeap<A> h = new SimpleHeap<>(20);
 
         for (final int i : arr)
         {
@@ -78,15 +78,13 @@ public class SimpleHeapTest
     /**
      * Test that SimleHeap behaves like a heap. The top of the heap is always
      * the same as the first element in a sorted list.
-     *
-     * @throws Exception
      */
     @Test
     public void testHeapFunctionality() throws Exception
     {
         final Random        rand = new Random();
-        final SimpleHeap<A> h    = new SimpleHeap<A>(50);
-        final ArrayList<A>  arr  = new ArrayList<A>(1000);
+        final SimpleHeap<A> h    = new SimpleHeap<>(50);
+        final ArrayList<A>  arr  = new ArrayList<>(1000);
         for (int i = 0; i < 1000; i++)
         {
             final A a = new A(rand.nextInt());
@@ -118,15 +116,13 @@ public class SimpleHeapTest
     /**
      * Test that heap properties are maintained in face of property changes and
      * adjustments.
-     *
-     * @throws Exception
      */
     @Test
     public void testHeapAdjust() throws Exception
     {
         final Random        rand = new Random();
-        final SimpleHeap<A> h    = new SimpleHeap<A>(50);
-        final ArrayList<A>  arr  = new ArrayList<A>(1000);
+        final SimpleHeap<A> h    = new SimpleHeap<>(50);
+        final ArrayList<A>  arr  = new ArrayList<>(1000);
         for (int i = 0; i < 1000; i++)
         {
             final A a = new A(rand.nextInt());
@@ -186,13 +182,8 @@ public class SimpleHeapTest
             if (this == o)
                 return 0;
             final A a2 = (A) o;
-            if (a == a2.a)
-                return 0;
-            else if (a < a2.a)
-                return -1;
-            else
-                return 1; // Explicit comparison handles all values of integers better.
-            // return a - a2.a;
+
+            return Integer.compare(a, a2.a);
         }
 
         public int getHeapIndex()
