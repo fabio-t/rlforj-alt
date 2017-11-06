@@ -1,5 +1,6 @@
 package rlforj.los;
 
+import rlforj.IBoard;
 import rlforj.math.Point;
 import rlforj.util.BresenhamLine;
 
@@ -20,10 +21,10 @@ public class BresOpportunisticLos implements ILosAlgorithm
 
     private Vector<Point> path;
 
-    public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1, final boolean calculateProject)
+    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY, final boolean calculateProject)
     {
-        final int dx  = startX - x1;
-        final int dy  = startY - y1;
+        final int dx  = startX - endX;
+        final int dy  = startY - endY;
         final int adx = dx > 0 ? dx : -dx;
         final int ady = dy > 0 ? dy : -dy;
         final int len = (adx > ady ? adx : ady) + 1;
@@ -38,15 +39,15 @@ public class BresOpportunisticLos implements ILosAlgorithm
         py1 = new int[len];
 
         //Compute both paths
-        BresenhamLine.plot(startX, startY, x1, y1, px, py);
-        BresenhamLine.plot(x1, y1, startX, startY, px1, py1);
+        BresenhamLine.plot(startX, startY, endX, endY, px, py);
+        BresenhamLine.plot(endX, endY, startX, startY, px1, py1);
 
         boolean los           = false;
         boolean alternatePath = false;
         for (int i = 0; i < len; i++)
         {
             // Have we reached the end ? In that case quit
-            if (px[i] == x1 && py[i] == y1)
+            if (px[i] == endX && py[i] == endY)
             {
                 if (calculateProject)
                 {

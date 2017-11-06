@@ -1,5 +1,6 @@
 package rlforj.los;
 
+import rlforj.IBoard;
 import rlforj.math.Line2I;
 import rlforj.math.Point;
 
@@ -320,7 +321,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         return 1;
     }
 
-    public void visitFieldOfView(final ILosBoard b, final int x, final int y, final int distance)
+    public void visitFieldOfView(final IBoard b, final int x, final int y, final int distance)
     {
         final permissiveMaskT mask = new permissiveMaskT();
         mask.east = mask.north = mask.south = mask.west = distance;
@@ -335,17 +336,18 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
      * Algorithm inspired by
      * http://groups.google.com/group/rec.games.roguelike.development/browse_thread/thread/f3506215be9d9f9a/2e543127f705a278#2e543127f705a278
      *
-     * @see rlforj.los.ILosAlgorithm#existsLineOfSight(rlforj.los.ILosBoard, int, int, int, int, boolean)
+     * @see rlforj.los.ILosAlgorithm#existsLineOfSight(IBoard, int, int, int, int, boolean)
      */
-    public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1,
+    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY,
                                      final boolean calculateProject)
     {
         final permissiveMaskT          mask = new permissiveMaskT();
-        final int                      dx   = x1 - startX;
+        final int                      dx   = endX - startX;
         final int                      adx  = dx > 0 ? dx : -dx;
-        final int                      dy   = y1 - startY;
+        final int                      dy   = endY - startY;
         final int                      ady  = dy > 0 ? dy : -dy;
-        final RecordQuadrantVisitBoard fb   = new RecordQuadrantVisitBoard(b, startX, startY, x1, y1, calculateProject);
+        final RecordQuadrantVisitBoard fb   = new RecordQuadrantVisitBoard(b, startX, startY, endX,
+                                                                           endY, calculateProject);
         mask.east = mask.west = adx;
         mask.north = mask.south = ady;
         mask.mask = null;
@@ -435,10 +437,10 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         if (calculateProject)
         {
             if (fb.endVisited)
-                path = GenericCalculateProjection.calculateProjecton(startX, startY, x1, y1, fb);
+                path = GenericCalculateProjection.calculateProjecton(startX, startY, endX, endY, fb);
             else
             {
-                fallBackLos.existsLineOfSight(b, startX, startY, x1, y1, true);
+                fallBackLos.existsLineOfSight(b, startX, startY, endX, endY, true);
                 path = (Vector<Point>) fallBackLos.getProjectPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
@@ -464,13 +466,13 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
          * Do not interact with the members directly. Use the provided
          * functions.
          */ int north;
-        int       south;
-        int       east;
-        int       west;
+        int    south;
+        int    east;
+        int    west;
         // int width;
         // int height;
-        int[]     mask;
-        ILosBoard board;
+        int[]  mask;
+        IBoard board;
     }
 
     class fovStateT
@@ -482,7 +484,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         Object          context;
         Point           quadrant;
         Point           extent;
-        ILosBoard       board;
+        IBoard          board;
     }
 
     class bumpT

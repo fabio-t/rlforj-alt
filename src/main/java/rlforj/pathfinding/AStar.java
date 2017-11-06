@@ -1,6 +1,6 @@
 package rlforj.pathfinding;
 
-import rlforj.los.ILosBoard;
+import rlforj.IBoard;
 import rlforj.math.Point;
 import rlforj.util.HeapNode;
 import rlforj.util.SimpleHeap;
@@ -9,17 +9,17 @@ import java.util.ArrayList;
 
 public class AStar
 {
-    private final ILosBoard map;
-    private final int       boardWidth;
-    private final int       boardHeight;
-    private final boolean   allowDiagonal;
+    private final IBoard  map;
+    private final int     boardWidth;
+    private final int     boardHeight;
+    private final boolean allowDiagonal;
 
-    public AStar(final ILosBoard map, final int boardWidth, final int boardHeight)
+    public AStar(final IBoard map, final int boardWidth, final int boardHeight)
     {
         this(map, boardWidth, boardHeight, true);
     }
 
-    public AStar(final ILosBoard map, final int boardWidth, final int boardHeight, final boolean allowDiagonal)
+    public AStar(final IBoard map, final int boardWidth, final int boardHeight, final boolean allowDiagonal)
     {
         this.map = map;
         this.boardWidth = boardWidth;

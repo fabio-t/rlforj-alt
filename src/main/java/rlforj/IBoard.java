@@ -1,5 +1,7 @@
-package rlforj.los;
+package rlforj;
 
+import rlforj.los.IFovAlgorithm;
+import rlforj.los.ILosAlgorithm;
 import rlforj.pathfinding.AStar;
 
 /**
@@ -10,7 +12,7 @@ import rlforj.pathfinding.AStar;
  *
  * @author sdatta
  */
-public interface ILosBoard
+public interface IBoard
 {
     /**
      * Is the location (x, y) inside the board ?

@@ -1,12 +1,12 @@
 package rlforj.examples;
 
-import rlforj.los.ILosBoard;
+import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ExampleBoard implements ILosBoard
+public class ExampleBoard implements IBoard
 {
 
     public char visibleFloor = '.', invisibleFloor = ' ', invisibleWall = ' ';

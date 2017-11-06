@@ -1,13 +1,13 @@
 package rlforj.util.test;
 
-import rlforj.los.ILosBoard;
+import rlforj.IBoard;
 
 /**
  * A simple board for testing LOS, Pathfinding, etc
  *
  * @author vic
  */
-class MockBoard implements ILosBoard
+class MockBoard implements IBoard
 {
 
     private final boolean[][] obstacle;

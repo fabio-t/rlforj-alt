@@ -1,5 +1,6 @@
 package rlforj.los;
 
+import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.*;
@@ -32,7 +33,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         {
             for (int j = -radius; j <= radius; j++)
             {
-                final int distance = (int) floor(origin.distance(i, j));
+                // final int distance = (int) floor(origin.distance(i, j));
+                final int distance = origin.distance2(i, j);
 
                 // If filled, add anything where floor(distance) <= radius
                 // If not filled, require that floor(distance) == radius
@@ -57,7 +59,7 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
     BresLos fallBackLos = new BresLos(true);
     private Vector<Point> path;
 
-    static void go(final ILosBoard board, final Point ctr, final int r, final int maxDistance, double th1, final double th2)
+    static void go(final IBoard board, final Point ctr, final int r, final int maxDistance, double th1, final double th2)
     {
         if (r > maxDistance)
             throw new IllegalArgumentException();
@@ -177,7 +179,7 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
      * Compute and return the list of RLPoints in line-of-sight to the given
      * region. In general, this method should be very fast.
      */
-    public void visitFieldOfView(final ILosBoard b, final int x, final int y, final int distance)
+    public void visitFieldOfView(final IBoard b, final int x, final int y, final int distance)
     {
         if (b == null)
             throw new IllegalArgumentException();
@@ -204,10 +206,10 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         // return points;
     }
 
-    public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1, final boolean calculateProject)
+    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY, final boolean calculateProject)
     {
-        final int dx = x1 - startX;
-        final int dy = y1 - startY;
+        final int dx = endX - startX;
+        final int dy = endY - startY;
         final int signX, signY;
         final int adx, ady;
 
@@ -231,11 +233,11 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             ady = -dy;
             signY = -1;
         }
-        final RecordQuadrantVisitBoard fb = new RecordQuadrantVisitBoard(b, startX, startY, x1, y1, calculateProject);
+        final RecordQuadrantVisitBoard fb = new RecordQuadrantVisitBoard(b, startX, startY, endX, endY, calculateProject);
 
         final Point p = new Point(startX, startY);
 
-        if (startY == y1 && x1 > startX)
+        if (startY == endY && endX > startX)
         {
             final int    distance = dx + 1;
             final double deg1     = Math.toDegrees(Math.atan2(.25, dx));//very thin angle
@@ -268,10 +270,10 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         if (calculateProject)
         {
             if (fb.endVisited)
-                path = GenericCalculateProjection.calculateProjecton(startX, startY, x1, y1, fb);
+                path = GenericCalculateProjection.calculateProjecton(startX, startY, endX, endY, fb);
             else
             {
-                fallBackLos.existsLineOfSight(b, startX, startY, x1, y1, true);
+                fallBackLos.existsLineOfSight(b, startX, startY, endX, endY, true);
                 path = (Vector<Point>) fallBackLos.getProjectPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
@@ -284,28 +286,28 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         return path;
     }
 
-    public void visitConeFieldOfView(final ILosBoard b, final int x, final int y, final int distance, int startAngle, int finishAngle)
+    public void visitConeFieldOfView(final IBoard b, final int x, final int y, final int distance, int startAngle, int endAngle)
     {
         // Making Positive Y downwards
         final int tmp = startAngle;
-        startAngle = -finishAngle;
-        finishAngle = -tmp;
+        startAngle = -endAngle;
+        endAngle = -tmp;
 
         if (startAngle < 0)
         {
             startAngle %= 360;
             startAngle += 360;
         }
-        if (finishAngle < 0)
+        if (endAngle < 0)
         {
-            finishAngle %= 360;
-            finishAngle += 360;
+            endAngle %= 360;
+            endAngle += 360;
         }
 
         if (startAngle > 360)
             startAngle %= 360;
-        if (finishAngle > 360)
-            finishAngle %= 360;
+        if (endAngle > 360)
+            endAngle %= 360;
         //		System.out.println(startAngle+" "+finishAngle);
 
         if (b == null)
@@ -315,13 +317,13 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
 
         final Point p = new Point(x, y);
         b.visit(x, y);
-        if (startAngle > finishAngle)
+        if (startAngle > endAngle)
         {
             go(b, p, 1, distance, startAngle, 359.999);
-            go(b, p, 1, distance, 0.0, finishAngle);
+            go(b, p, 1, distance, 0.0, endAngle);
         }
         else
-            go(b, p, 1, distance, startAngle, finishAngle);
+            go(b, p, 1, distance, startAngle, endAngle);
     }
 
     static class ArcPoint implements Comparable

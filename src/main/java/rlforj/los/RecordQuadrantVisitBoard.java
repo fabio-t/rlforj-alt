@@ -1,5 +1,6 @@
 package rlforj.los;
 
+import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.HashSet;
@@ -11,9 +12,9 @@ import java.util.Set;
  *
  * @author sdatta
  */
-public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProjection.VisitedBoard
+public class RecordQuadrantVisitBoard implements IBoard, GenericCalculateProjection.VisitedBoard
 {
-    ILosBoard b;
+    IBoard b;
 
     int sx, sy, sxy;
 
@@ -27,7 +28,7 @@ public class RecordQuadrantVisitBoard implements ILosBoard, GenericCalculateProj
     boolean calculateProject;
     private final Point visitedCheck = new Point(0, 0);
 
-    public RecordQuadrantVisitBoard(final ILosBoard b, final int sx, final int sy, final int dx, final int dy, final boolean calculateProject)
+    public RecordQuadrantVisitBoard(final IBoard b, final int sx, final int sy, final int dx, final int dy, final boolean calculateProject)
     {
         super();
         this.b = b;
