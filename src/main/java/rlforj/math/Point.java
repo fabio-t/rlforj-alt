@@ -31,6 +31,19 @@ public class Point
         return Math.max(Math.abs(this.x - x), Math.abs(this.y - y));
     }
 
+    public int distance2(final Point p)
+    {
+        return distance2(p.x, p.y);
+    }
+
+    public int distance2(final int x, final int y)
+    {
+        final float dx = this.x - x;
+        final float dy = this.y - y;
+
+        return (int) Math.floor(Math.sqrt(dx*dx + dy*dy));
+    }
+
     @Override
     public boolean equals(final Object o)
     {

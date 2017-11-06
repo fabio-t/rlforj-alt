@@ -33,7 +33,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         {
             for (int j = -radius; j <= radius; j++)
             {
-                final int distance = (int) floor(origin.distance(i, j));
+                // final int distance = (int) floor(origin.distance(i, j));
+                final int distance = origin.distance2(i, j);
 
                 // If filled, add anything where floor(distance) <= radius
                 // If not filled, require that floor(distance) == radius
