@@ -1,6 +1,6 @@
 package rlforj.los.test;
 
-import rlforj.los.ILosBoard;
+import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class TestBoard implements ILosBoard
+public class TestBoard implements IBoard
 {
 
     public boolean def; // true => obstacle

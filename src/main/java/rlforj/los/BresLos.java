@@ -1,5 +1,6 @@
 package rlforj.los;
 
+import rlforj.IBoard;
 import rlforj.math.Point;
 import rlforj.util.BresenhamLine;
 
@@ -27,10 +28,10 @@ public class BresLos implements ILosAlgorithm
         symmetricEnabled = symmetric;
     }
 
-    public boolean existsLineOfSight(final ILosBoard b, final int startX, final int startY, final int x1, final int y1, final boolean calculateProject)
+    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY, final boolean calculateProject)
     {
-        final int dx  = startX - x1;
-        final int dy  = startY - y1;
+        final int dx  = startX - endX;
+        final int dy  = startY - endY;
         final int adx = dx > 0 ? dx : -dx;
         final int ady = dy > 0 ? dy : -dy;
         final int len = (adx > ady ? adx : ady) + 1;//Max number of points on the path.
@@ -43,7 +44,7 @@ public class BresLos implements ILosAlgorithm
         final int[] py = new int[len];
 
         //Start to finish path
-        BresenhamLine.plot(startX, startY, x1, y1, px, py);
+        BresenhamLine.plot(startX, startY, endX, endY, px, py);
 
         boolean los = false;
         for (int i = 0; i < len; i++)
@@ -52,7 +53,7 @@ public class BresLos implements ILosAlgorithm
             {
                 path.add(new Point(px[i], py[i]));
             }
-            if (px[i] == x1 && py[i] == y1)
+            if (px[i] == endX && py[i] == endY)
             {
                 los = true;
                 break;
@@ -69,7 +70,7 @@ public class BresLos implements ILosAlgorithm
             px1 = new int[len];
             py1 = new int[len];
             // finish to start path.
-            BresenhamLine.plot(x1, y1, startX, startY, px1, py1);
+            BresenhamLine.plot(endX, endY, startX, startY, px1, py1);
 
             final Vector<Point> oldpath = path;
             path = new Vector<>(len);
@@ -79,7 +80,7 @@ public class BresLos implements ILosAlgorithm
                 {
                     path.add(new Point(px1[i], py1[i]));
                 }
-                if (px1[i] == x1 && py1[i] == y1)
+                if (px1[i] == endX && py1[i] == endY)
                 {
                     los = true;
                     break;

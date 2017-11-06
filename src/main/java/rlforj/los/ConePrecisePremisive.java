@@ -1,5 +1,6 @@
 package rlforj.los;
 
+import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.LinkedList;
@@ -13,8 +14,8 @@ import java.util.LinkedList;
 public class ConePrecisePremisive extends PrecisePermissive implements IConeFovAlgorithm
 {
 
-    public void visitConeFieldOfView(final ILosBoard b, final int x, final int y, final int distance, int startAngle,
-                                     int finishAngle)
+    public void visitConeFieldOfView(final IBoard b, final int x, final int y, final int distance, int startAngle,
+                                     int endAngle)
     {
         if (startAngle % 90 == 0 && startAngle % 360 != 0)
             startAngle--;//we dont like to start at 90, 180, 270
@@ -26,16 +27,16 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
             startAngle %= 360;
             startAngle += 360;
         }
-        if (finishAngle < 0)
+        if (endAngle < 0)
         {
-            finishAngle %= 360;
-            finishAngle += 360;
+            endAngle %= 360;
+            endAngle += 360;
         }
 
         if (startAngle > 360)
             startAngle %= 360;
-        if (finishAngle > 360)
-            finishAngle %= 360;
+        if (endAngle > 360)
+            endAngle %= 360;
 
         final permissiveMaskT mask = new permissiveMaskT();
         mask.east = mask.north = mask.south = mask.west = distance;
@@ -43,7 +44,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         mask.fovType = FovType.CIRCLE;
         mask.distPlusOneSq = (distance + 1) * (distance + 1);
         mask.board = b;
-        permissiveConeFov(x, y, mask, startAngle, finishAngle);
+        permissiveConeFov(x, y, mask, startAngle, endAngle);
     }
 
     /**

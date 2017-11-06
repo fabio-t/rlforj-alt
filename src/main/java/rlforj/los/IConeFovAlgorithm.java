@@ -1,5 +1,7 @@
 package rlforj.los;
 
+import rlforj.IBoard;
+
 /**
  * FOV along a cone. Give starting and finish angle.
  * Note: Positive Y axis is down.
@@ -18,7 +20,7 @@ public interface IConeFovAlgorithm extends IFovAlgorithm
      * @param y y position
      * @param distance maximum distance of cone of view
      * @param startAngle start angle
-     * @param finishAngle end angle
+     * @param endAngle end angle
      */
-    void visitConeFieldOfView(ILosBoard b, int x, int y, int distance, int startAngle, int finishAngle);
+    void visitConeFieldOfView(IBoard b, int x, int y, int distance, int startAngle, int endAngle);
 }

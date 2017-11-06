@@ -1,7 +1,7 @@
 package rlforj.los.raymulticast;
 
 import rlforj.los.IFovAlgorithm;
-import rlforj.los.ILosBoard;
+import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.LinkedList;
@@ -26,7 +26,7 @@ import java.util.Queue;
 public class MultiRaysCaster implements IFovAlgorithm
 {
 
-    private ILosBoard      world;     // holds obstruction data
+    private IBoard         world;     // holds obstruction data
     private Point          origin;    // the point at which the rays will be
     // cast from
     private Point          offset;    // offset for storing in results
@@ -34,7 +34,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     private RayData[][]    results;   // stores calculated data for external use
     private int            dsq;
 
-    public MultiRaysCaster(final ILosBoard world, final int originX, final int originY, final int radius)
+    public MultiRaysCaster(final IBoard world, final int originX, final int originY, final int radius)
     {
         this.world = world;
         this.origin = new Point(originX, originY);
@@ -51,7 +51,7 @@ public class MultiRaysCaster implements IFovAlgorithm
     }
 
     @Override
-    public void visitFieldOfView(final ILosBoard b, final int x, final int y, final int distance)
+    public void visitFieldOfView(final IBoard b, final int x, final int y, final int distance)
     {
         this.world = b;
         this.origin = new Point(x, y);

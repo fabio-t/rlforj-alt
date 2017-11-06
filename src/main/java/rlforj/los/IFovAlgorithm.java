@@ -1,5 +1,7 @@
 package rlforj.los;
 
+import rlforj.IBoard;
+
 /**
  * An interface for FOV algorithms.
  *
@@ -25,6 +27,6 @@ public interface IFovAlgorithm
      * @param y        Starting location:y
      * @param distance How far can this Field of View go
      */
-    void visitFieldOfView(ILosBoard b, int x, int y, int distance);
+    void visitFieldOfView(IBoard b, int x, int y, int distance);
 
 }
