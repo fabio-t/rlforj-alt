@@ -4,18 +4,10 @@ language: java
 jdk:
   - oraclejdk8
 
-before_cache:
-  # No sense in caching current build artifacts
-  rm -rf $HOME/.m2/repository/fabioticconi/rlforj-alt
+install: true
 
 script:
   - mvn clean verify
-
-  # Trick to avoid useless S3 cache updates
-  - mv $HOME/.m2/repository/fabioticconi/rlforj-alt /tmp/cache-trick
-
-# Skip default "mvn install" issued by Travis
-install: true
 
 cache:
   directories:
