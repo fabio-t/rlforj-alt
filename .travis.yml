@@ -9,10 +9,7 @@ before_cache:
   rm -rf $HOME/.m2/repository/fabioticconi/rlforj-alt
 
 script:
-  - mvn clean install
-
-  # Test Coverage
-  - mvn cobertura:cobertura coveralls:cobertura
+  - mvn clean verify
 
   # Trick to avoid useless S3 cache updates
   - mv $HOME/.m2/repository/fabioticconi/rlforj-alt /tmp/cache-trick
