@@ -207,7 +207,7 @@ includes the start and end point.
 Pathfinding is the task of finding an unobstructed path from a start to an end point. Contrarily to Los,
 the path does not need to be a line.
 
-Only one algorithm is supported for now, the king of pathfinding in games: AStar. Use it like this:
+Only one algorithm is supported for now, the king of pathfinding: AStar. Use it like this:
 
 ```$java
 IBoard map = new MyMap();
@@ -224,6 +224,9 @@ Point[] path = a.findPath(startX, startY, endX, endY, radius)
 If `path` is not `null`, it always includes the start and end point.
 
 ## Examples
+
+Let's see some of the algorithms in action. If you wish to run them yourself, have a look at the
+[examples folder](src/main/java/rlforj/examples/).
 
 ### Fov ShadowCasting
 
@@ -262,8 +265,6 @@ If `path` is not `null`, it always includes the start and end point.
 ```
     
 ### Conic Fov ShadowCasting
-
-30 degrees to 70 degrees
   
 ```                     
           @          
