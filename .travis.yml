@@ -1,3 +1,25 @@
-language: java
 sudo: false
-script: mvn clean verify
+
+language: java
+jdk:
+  - oraclejdk8
+
+before_cache:
+  # No sense in caching current build artifacts
+  rm -rf $HOME/.m2/repository/fabioticconi/rlforj-alt
+
+script:
+  - mvn clean install
+
+  # Test Coverage
+  - mvn cobertura:cobertura coveralls:cobertura
+
+  # Trick to avoid useless S3 cache updates
+  - mv $HOME/.m2/repository/fabioticconi/rlforj-alt /tmp/cache-trick
+
+# Skip default "mvn install" issued by Travis
+install: true
+
+cache:
+  directories:
+    - '$HOME/.m2/repository'
