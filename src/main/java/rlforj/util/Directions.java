@@ -1,6 +1,10 @@
-package rlforj.util;
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
 
-import rlforj.math.Point;
+package rlforj.util;
 
 /**
  * A class for various directions, their offsets.

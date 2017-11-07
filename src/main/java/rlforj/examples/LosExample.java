@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.examples;
 
 import rlforj.los.*;
@@ -6,46 +12,49 @@ import rlforj.math.Point;
 import java.util.List;
 import java.util.Random;
 
-public class ProjectionExample
+public class LosExample
 {
+    final static int width  = 17;
+    final static int height = 17;
 
     public static void main(final String[] args)
     {
-        final ExampleBoard b    = new ExampleBoard(21, 21);
+        final ExampleBoard b    = new ExampleBoard(width, height);
         final Random       rand = new Random();
         for (int i = 0; i < 30; i++)
         {
-            b.setObstacle(rand.nextInt(21), rand.nextInt(21));
+            b.setObstacle(rand.nextInt(width), rand.nextInt(height));
         }
-        final int x1 = rand.nextInt(21);
-        final int y1 = rand.nextInt(21);
+        final int x1 = rand.nextInt(width);
+        final int y1 = rand.nextInt(height);
         b.invisibleFloor = '.';
         b.invisibleWall = '#';
 
-        displayProjection(new ShadowCasting(), "Shadowcasting", b, x1, y1);
-        displayProjection(new PrecisePermissive(), "Precise Permissive", b, x1, y1);
-        displayProjection(new BresLos(false), "Bresenham", b, x1, y1);
+        displayLos(new ShadowCasting(), "Shadowcasting", b, x1, y1);
+        displayLos(new PrecisePermissive(), "Precise Permissive", b, x1, y1);
+        displayLos(new BresLos(false), "Bresenham", b, x1, y1);
         final BresLos bl = new BresLos(true);
-        displayProjection(bl, "Symmetric Bresenham", b, x1, y1);
-        displayProjection(new BresOpportunisticLos(), "Opportunistic Bresenham", b, x1, y1);
+        displayLos(bl, "Symmetric Bresenham", b, x1, y1);
+        displayLos(new BresOpportunisticLos(), "Opportunistic Bresenham", b, x1, y1);
     }
 
     /**
-     * @param a algorithm instance
+     * @param a        algorithm instance
      * @param algoName The name of the algorithm
-     * @param b board
-     * @param x1 x position
-     * @param y1 y position
+     * @param b        board
+     * @param x1       x position
+     * @param y1       y position
      */
-    private static void displayProjection(final ILosAlgorithm a, final String algoName, final ExampleBoard b, final int x1, final int y1)
+    private static void displayLos(final ILosAlgorithm a, final String algoName, final ExampleBoard b, final int x1,
+                                   final int y1)
     {
         final boolean     los;
         final List<Point> path;
         b.resetVisitedAndMarks();
         System.out.println(algoName);
-        los = a.existsLineOfSight(b, 10, 10, x1, y1, true);
+        los = a.exists(b, width / 2, height / 2, x1, y1, true);
 
-        path = a.getProjectPath();
+        path = a.getPath();
         markProjectPath(b, path);
         if (los)
             b.mark(x1, y1, '*');
@@ -53,7 +62,7 @@ public class ProjectionExample
             b.mark(x1, y1, '?');
 
         System.out.println("Los " + (los ? "exists" : "does not exist"));
-        b.print(10, 10);
+        b.print(width / 2, height / 2);
     }
 
     private static void markProjectPath(final ExampleBoard b, final List<Point> path)

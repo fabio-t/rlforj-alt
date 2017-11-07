@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.math;
 
 /**
@@ -41,7 +47,7 @@ public class Point
         final float dx = this.x - x;
         final float dy = this.y - y;
 
-        return (int) Math.floor(Math.sqrt(dx*dx + dy*dy));
+        return (int) Math.floor(Math.sqrt(dx * dx + dy * dy));
     }
 
     @Override

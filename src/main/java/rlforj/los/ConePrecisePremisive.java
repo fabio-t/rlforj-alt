@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -72,8 +78,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
             activeFields.getLast().shallow.near = new Point(0, 1);
             activeFields.getLast().shallow.far = new Point((int) Math.ceil(
                 Math.cos(Math.toRadians(startAngle)) * state.extent.x),
-                                                           (int) Math.floor(Math.sin(Math.toRadians(startAngle)) *
-                                                                              state.extent.y));
+                                                           (int) Math.floor(
+                                                               Math.sin(Math.toRadians(startAngle)) * state.extent.y));
             //			System.out.println(activeFields.getLast().shallow.isAboveOrContains(new offsetT(0, 10)));
         }
         if (finishAngle == 90)
@@ -87,7 +93,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
             activeFields.getLast().steep.far = new Point((int) Math.floor(
                 Math.cos(Math.toRadians(finishAngle)) * state.extent.x),
                                                          (int) Math.ceil(
-                                                               Math.sin(Math.toRadians(finishAngle)) * state.extent.y));
+                                                             Math.sin(Math.toRadians(finishAngle)) * state.extent.y));
         }
         final Point dest = new Point(0, 0);
 
@@ -130,8 +136,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         return i < j ? i : j;
     }
 
-    private void permissiveConeFov(final int sourceX, final int sourceY, final permissiveMaskT mask, final int startAngle,
-                           final int finishAngle)
+    private void permissiveConeFov(final int sourceX, final int sourceY, final permissiveMaskT mask,
+                                   final int startAngle, final int finishAngle)
     {
         final coneFovState state = new coneFovState();
         state.source = new Point(sourceX, sourceY);
@@ -144,8 +150,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
         //visit origin once
         state.board.visit(sourceX, sourceY);
 
-        final Point quadrants[]   = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1),
-                                      new Point(1, -1) };
+        final Point quadrants[] = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1), new Point(1, -1) };
 
         final Point extents[] = { new Point(mask.east, mask.north), new Point(mask.west, mask.north),
                                   new Point(mask.west, mask.south), new Point(mask.east, mask.south) };
@@ -243,8 +248,8 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
      * Maybe this code can be simplified ?
      */
     private void visitConeSquare(final coneFovState state, final Point dest, final CLikeIterator<fieldT> currentField,
-                         final LinkedList<bumpT> steepBumps, final LinkedList<bumpT> shallowBumps,
-                         final LinkedList<fieldT> activeFields)
+                                 final LinkedList<bumpT> steepBumps, final LinkedList<bumpT> shallowBumps,
+                                 final LinkedList<fieldT> activeFields)
     {
         // System.out.println("visitsq called "+dest);
         // The top-left and bottom-right corners of the destination square.
@@ -356,7 +361,7 @@ public class ConePrecisePremisive extends PrecisePermissive implements IConeFovA
     {
         final Point stateQuadrant = state.quadrant;
         final Point adjustedPos = new Point(pos.x * stateQuadrant.x + state.source.x,
-                                                pos.y * stateQuadrant.y + state.source.y);
+                                            pos.y * stateQuadrant.y + state.source.y);
 
         //Keep track of which axes are done.
         if ((pos.x == 0 && stateQuadrant.y > 0 && !state.axisDone[1]) ||

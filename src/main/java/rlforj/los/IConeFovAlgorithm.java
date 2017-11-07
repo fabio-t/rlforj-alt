@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -15,12 +21,12 @@ public interface IConeFovAlgorithm extends IFovAlgorithm
      * finishAngle.
      * Positive Y axis is downwards.
      *
-     * @param b board
-     * @param x x position
-     * @param y y position
-     * @param distance maximum distance of cone of view
+     * @param b          board
+     * @param x          x position
+     * @param y          y position
+     * @param distance   maximum distance of cone of view
      * @param startAngle start angle
-     * @param endAngle end angle
+     * @param endAngle   end angle
      */
     void visitConeFieldOfView(IBoard b, int x, int y, int distance, int startAngle, int endAngle);
 }

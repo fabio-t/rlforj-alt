@@ -1,8 +1,15 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.pathfinding.test;
 
 import org.junit.Test;
 import rlforj.math.Point;
 import rlforj.pathfinding.AStar;
+import rlforj.pathfinding.IPathAlgorithm;
 import rlforj.util.Directions;
 
 import java.util.ArrayList;
@@ -68,7 +75,7 @@ public class AStarTest
                     break;
             }
 
-            final AStar algo = new AStar(m, w, h);
+            final IPathAlgorithm algo = new AStar(m, w, h);
 
             final Point pStart = new Point(startx, starty);
             final Point pEnd   = new Point(endx, endy);
@@ -118,9 +125,9 @@ public class AStarTest
      * FloodFill the board from point 1 and see if point2 is same color. If not,
      * points are not reachable from each other.
      *
-     * @param mb board
-     * @param start start point (can be a obstacle)
-     * @param end end point (can be a obstacle)
+     * @param mb     board
+     * @param start  start point (can be a obstacle)
+     * @param end    end point (can be a obstacle)
      * @param radius radius of search
      * @return true if there exists a path between start and end point, false otherwise
      */

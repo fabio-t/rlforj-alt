@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.examples;
 
 import rlforj.los.IFovAlgorithm;
@@ -8,6 +14,8 @@ import java.util.Random;
 
 public class FovExample
 {
+    final static int width  = 17;
+    final static int height = 17;
 
     /*
      * Each time creates a 21x21 area with random obstacles and
@@ -16,22 +24,22 @@ public class FovExample
      */
     public static void main(final String[] args)
     {
-        final ExampleBoard b    = new ExampleBoard(21, 21);
+        final ExampleBoard b    = new ExampleBoard(width, height);
         final Random       rand = new Random();
         for (int i = 0; i < 30; i++)
         {
-            b.setObstacle(rand.nextInt(21), rand.nextInt(21));
+            b.setObstacle(rand.nextInt(width), rand.nextInt(height));
         }
 
         System.out.println("ShadowCasting");
         IFovAlgorithm a = new ShadowCasting();
-        a.visitFieldOfView(b, 10, 10, 9);
-        b.print(10, 10);
+        a.visitFoV(b, width / 2, height / 2, width / 3 + 1);
+        b.print(width / 2, height / 2);
 
         b.resetVisitedAndMarks();
         System.out.println("Precise Permissive");
         a = new PrecisePermissive();
-        a.visitFieldOfView(b, 10, 10, 9);
-        b.print(10, 10);
+        a.visitFoV(b, width / 2, height / 2, width / 3 + 1);
+        b.print(width / 2, height / 2);
     }
 }

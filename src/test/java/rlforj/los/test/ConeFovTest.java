@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los.test;
 
 import rlforj.los.ConePrecisePremisive;
@@ -47,7 +53,7 @@ public class ConeFovTest
         //		IFovAlgorithm a1= new ShadowCasting();
         //		b.visited.clear();
         //
-        //		a1.visitFieldOfView(b, 10, 10, 10);
+        //		a1.visitFoV(b, 10, 10, 10);
         //
         //		b.mark(10, 10, '@');
         //		b.print(-1, 21, -1, 21);

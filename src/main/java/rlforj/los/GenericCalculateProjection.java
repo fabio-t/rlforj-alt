@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.math.Point;
@@ -16,7 +22,8 @@ import java.util.Vector;
 public class GenericCalculateProjection
 {
 
-    public static Vector<Point> calculateProjecton(final int startX, final int startY, final int x1, final int y1, final VisitedBoard fb)
+    public static Vector<Point> calculateProjecton(final int startX, final int startY, final int x1, final int y1,
+                                                   final VisitedBoard fb)
     {
         final Vector<Point> path = new Vector<>();
 

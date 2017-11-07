@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -8,24 +14,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
-/**
- * Precise permissive visibility algorithm.
- * <p>Refer to
- * <a href="http://roguebasin.roguelikedevelopment.org/index.php?title=Precise_Permissive_Field_of_View">this page</a>
- * for examples.</p>
- * Copyright (c) 2007, Jonathon Duerig. Licensed under the BSD
- * license. See LICENSE.txt for details.
- * <p>
- * TODO : Do multitile organism by replacing offsetT(0,1)(1, 0) by offsetT(0,
- * size.y) (size.x, 0). Also need to consider border tiles.</p>
- *
- * @author sdatta
- */
 public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
 {
-    private Vector<Point> path;
-
     private final ILosAlgorithm fallBackLos = new BresLos(true);
+    private Vector<Point> path;
 
     void calculateFovQuadrant(final fovStateT state)
     {
@@ -238,7 +230,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
     boolean actIsBlocked(final fovStateT state, final Point pos)
     {
         final Point adjustedPos = new Point(pos.x * state.quadrant.x + state.source.x,
-                                                pos.y * state.quadrant.y + state.source.y);
+                                            pos.y * state.quadrant.y + state.source.y);
 
         if (!state.board.contains(adjustedPos.x, adjustedPos.y))
             return false;//we are getting outside the board
@@ -291,9 +283,8 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         // state.visit = visit;
         // state.context = context;
 
-        final int     quadrantCount = 4;
-        final Point quadrants[]   = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1),
-                                      new Point(1, -1) };
+        final int   quadrantCount = 4;
+        final Point quadrants[]   = { new Point(1, 1), new Point(-1, 1), new Point(-1, -1), new Point(1, -1) };
 
         final Point extents[] = { new Point(mask.east, mask.north), new Point(mask.west, mask.north),
                                   new Point(mask.west, mask.south), new Point(mask.east, mask.south) };
@@ -321,7 +312,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         return 1;
     }
 
-    public void visitFieldOfView(final IBoard b, final int x, final int y, final int distance)
+    public void visitFoV(final IBoard b, final int x, final int y, final int distance)
     {
         final permissiveMaskT mask = new permissiveMaskT();
         mask.east = mask.north = mask.south = mask.west = distance;
@@ -336,18 +327,17 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
      * Algorithm inspired by
      * http://groups.google.com/group/rec.games.roguelike.development/browse_thread/thread/f3506215be9d9f9a/2e543127f705a278#2e543127f705a278
      *
-     * @see rlforj.los.ILosAlgorithm#existsLineOfSight(IBoard, int, int, int, int, boolean)
+     * @see rlforj.los.ILosAlgorithm#exists(IBoard, int, int, int, int, boolean)
      */
-    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY,
-                                     final boolean calculateProject)
+    public boolean exists(final IBoard b, final int startX, final int startY, final int endX, final int endY,
+                          final boolean savePath)
     {
         final permissiveMaskT          mask = new permissiveMaskT();
         final int                      dx   = endX - startX;
         final int                      adx  = dx > 0 ? dx : -dx;
         final int                      dy   = endY - startY;
         final int                      ady  = dy > 0 ? dy : -dy;
-        final RecordQuadrantVisitBoard fb   = new RecordQuadrantVisitBoard(b, startX, startY, endX,
-                                                                           endY, calculateProject);
+        final RecordQuadrantVisitBoard fb   = new RecordQuadrantVisitBoard(b, startX, startY, endX, endY, savePath);
         mask.east = mask.west = adx;
         mask.north = mask.south = ady;
         mask.mask = null;
@@ -377,8 +367,7 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
 
         final Line2I stopLine = new Line2I(new Point(0, 1),
                                            new Point(adx, ady + 1)), startLine = new Line2I(new Point(1, 0),
-                                                                                            new Point(adx + 1,
-                                                                                                      ady));
+                                                                                            new Point(adx + 1, ady));
 
         // Visit the source square exactly once (in quadrant 1).
         actIsBlocked(state, dest);
@@ -434,14 +423,14 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
             currentField = new CLikeIterator<>(activeFields.listIterator());
         }
 
-        if (calculateProject)
+        if (savePath)
         {
             if (fb.endVisited)
                 path = GenericCalculateProjection.calculateProjecton(startX, startY, endX, endY, fb);
             else
             {
-                fallBackLos.existsLineOfSight(b, startX, startY, endX, endY, true);
-                path = (Vector<Point>) fallBackLos.getProjectPath();
+                fallBackLos.exists(b, startX, startY, endX, endY, true);
+                path = (Vector<Point>) fallBackLos.getPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
         }
@@ -451,9 +440,9 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
     /*
      * (non-Javadoc)
      *
-     * @see sid.los.ILosAlgorithm1#getProjectPath()
+     * @see sid.los.ILosAlgorithm1#getPath()
      */
-    public List<Point> getProjectPath()
+    public List<Point> getPath()
     {
         return path;
     }

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los.test;
 
 import rlforj.los.ILosAlgorithm;
@@ -26,8 +32,8 @@ public class ProjectionTest
         //		ILosAlgorithm alg = new PrecisePermissive();
         final ILosAlgorithm alg = new ShadowCasting();
 
-        final boolean     losExists = alg.existsLineOfSight(tb, 10, 10, x1, y1, true);
-        final List<Point> path      = alg.getProjectPath();
+        final boolean     losExists = alg.exists(tb, 10, 10, x1, y1, true);
+        final List<Point> path      = alg.getPath();
 
         for (final Point p : path)
         {
