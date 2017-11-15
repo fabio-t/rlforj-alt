@@ -1,7 +1,7 @@
 # rlforj-alt
 
-[![Latest Github release](https://img.shields.io/github/release/fabioticconi/rlforj-alt.svg)](https://github.com/fabioticconi/rlforj-alt/releases/latest)
-[![Build Status](https://travis-ci.org/fabioticconi/rlforj-alt.svg?branch=master)](https://travis-ci.org/fabioticconi/rlforj-alt)
+[![Latest Github release](https://img.shields.io/github/release/fabio-t/rlforj-alt.svg)](https://github.com/fabio-t/rlforj-alt/releases/latest)
+[![Build Status](https://travis-ci.org/fabio-t/rlforj-alt.svg?branch=master)](https://travis-ci.org/fabio-t/rlforj-alt)
 
 Roguelike Library For Java (Alternative version).
 
@@ -33,11 +33,11 @@ Some terrain generation utilities will also be available in the future.
 ```
 
 2. Then add `rlforj-alt` as a dependency (make sure to change `version` to one of the
-[releases](https://github.com/fabioticconi/rlforj-alt/releases)):
+[releases](https://github.com/fabio-t/rlforj-alt/releases)):
 
 ```$xml
 <dependency>
-    <groupId>com.github.fabioticconi</groupId>
+    <groupId>com.github.fabio-t</groupId>
     <artifactId>rlforj-alt</artifactId>
     <version>version</version>
 </dependency>

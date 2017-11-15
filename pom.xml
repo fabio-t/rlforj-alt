@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.fabioticconi</groupId>
+    <groupId>com.github.fabio-t</groupId>
     <artifactId>rlforj-alt</artifactId>
     <version>0.2.0</version>
     <packaging>jar</packaging>
@@ -81,8 +81,8 @@
     </build>
 
     <scm>
-        <connection>scm:git:git@fabioticconi/rlforj-alt.git</connection>
-        <url>scm:git:git@fabioticconi/rlforj-alt.git</url>
-        <developerConnection>scm:git:git@fabioticconi/rlforj-alt.git</developerConnection>
+        <connection>scm:git:git@fabio-t/rlforj-alt.git</connection>
+        <url>scm:git:git@fabio-t/rlforj-alt.git</url>
+        <developerConnection>scm:git:git@fabio-t/rlforj-alt.git</developerConnection>
     </scm>
 </project>
