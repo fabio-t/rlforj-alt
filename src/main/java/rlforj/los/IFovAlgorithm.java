@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -9,7 +15,6 @@ import rlforj.IBoard;
  */
 public interface IFovAlgorithm
 {
-
     /**
      * All locations of Board b that are visible
      * from (x, y) will be visited, ie b.visit(x, y)
@@ -27,6 +32,5 @@ public interface IFovAlgorithm
      * @param y        Starting location:y
      * @param distance How far can this Field of View go
      */
-    void visitFieldOfView(IBoard b, int x, int y, int distance);
-
+    void visitFoV(IBoard b, int x, int y, int distance);
 }

@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los.test;
 
 import junit.framework.TestCase;
@@ -18,11 +24,11 @@ public abstract class LosTest extends TestCase
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
-        assertTrue(a.existsLineOfSight(b, 10, 10, 11, 11, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 10, 11, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 11, 10, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 10, 15, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 15, 10, false));
+        assertTrue(a.exists(b, 10, 10, 11, 11, false));
+        assertTrue(a.exists(b, 10, 10, 10, 11, false));
+        assertTrue(a.exists(b, 10, 10, 11, 10, false));
+        assertTrue(a.exists(b, 10, 10, 10, 15, false));
+        assertTrue(a.exists(b, 10, 10, 15, 10, false));
     }
 
     public void testFull()
@@ -32,11 +38,11 @@ public abstract class LosTest extends TestCase
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
-        assertTrue(a.existsLineOfSight(b, 10, 10, 11, 11, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 10, 11, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 11, 10, false));
-        assertFalse(a.existsLineOfSight(b, 10, 10, 10, 15, false));
-        assertFalse(a.existsLineOfSight(b, 10, 10, 15, 10, false));
+        assertTrue(a.exists(b, 10, 10, 11, 11, false));
+        assertTrue(a.exists(b, 10, 10, 10, 11, false));
+        assertTrue(a.exists(b, 10, 10, 11, 10, false));
+        assertFalse(a.exists(b, 10, 10, 10, 15, false));
+        assertFalse(a.exists(b, 10, 10, 15, 10, false));
     }
 
     public void testLine()
@@ -51,11 +57,11 @@ public abstract class LosTest extends TestCase
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
-        assertTrue(a.existsLineOfSight(b, 10, 10, 11, 11, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 10, 11, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 11, 10, false));
-        assertTrue(a.existsLineOfSight(b, 10, 10, 5, 10, false));
-        assertFalse(a.existsLineOfSight(b, 10, 10, 15, 10, false));
+        assertTrue(a.exists(b, 10, 10, 11, 11, false));
+        assertTrue(a.exists(b, 10, 10, 10, 11, false));
+        assertTrue(a.exists(b, 10, 10, 11, 10, false));
+        assertTrue(a.exists(b, 10, 10, 5, 10, false));
+        assertFalse(a.exists(b, 10, 10, 15, 10, false));
     }
 
     public void testAcrossPillar()
@@ -67,8 +73,8 @@ public abstract class LosTest extends TestCase
         // b.print(4, 14, 4, 14);
         // System.out.println();
 
-        assertTrue(a.existsLineOfSight(b, 9, 9, 10, 11, false));
-        assertFalse(a.existsLineOfSight(b, 9, 9, 11, 11, false));
+        assertTrue(a.exists(b, 9, 9, 10, 11, false));
+        assertFalse(a.exists(b, 9, 9, 11, 11, false));
     }
 
     public void testDiagonalWall()
@@ -80,7 +86,7 @@ public abstract class LosTest extends TestCase
 
         // b.print(5, 15, 6, 16);
         // System.out.println();
-        assertTrue(a.existsLineOfSight(b, 10, 11, 11, 10, false));
+        assertTrue(a.exists(b, 10, 11, 11, 10, false));
 
     }
 }

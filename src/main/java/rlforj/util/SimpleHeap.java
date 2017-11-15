@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.util;
 
 /**
@@ -73,8 +79,8 @@ public class SimpleHeap<T extends HeapNode>
         final int                   half = size >>> 1;        // loop while a non-leaf
         while (k < half)
         {
-            int child = (k << 1) + 1; // assume left child is least
-            T   c     = (T) queue[child];
+            int       child = (k << 1) + 1; // assume left child is least
+            T         c     = (T) queue[child];
             final int right = child + 1;
             if (right < size && c.compareTo(queue[right]) > 0)
                 c = (T) queue[child = right];

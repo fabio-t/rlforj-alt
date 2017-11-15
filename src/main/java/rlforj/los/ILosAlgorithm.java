@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -12,28 +18,26 @@ import java.util.List;
  */
 public interface ILosAlgorithm
 {
-
     /**
-     * Calculates if line of sight exists between point startX, startY and
-     * endX, y1. Optionally calculate the path of projection.
+     * Determines whether line of sight exists between point (startX, startY) and
+     * (endX, endY). Optionally calculates the path of projection (retrievable via call to
+     * {@link ILosAlgorithm#getPath}).
      *
-     * @param b                The board to be visited.
-     * @param startX           Starting position:x
-     * @param startY           Starting position:y
-     * @param endX             Target location:x
-     * @param endY             Target location:y
-     * @param calculateProject Whether to also calculate the path from the
-     *                         source to the target.
+     * @param b        The board to be visited.
+     * @param startX   Starting position:x
+     * @param startY   Starting position:y
+     * @param endX     Target location:x
+     * @param endY     Target location:y
+     * @param savePath Whether to also calculate and store the path from the source to the target.
      * @return true if a line of sight could be established
      */
-    boolean existsLineOfSight(IBoard b, int startX, int startY, int endX, int endY, boolean calculateProject);
+    boolean exists(IBoard b, int startX, int startY, int endX, int endY, boolean savePath);
 
     /**
      * Obtain the path of the projection calculated during the last call
-     * to existsLineOfSight.
+     * to {@link ILosAlgorithm#exists}.
      *
      * @return null if no los was established so far, or a list of points if a los found
      */
-    List<Point> getProjectPath();
-
+    List<Point> getPath();
 }

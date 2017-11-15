@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los.test;
 
 import junit.framework.TestCase;
@@ -19,7 +25,7 @@ public abstract class FovTest extends TestCase
     {
         final TestBoard b = new TestBoard(false);
 
-        a.visitFieldOfView(b, 10, 10, 5);
+        a.visitFoV(b, 10, 10, 5);
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
@@ -34,7 +40,7 @@ public abstract class FovTest extends TestCase
     {
         final TestBoard b = new TestBoard(true);
 
-        a.visitFieldOfView(b, 10, 10, 5);
+        a.visitFoV(b, 10, 10, 5);
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
@@ -54,7 +60,7 @@ public abstract class FovTest extends TestCase
             b.exception.add(new Point(i, 10));
         }
 
-        a.visitFieldOfView(b, 10, 10, 5);
+        a.visitFoV(b, 10, 10, 5);
         // b.print(5, 15, 5, 15);
         // System.out.println();
 
@@ -71,7 +77,7 @@ public abstract class FovTest extends TestCase
 
         b.exception.add(new Point(10, 10));
 
-        a.visitFieldOfView(b, 9, 9, 5);
+        a.visitFoV(b, 9, 9, 5);
         // b.print(4, 14, 4, 14);
         // System.out.println();
 
@@ -86,7 +92,7 @@ public abstract class FovTest extends TestCase
         b.exception.add(new Point(11, 11));
         b.exception.add(new Point(10, 10));
 
-        a.visitFieldOfView(b, 10, 11, 5);
+        a.visitFoV(b, 10, 11, 5);
         // b.print(5, 15, 6, 16);
         // System.out.println();
 
@@ -104,7 +110,7 @@ public abstract class FovTest extends TestCase
         }
 
         final long t1 = System.currentTimeMillis();
-        a.visitFieldOfView(b, 100, 100, 40);
+        a.visitFoV(b, 100, 100, 40);
         final long t2 = System.currentTimeMillis();
 
         System.out.println("Large Test took " + (t2 - t1));

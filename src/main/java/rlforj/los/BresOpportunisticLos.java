@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -21,7 +27,8 @@ public class BresOpportunisticLos implements ILosAlgorithm
 
     private Vector<Point> path;
 
-    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY, final boolean calculateProject)
+    public boolean exists(final IBoard b, final int startX, final int startY, final int endX, final int endY,
+                          final boolean savePath)
     {
         final int dx  = startX - endX;
         final int dy  = startY - endY;
@@ -29,11 +36,11 @@ public class BresOpportunisticLos implements ILosAlgorithm
         final int ady = dy > 0 ? dy : -dy;
         final int len = (adx > ady ? adx : ady) + 1;
 
-        if (calculateProject)
+        if (savePath)
             path = new Vector<>(len);
 
-        final int[] px  = new int[len];
-        final int[] py  = new int[len];
+        final int[] px = new int[len];
+        final int[] py = new int[len];
         int[]       px1, py1;
         px1 = new int[len];
         py1 = new int[len];
@@ -49,7 +56,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
             // Have we reached the end ? In that case quit
             if (px[i] == endX && py[i] == endY)
             {
-                if (calculateProject)
+                if (savePath)
                 {
                     path.add(new Point(px[i], py[i]));
                 }
@@ -59,7 +66,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
             // if we are on alternate path, is the path clear ?
             if (alternatePath && !b.blocksLight(px1[len - i - 1], py1[len - i - 1]))
             {
-                if (calculateProject)
+                if (savePath)
                     path.add(new Point(px1[len - i - 1], py1[len - i - 1]));
                 continue;
             }
@@ -69,7 +76,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
             //if on ordinary path, or alternate path was not clear
             if (!b.blocksLight(px[i], py[i]))
             {
-                if (calculateProject)
+                if (savePath)
                 {
                     path.add(new Point(px[i], py[i]));
                 }
@@ -78,12 +85,12 @@ public class BresOpportunisticLos implements ILosAlgorithm
             //if ordinary path wasnt clear
             if (!b.blocksLight(px1[len - i - 1], py1[len - i - 1]))
             {
-                if (calculateProject)
+                if (savePath)
                     path.add(new Point(px1[len - i - 1], py1[len - i - 1]));
                 alternatePath = true;//go on alternate path
                 continue;
             }
-            if (calculateProject)
+            if (savePath)
                 path.add(new Point(px1[len - i - 1], py1[len - i - 1]));
             break;
         }
@@ -91,7 +98,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
         return los;
     }
 
-    public List<Point> getProjectPath()
+    public List<Point> getPath()
     {
         return path;
     }

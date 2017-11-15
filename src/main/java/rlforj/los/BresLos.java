@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -28,7 +34,8 @@ public class BresLos implements ILosAlgorithm
         symmetricEnabled = symmetric;
     }
 
-    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY, final boolean calculateProject)
+    public boolean exists(final IBoard b, final int startX, final int startY, final int endX, final int endY,
+                          final boolean savePath)
     {
         final int dx  = startX - endX;
         final int dy  = startY - endY;
@@ -36,7 +43,7 @@ public class BresLos implements ILosAlgorithm
         final int ady = dy > 0 ? dy : -dy;
         final int len = (adx > ady ? adx : ady) + 1;//Max number of points on the path.
 
-        if (calculateProject)
+        if (savePath)
             path = new Vector<>(len);
 
         // array to store path.
@@ -49,7 +56,7 @@ public class BresLos implements ILosAlgorithm
         boolean los = false;
         for (int i = 0; i < len; i++)
         {
-            if (calculateProject)
+            if (savePath)
             {
                 path.add(new Point(px[i], py[i]));
             }
@@ -61,7 +68,7 @@ public class BresLos implements ILosAlgorithm
             if (b.blocksLight(px[i], py[i]))
                 break;
         }
-        // Direct path couldnt find LOS so try alternate path
+        // Direct path couldn't find LOS so try alternate path
         if (!los && symmetricEnabled)
         {
             final int[] px1;
@@ -76,7 +83,7 @@ public class BresLos implements ILosAlgorithm
             path = new Vector<>(len);
             for (int i = len - 1; i > -1; i--)
             {
-                if (calculateProject)
+                if (savePath)
                 {
                     path.add(new Point(px1[i], py1[i]));
                 }
@@ -89,14 +96,14 @@ public class BresLos implements ILosAlgorithm
                     break;
             }
 
-            if (calculateProject)
+            if (savePath)
                 path = oldpath.size() > path.size() ? oldpath : path;
         }
 
         return los;
     }
 
-    public List<Point> getProjectPath()
+    public List<Point> getPath()
     {
         return path;
     }

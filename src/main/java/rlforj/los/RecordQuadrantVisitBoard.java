@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
@@ -14,21 +20,17 @@ import java.util.Set;
  */
 public class RecordQuadrantVisitBoard implements IBoard, GenericCalculateProjection.VisitedBoard
 {
+    private final Point visitedCheck = new Point(0, 0);
     IBoard b;
-
-    int sx, sy, sxy;
-
+    int    sx, sy, sxy;
     int targetX, targetY;
-
     // int manhattanDist;
     Set<Point> visitedNotObs = new HashSet<>();
-
-    boolean endVisited = false;
-
+    boolean    endVisited    = false;
     boolean calculateProject;
-    private final Point visitedCheck = new Point(0, 0);
 
-    public RecordQuadrantVisitBoard(final IBoard b, final int sx, final int sy, final int dx, final int dy, final boolean calculateProject)
+    public RecordQuadrantVisitBoard(final IBoard b, final int sx, final int sy, final int dx, final int dy,
+                                    final boolean calculateProject)
     {
         super();
         this.b = b;

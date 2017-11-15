@@ -1,11 +1,15 @@
+/*
+ * Copyright (c) 2017, Fabio Ticconi, fabio.ticconi@gmail.com
+ * Copyright (c) 2013, kba
+ * All rights reserved.
+ */
+
 package rlforj.los;
 
 import rlforj.IBoard;
 import rlforj.math.Point;
 
 import java.util.*;
-
-import static java.lang.Math.floor;
 
 /**
  * Code adapted from NG roguelike engine http://roguelike-eng.sourceforge.net/
@@ -59,7 +63,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
     BresLos fallBackLos = new BresLos(true);
     private Vector<Point> path;
 
-    static void go(final IBoard board, final Point ctr, final int r, final int maxDistance, double th1, final double th2)
+    static void go(final IBoard board, final Point ctr, final int r, final int maxDistance, double th1,
+                   final double th2)
     {
         if (r > maxDistance)
             throw new IllegalArgumentException();
@@ -67,8 +72,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             throw new IllegalArgumentException();
         final ArrayList<ArcPoint> circle      = circles.get(r);
         final int                 circSize    = circle.size();
-        boolean             wasObstacle = false;
-        boolean             foundClear  = false;
+        boolean                   wasObstacle = false;
+        boolean                   foundClear  = false;
         for (int i = 0; i < circSize; i++)
         {
             final ArcPoint arcPoint = circle.get(i);
@@ -179,7 +184,7 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
      * Compute and return the list of RLPoints in line-of-sight to the given
      * region. In general, this method should be very fast.
      */
-    public void visitFieldOfView(final IBoard b, final int x, final int y, final int distance)
+    public void visitFoV(final IBoard b, final int x, final int y, final int distance)
     {
         if (b == null)
             throw new IllegalArgumentException();
@@ -206,7 +211,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         // return points;
     }
 
-    public boolean existsLineOfSight(final IBoard b, final int startX, final int startY, final int endX, final int endY, final boolean calculateProject)
+    public boolean exists(final IBoard b, final int startX, final int startY, final int endX, final int endY,
+                          final boolean savePath)
     {
         final int dx = endX - startX;
         final int dy = endY - startY;
@@ -233,7 +239,7 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             ady = -dy;
             signY = -1;
         }
-        final RecordQuadrantVisitBoard fb = new RecordQuadrantVisitBoard(b, startX, startY, endX, endY, calculateProject);
+        final RecordQuadrantVisitBoard fb = new RecordQuadrantVisitBoard(b, startX, startY, endX, endY, savePath);
 
         final Point p = new Point(startX, startY);
 
@@ -246,8 +252,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         }
         else
         {
-            final int    distance = (int) Math.sqrt(adx * adx + ady * ady) + 1;
-            double deg1     = Math.toDegrees(Math.atan2(-dy, (adx - .5) * signX));
+            final int distance = (int) Math.sqrt(adx * adx + ady * ady) + 1;
+            double    deg1     = Math.toDegrees(Math.atan2(-dy, (adx - .5) * signX));
             if (deg1 < 0)
                 deg1 += 360;
             double deg2 = Math.toDegrees(Math.atan2(-(ady - .5) * signY, dx));
@@ -267,26 +273,27 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             go(fb, p, 1, distance, deg1, deg2);
         }
 
-        if (calculateProject)
+        if (savePath)
         {
             if (fb.endVisited)
                 path = GenericCalculateProjection.calculateProjecton(startX, startY, endX, endY, fb);
             else
             {
-                fallBackLos.existsLineOfSight(b, startX, startY, endX, endY, true);
-                path = (Vector<Point>) fallBackLos.getProjectPath();
+                fallBackLos.exists(b, startX, startY, endX, endY, true);
+                path = (Vector<Point>) fallBackLos.getPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
         }
         return fb.endVisited;
     }
 
-    public List<Point> getProjectPath()
+    public List<Point> getPath()
     {
         return path;
     }
 
-    public void visitConeFieldOfView(final IBoard b, final int x, final int y, final int distance, int startAngle, int endAngle)
+    public void visitConeFieldOfView(final IBoard b, final int x, final int y, final int distance, int startAngle,
+                                     int endAngle)
     {
         // Making Positive Y downwards
         final int tmp = startAngle;
