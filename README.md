@@ -23,7 +23,7 @@ Some terrain generation utilities will also be available in the future.
 
 1. First add Jitpack as a repository inside your pom.xml
 
-```$xml
+```xml
 <repositories>
   <repository>
     <id>jitpack.io</id>
@@ -35,7 +35,7 @@ Some terrain generation utilities will also be available in the future.
 2. Then add `rlforj-alt` as a dependency (make sure to change `version` to one of the
 [releases](https://github.com/fabio-t/rlforj-alt/releases)):
 
-```$xml
+```xml
 <dependency>
     <groupId>com.github.fabio-t</groupId>
     <artifactId>rlforj-alt</artifactId>
@@ -48,7 +48,7 @@ Some terrain generation utilities will also be available in the future.
 The main component of rlforj-alt is the so called `Board`. You must implement the [IBoard](src/main/java/rlforj/IBoard.java)
 interface before doing anything:
 
-```$java
+```java
 public interface IBoard
 {
     boolean contains(int x, int y);
@@ -76,7 +76,7 @@ public interface IBoard
 To explore all the visible cells (what is generally called `Field of View`) you must choose one of the available
 Fov algorithms implementing the [IFovAlgorithm](src/main/java/rlforj/los/IFovAlgorithm.java) interface:
 
-```$java
+```java
 public interface IFovAlgorithm
 {
     void visitFov(IBoard b, int x, int y, int distance);
@@ -85,7 +85,7 @@ public interface IFovAlgorithm
 
 Then you can use it like this:
 
-```$java
+```java
 IBoard map = new MyMap();
 
 // choose one of these
@@ -109,7 +109,7 @@ In alternative to the above, if you want to only visit a **conic field of view**
 directional light), you can choose one of the algorithms implementing the [IConeFovAlgorithm](src/main/java/rlforj/los/IConeFovAlgorithm.java)
 interface:
 
-```$java
+```java
 public interface IConeFovAlgorithm
 {
     void visitConeFov(IBoard b, int x, int y, int distance, int startAngle, int endAngle);
@@ -118,7 +118,7 @@ public interface IConeFovAlgorithm
 
 Then you can use it like this:
 
-```$java
+```java
 IBoard map = new MyMap();
 
 // choose one of these
@@ -137,7 +137,7 @@ useful for ranged attacks.
 rlforj-alt supports many Los algorithms, all implementing the [ILosAlgorithm](src/main/java/rlforj/los/ILosAlgorithm.java)
 interface:
 
-```$java
+```java
 public interface ILosAlgorithm
 {
     boolean exists(IBoard b, int startX, int startY, int endX, int endY, boolean savePath);
@@ -151,7 +151,7 @@ If you only need to **test** for line of sight, set the last argument, `savePath
 
 More commonly, you will need the path (if one exists), so do this:
 
-```$java
+```java
 IBoard map = new MyMap();
 
 // choose one of these
@@ -209,7 +209,7 @@ the path does not need to be a line.
 
 Only one algorithm is supported for now, the king of pathfinding: AStar. Use it like this:
 
-```$java
+```java
 IBoard map = new MyMap();
 
 // choose one of these
