@@ -14,6 +14,13 @@
     <packaging>jar</packaging>
 
     <name>Roguelike Library For Java (Alternative version)</name>
+  
+    <licenses>
+        <license>
+            <name>BSD-3-Clause</name>
+            <url>https://spdx.org/licenses/BSD-3-Clause.html</url>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
