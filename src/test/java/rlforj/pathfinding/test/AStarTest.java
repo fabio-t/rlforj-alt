@@ -6,7 +6,7 @@
 
 package rlforj.pathfinding.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import rlforj.math.Point;
 import rlforj.pathfinding.AStar;
 import rlforj.pathfinding.IPathAlgorithm;
@@ -15,7 +15,7 @@ import rlforj.util.Directions;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AStarTest
 {
@@ -90,11 +90,11 @@ public class AStarTest
                     final Point step = path[pi];
 
                     if (pi == 0)
-                        assertEquals("Path did not start with the starting point", step, pStart);
+                        assertEquals(pStart, step, "Path did not start with the starting point");
                     else if (pi == path.length - 1)
-                        assertEquals("Path did not end with the ending point", step, pEnd);
+                        assertEquals(pEnd, step, "Path did not end with the ending point");
                     else
-                        assertFalse("A point on A* path was an obstacle", m.isObstacle(step.x, step.y));
+                        assertFalse(m.isObstacle(step.x, step.y), "A point on A* path was an obstacle");
                 }
 
                 // Check continuity
@@ -107,16 +107,16 @@ public class AStarTest
                         continue;
                     }
 
-                    assertTrue("Discontinuous path in A*",
-                               step.x - lastStep.x <= 1 && step.x - lastStep.x >= -1 && step.y - lastStep.y <= 1 &&
-                               step.y - lastStep.y >= -1);
+                    assertTrue(step.x - lastStep.x <= 1 && step.x - lastStep.x >= -1 &&
+                               step.y - lastStep.y <= 1 && step.y - lastStep.y >= -1,
+                               "Discontinuous path in A*");
 
                     lastStep = step;
                 }
             }
             else
             {
-                assertFalse("Path existed but A* failed", floodFillTest(m, pStart, pEnd, radius));
+                assertFalse(floodFillTest(m, pStart, pEnd, radius), "Path existed but A* failed");
             }
         }
     }

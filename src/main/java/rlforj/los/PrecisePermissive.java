@@ -12,12 +12,11 @@ import rlforj.math.Point;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
 {
     private final ILosAlgorithm fallBackLos = new BresLos(true);
-    private Vector<Point> path;
+    private List<Point> path;
 
     void calculateFovQuadrant(final fovStateT state)
     {
@@ -426,11 +425,11 @@ public class PrecisePermissive implements IFovAlgorithm, ILosAlgorithm
         if (savePath)
         {
             if (fb.endVisited)
-                path = GenericCalculateProjection.calculateProjecton(startX, startY, endX, endY, fb);
+                path = GenericCalculateProjection.calculateProjection(startX, startY, endX, endY, fb);
             else
             {
                 fallBackLos.exists(b, startX, startY, endX, endY, true);
-                path = (Vector<Point>) fallBackLos.getPath();
+                path = fallBackLos.getPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
         }

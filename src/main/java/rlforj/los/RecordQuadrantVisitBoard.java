@@ -70,7 +70,9 @@ public class RecordQuadrantVisitBoard implements IBoard, GenericCalculateProject
         //			System.out.println("visited "+x+" "+y);
         if (x == targetX && y == targetY)
             endVisited = true;
-        if (calculateProject && !b.blocksLight(x, y))
+        // the target cell is part of the projection even when it blocks
+        // light (a wall is visible: a projectile stops there)
+        if (calculateProject && (!b.blocksLight(x, y) || (x == targetX && y == targetY)))
         {
             int dx = x - sx;
             dx = dx > 0 ? dx : -dx;

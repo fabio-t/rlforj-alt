@@ -72,10 +72,16 @@ public class AStar implements IPathAlgorithm
 
             width = maxX - minX + 1;
             height = maxY - minY + 1;
+
+            // the end point is outside the searched box: no path can exist
+            if (endX < minX || endX > maxX || endY < minY || endY > maxY)
+            {
+                return null;
+            }
         }
 
         final PathNode[][]         nodeHash  = new PathNode[width][height];
-        final SimpleHeap<HeapNode> open      = new SimpleHeap<>(1000);
+        final SimpleHeap<PathNode> open      = new SimpleHeap<>(1000);
         final PathNode             startNode = new PathNode(startX, startY, 0.0);
         startNode.h = this.computeHeuristics(startNode, endX, endY, startX, startY);
         startNode.calcCost();
@@ -83,7 +89,7 @@ public class AStar implements IPathAlgorithm
         nodeHash[startX - minX][startY - minY] = startNode;
         while (open.size() > 0)
         {
-            final PathNode step = (PathNode) open.poll();
+            final PathNode step = open.poll();
             if (step.x == endX && step.y == endY)
             {
                 return this.createPath(step);
@@ -201,9 +207,10 @@ public class AStar implements IPathAlgorithm
             this.cost = this.h + this.g;
         }
 
-        public int compareTo(final Object o)
+        @Override
+        public int compareTo(final HeapNode o)
         {
-            return (int) Math.signum(this.cost - ((PathNode) o).cost);
+            return Double.compare(this.cost, ((PathNode) o).cost);
         }
 
         public int getHeapIndex()

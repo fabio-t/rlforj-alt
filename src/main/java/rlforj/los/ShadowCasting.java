@@ -23,45 +23,60 @@ import java.util.*;
  */
 public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
 {
-    public static final int MAX_CACHED_RADIUS = 40;
+    public static final int INITIAL_CACHED_RADIUS = 40;
 
-    static HashMap<Integer, ArrayList<ArcPoint>> circles = new HashMap<>();
+    private static final Map<Integer, List<ArcPoint>> circles = new HashMap<>();
+
+    private static int cachedRadius = 0;
 
     static
     {
-        final Point origin = new Point(0, 0);
+        ensureCircles(INITIAL_CACHED_RADIUS);
+    }
 
-        final int radius = MAX_CACHED_RADIUS;
+    /**
+     * Precompute the circles of points at each distance, up to (and
+     * including) the given radius. The cache grows on demand: asking
+     * for a larger field of view than any before simply extends it.
+     *
+     * @param radius maximum radius the cache must cover
+     */
+    private static synchronized void ensureCircles(final int radius)
+    {
+        if (radius <= cachedRadius)
+            return;
+
+        final Point origin = new Point(0, 0);
 
         for (int i = -radius; i <= radius; i++)
         {
             for (int j = -radius; j <= radius; j++)
             {
-                // final int distance = (int) floor(origin.distance(i, j));
                 final int distance = origin.distance2(i, j);
 
-                // If filled, add anything where floor(distance) <= radius
-                // If not filled, require that floor(distance) == radius
-                if (distance <= radius)
+                // only add the rings not already cached
+                if (distance > cachedRadius && distance <= radius)
                 {
-                    final ArrayList<ArcPoint> circ = circles.computeIfAbsent(distance, k -> new ArrayList<>());
-                    circ.add(new ArcPoint(i, j));
+                    circles.computeIfAbsent(distance, k -> new ArrayList<>()).add(new ArcPoint(i, j));
                 }
             }
         }
 
-        for (final ArrayList<ArcPoint> list : circles.values())
+        for (int r = cachedRadius + 1; r <= radius; r++)
         {
-            Collections.sort(list);
-            // System.out.println("r: "+r+" "+list);
+            final List<ArcPoint> list = circles.get(r);
+            if (list != null)
+                Collections.sort(list);
         }
+
+        cachedRadius = radius;
     }
 
     /**
      * When LOS not found, use Bresenham to find failed path
      */
-    BresLos fallBackLos = new BresLos(true);
-    private Vector<Point> path;
+    private final BresLos fallBackLos = new BresLos(true);
+    private List<Point> path;
 
     static void go(final IBoard board, final Point ctr, final int r, final int maxDistance, double th1,
                    final double th2)
@@ -70,8 +85,8 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             throw new IllegalArgumentException();
         if (r <= 0)
             throw new IllegalArgumentException();
-        final ArrayList<ArcPoint> circle      = circles.get(r);
-        final int                 circSize    = circle.size();
+        final List<ArcPoint> circle      = circles.get(r);
+        final int            circSize    = circle.size();
         boolean                   wasObstacle = false;
         boolean                   foundClear  = false;
         for (int i = 0; i < circSize; i++)
@@ -202,9 +217,12 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         // for (int j = 0; j < r.height; j++) {
         // RLPoint p = RLPoint.point(r.x + i, r.y + j);
         // points.add(p);
-        final Point p = new Point(x, y);
-        b.visit(x, y);
-        go(b, p, 1, distance, 0.0, 359.9);
+        ensureCircles(distance);
+
+        final IBoard once = new VisitOnceBoard(b);
+        final Point  p    = new Point(x, y);
+        once.visit(x, y);
+        go(once, p, 1, distance, 0.0, 359.9);
         // }
         // }
 
@@ -214,6 +232,17 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
     public boolean exists(final IBoard b, final int startX, final int startY, final int endX, final int endY,
                           final boolean savePath)
     {
+        // degenerate case: a point can always see itself
+        if (startX == endX && startY == endY)
+        {
+            if (savePath)
+            {
+                path = new ArrayList<>();
+                path.add(new Point(startX, startY));
+            }
+            return true;
+        }
+
         final int dx = endX - startX;
         final int dy = endY - startY;
         final int signX, signY;
@@ -246,13 +275,15 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         if (startY == endY && endX > startX)
         {
             final int    distance = dx + 1;
+            ensureCircles(distance);
             final double deg1     = Math.toDegrees(Math.atan2(.25, dx));//very thin angle
             go(fb, p, 1, distance, -deg1, 0);
             go(fb, p, 1, distance, 0, deg1);
         }
         else
         {
-            final int distance = (int) Math.sqrt(adx * adx + ady * ady) + 1;
+            final int distance = (int) Math.sqrt((double) adx * adx + (double) ady * ady) + 1;
+            ensureCircles(distance);
             double    deg1     = Math.toDegrees(Math.atan2(-dy, (adx - .5) * signX));
             if (deg1 < 0)
                 deg1 += 360;
@@ -276,11 +307,11 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         if (savePath)
         {
             if (fb.endVisited)
-                path = GenericCalculateProjection.calculateProjecton(startX, startY, endX, endY, fb);
+                path = GenericCalculateProjection.calculateProjection(startX, startY, endX, endY, fb);
             else
             {
                 fallBackLos.exists(b, startX, startY, endX, endY, true);
-                path = (Vector<Point>) fallBackLos.getPath();
+                path = fallBackLos.getPath();
             }
             //			calculateProjecton(startX, startY, adx, ady, fb, state);
         }
@@ -322,18 +353,67 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
         if (distance < 1)
             throw new IllegalArgumentException();
 
-        final Point p = new Point(x, y);
-        b.visit(x, y);
+        ensureCircles(distance);
+
+        final IBoard once = new VisitOnceBoard(b);
+        final Point  p    = new Point(x, y);
+        once.visit(x, y);
         if (startAngle > endAngle)
         {
-            go(b, p, 1, distance, startAngle, 359.999);
-            go(b, p, 1, distance, 0.0, endAngle);
+            go(once, p, 1, distance, startAngle, 359.999);
+            go(once, p, 1, distance, 0.0, endAngle);
         }
         else
-            go(b, p, 1, distance, startAngle, endAngle);
+            go(once, p, 1, distance, startAngle, endAngle);
     }
 
-    static class ArcPoint implements Comparable
+    /**
+     * Delegating board that guarantees each cell is visited at most once,
+     * even when shadow casting runs overlap at their boundary angles.
+     */
+    private static class VisitOnceBoard implements IBoard
+    {
+        private final IBoard    b;
+        private final Set<Long> visited = new HashSet<>();
+
+        VisitOnceBoard(final IBoard b)
+        {
+            this.b = b;
+        }
+
+        @Override
+        public boolean contains(final int x, final int y)
+        {
+            return b.contains(x, y);
+        }
+
+        @Override
+        public boolean blocksLight(final int x, final int y)
+        {
+            return b.blocksLight(x, y);
+        }
+
+        @Override
+        public boolean blocksStep(final int x, final int y)
+        {
+            return b.blocksStep(x, y);
+        }
+
+        @Override
+        public boolean isObstacle(final int x, final int y)
+        {
+            return b.isObstacle(x, y);
+        }
+
+        @Override
+        public void visit(final int x, final int y)
+        {
+            if (visited.add(((long) x << 32) | (y & 0xffffffffL)))
+                b.visit(x, y);
+        }
+    }
+
+    static class ArcPoint implements Comparable<ArcPoint>
     {
         int x, y;
 
@@ -392,9 +472,10 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             return a;
         }
 
-        public int compareTo(final Object o)
+        @Override
+        public int compareTo(final ArcPoint o)
         {
-            return theta > ((ArcPoint) o).theta ? 1 : -1;
+            return Double.compare(theta, o.theta);
         }
 
         @Override
@@ -408,6 +489,12 @@ public class ShadowCasting implements IConeFovAlgorithm, ILosAlgorithm
             final ArcPoint arcPoint = (ArcPoint) o;
 
             return theta == arcPoint.theta;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Double.hashCode(theta);
         }
     }
 

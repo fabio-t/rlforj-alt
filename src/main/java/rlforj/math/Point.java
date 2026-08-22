@@ -44,8 +44,8 @@ public class Point
 
     public int distance2(final int x, final int y)
     {
-        final float dx = this.x - x;
-        final float dy = this.y - y;
+        final double dx = this.x - x;
+        final double dy = this.y - y;
 
         return (int) Math.floor(Math.sqrt(dx * dx + dy * dy));
     }
@@ -66,6 +66,6 @@ public class Point
     @Override
     public int hashCode()
     {
-        return x << 7 - x + y;//x*prime+y
+        return 31 * x + y;
     }
 }

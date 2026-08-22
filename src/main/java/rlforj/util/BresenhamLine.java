@@ -11,11 +11,6 @@ package rlforj.util;
 public final class BresenhamLine
 {
     /**
-     * General case algorithm
-     */
-    private static final BresenhamLine bresenham = new BresenhamLine();
-
-    /**
      * Used for calculation
      */
     private int dx, dy, error, x_inc, y_inc, xx, yy, length, count;
@@ -40,6 +35,9 @@ public final class BresenhamLine
      */
     public static final int plot(final int x1, final int y1, final int x2, final int y2, final int x[], final int y[])
     {
+
+        // a local instance keeps this method thread-safe
+        final BresenhamLine bresenham = new BresenhamLine();
 
         final int length = Math.min(x.length, Math.min(y.length, bresenham.plot(x1, y1, x2, y2)));
         for (int i = 0; i < length; i++)

@@ -6,7 +6,7 @@
 
 package rlforj.util.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import rlforj.util.HeapNode;
 import rlforj.util.SimpleHeap;
 
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * SimpleHeap Test
@@ -23,9 +23,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class SimpleHeapTest
 {
-    // NOTE: JUnit 4 guideline is no longer to use TestCase but use annotations.
-    // assert* can be static imported from org.junit.Assert.
-
     @Test
     public void testIndex()
     {
@@ -104,7 +101,7 @@ public class SimpleHeapTest
         {
             final A a1 = h.poll();
             final A a2 = arr.remove(0);
-            assertEquals("SimpleHeap does not match Array at " + i, a1.a, a2.a);
+            assertEquals(a1.a, a2.a, "SimpleHeap does not match Array at " + i);
 
             if (rand.nextInt(100) < 30)
             {
@@ -143,7 +140,7 @@ public class SimpleHeapTest
             final A a1 = h.poll();
             final A a2 = arr.remove(0);
 
-            assertEquals("SimpleHeap does not match Array at " + i, a1.a, a2.a);
+            assertEquals(a1.a, a2.a, "SimpleHeap does not match Array at " + i);
 
             if (h.size() == 0)
             {
@@ -183,7 +180,8 @@ public class SimpleHeapTest
             a = i;
         }
 
-        public int compareTo(final Object o)
+        @Override
+        public int compareTo(final HeapNode o)
         {
             if (this == o)
                 return 0;

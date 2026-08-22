@@ -8,7 +8,8 @@ package rlforj.los;
 
 import rlforj.math.Point;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Given a set of squares that we are allowed to visit, and two points
@@ -22,10 +23,10 @@ import java.util.Vector;
 public class GenericCalculateProjection
 {
 
-    public static Vector<Point> calculateProjecton(final int startX, final int startY, final int x1, final int y1,
-                                                   final VisitedBoard fb)
+    public static List<Point> calculateProjection(final int startX, final int startY, final int x1, final int y1,
+                                                  final VisitedBoard fb)
     {
-        final Vector<Point> path = new Vector<>();
+        final List<Point> path = new ArrayList<>();
 
         // calculate usual Bresenham values required.
         final int dx = x1 - startX;

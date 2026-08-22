@@ -1,7 +1,16 @@
-.svn
+# build output
+build/
+target/
+
+# gradle
+.gradle/
+
+# IDEs
+.idea/
+*.iml
 .classpath
 .project
-target/
 .settings/
-rlforj-alt.iml
-.idea/
+
+# misc
+.svn
