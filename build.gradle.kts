@@ -94,3 +94,10 @@ publishing {
         }
     }
 }
+
+tasks.register<JavaExec>("demo") {
+    group = "application"
+    description = "Runs the ASCII demo (FOV, cone FOV and LOS examples)"
+    classpath = sourceSets.main.get().runtimeClasspath
+    mainClass = "rlforj.examples.Demo"
+}
