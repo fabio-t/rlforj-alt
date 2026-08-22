@@ -6,56 +6,54 @@
 
 package rlforj.los.test;
 
-import rlforj.los.ConePrecisePremisive;
+import org.junit.jupiter.api.Test;
+import rlforj.los.ConePrecisePermissive;
 import rlforj.los.IConeFovAlgorithm;
 import rlforj.los.ShadowCasting;
 import rlforj.math.Point;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class ConeFovTest
 {
-    /*
-     * TODO : convert to TestCase
-     */
-    public static void main(final String[] args)
+    private void checkCone(final IConeFovAlgorithm a)
     {
-        final int startAngle  = -10;
-        final int finishAngle = 100;
-        //		if(startAngle<0) {startAngle%=360; startAngle+=360; }
-        //		if(finishAngle<0) {finishAngle%=360; finishAngle+=360; }
-        //
-        //		if(startAngle>360) startAngle%=360;
-        //		if(finishAngle>360) finishAngle%=360;
-        //		System.out.println(startAngle+" "+finishAngle);
-
         final TestBoard b = new TestBoard(false);
 
         b.exception.add(new Point(15, 15));
         b.exception.add(new Point(15, 16));
         b.exception.add(new Point(16, 15));
 
-        IConeFovAlgorithm a = new ConePrecisePremisive();
+        // angles grow clockwise, positive y is down: this cone points down-right
+        a.visitConeFieldOfView(b, 10, 10, 10, -10, 100);
 
-        a.visitConeFieldOfView(b, 10, 10, 10, startAngle, finishAngle);
+        // origin always visited
+        assertTrue(b.visited.contains(new Point(10, 10)));
 
-        b.mark(10, 10, '@');
-        b.print(-1, 21, -1, 21);
+        // cells well within the cone are visited
+        assertTrue(b.visited.contains(new Point(14, 10)));
+        assertTrue(b.visited.contains(new Point(10, 14)));
+        assertTrue(b.visited.contains(new Point(13, 13)));
 
-        System.out.println("visitederr " + b.visiterr);
+        // cells in the opposite direction are not
+        assertFalse(b.visited.contains(new Point(5, 10)));
+        assertFalse(b.visited.contains(new Point(10, 5)));
+        assertFalse(b.visited.contains(new Point(6, 6)));
 
-        a = new ShadowCasting();
-        b.visited.clear();
+        // no cell is visited twice
+        assertTrue(b.visiterr.isEmpty(), "Cells visited more than once: " + b.visiterr);
+    }
 
-        a.visitConeFieldOfView(b, 10, 10, 10, startAngle, finishAngle);
+    @Test
+    public void testConeShadowCasting()
+    {
+        checkCone(new ShadowCasting());
+    }
 
-        b.mark(10, 10, '@');
-        b.print(-1, 21, -1, 21);
-
-        //		IFovAlgorithm a1= new ShadowCasting();
-        //		b.visited.clear();
-        //
-        //		a1.visitFoV(b, 10, 10, 10);
-        //
-        //		b.mark(10, 10, '@');
-        //		b.print(-1, 21, -1, 21);
+    @Test
+    public void testConePrecisePermissive()
+    {
+        checkCone(new ConePrecisePermissive());
     }
 }

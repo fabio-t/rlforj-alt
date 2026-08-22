@@ -6,16 +6,21 @@
 
 package rlforj.util.test;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test the MockBoard class
  *
  * @author vic
  */
-public class MockBoardTest extends TestCase
+public class MockBoardTest
 {
 
+    @Test
     public void testConstructor_empty()
     {
         final MockBoard board = new MockBoard("   ");
@@ -27,6 +32,7 @@ public class MockBoardTest extends TestCase
         assertFalse(board.isObstacle(2, 0));
     }
 
+    @Test
     public void testConstructor_N()
     {
         final MockBoard board = new MockBoard("#########\n" + "#       #\n" + "####### #\n" + "#       #\n" +

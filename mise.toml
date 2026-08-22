@@ -1,0 +1,3 @@
+# https://mise.jdx.dev - pins the toolchain for local development
+[tools]
+java = "temurin-21"

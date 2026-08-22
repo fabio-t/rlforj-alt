@@ -10,8 +10,8 @@ import rlforj.IBoard;
 import rlforj.math.Point;
 import rlforj.util.BresenhamLine;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Bresenham LOS class.
@@ -27,7 +27,7 @@ public class BresLos implements ILosAlgorithm
 
     private boolean symmetricEnabled = false;
 
-    private Vector<Point> path;
+    private List<Point> path;
 
     public BresLos(final boolean symmetric)
     {
@@ -44,7 +44,7 @@ public class BresLos implements ILosAlgorithm
         final int len = (adx > ady ? adx : ady) + 1;//Max number of points on the path.
 
         if (savePath)
-            path = new Vector<>(len);
+            path = new ArrayList<>(len);
 
         // array to store path.
         final int[] px = new int[len];
@@ -65,7 +65,8 @@ public class BresLos implements ILosAlgorithm
                 los = true;
                 break;
             }
-            if (b.blocksLight(px[i], py[i]))
+            // the start cell never blocks its own line of sight
+            if (i > 0 && b.blocksLight(px[i], py[i]))
                 break;
         }
         // Direct path couldn't find LOS so try alternate path
@@ -79,8 +80,8 @@ public class BresLos implements ILosAlgorithm
             // finish to start path.
             BresenhamLine.plot(endX, endY, startX, startY, px1, py1);
 
-            final Vector<Point> oldpath = path;
-            path = new Vector<>(len);
+            final List<Point> oldpath = path;
+            path = new ArrayList<>(len);
             for (int i = len - 1; i > -1; i--)
             {
                 if (savePath)
@@ -92,7 +93,8 @@ public class BresLos implements ILosAlgorithm
                     los = true;
                     break;
                 }
-                if (b.blocksLight(px1[i], py1[i]))
+                // the start cell never blocks its own line of sight
+                if (i < len - 1 && b.blocksLight(px1[i], py1[i]))
                     break;
             }
 

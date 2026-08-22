@@ -6,7 +6,7 @@
 
 package rlforj.examples;
 
-import rlforj.los.ConePrecisePremisive;
+import rlforj.los.ConePrecisePermissive;
 import rlforj.los.IConeFovAlgorithm;
 import rlforj.los.ShadowCasting;
 
@@ -36,7 +36,7 @@ public class ConeFovExample
 
         b.resetVisitedAndMarks();
         System.out.println("Precise Permissive");
-        a = new ConePrecisePremisive();
+        a = new ConePrecisePermissive();
         a.visitConeFieldOfView(b, width / 2, height / 2, width / 3 + 1, startAngle, finishAngle);
         b.print(width / 2, height / 2);
     }

@@ -6,17 +6,32 @@
 
 package rlforj.los.test;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import rlforj.los.ILosAlgorithm;
 import rlforj.math.Point;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Testing Los algorithms
  */
-public abstract class LosTest extends TestCase
+public abstract class LosTest
 {
-    ILosAlgorithm a;
+    protected ILosAlgorithm a;
 
+    /**
+     * Whether the algorithm can see a diagonally adjacent cell "around"
+     * a pillar. True for all algorithms except plain (asymmetric)
+     * Bresenham, which only follows the single start-to-end line.
+     */
+    protected boolean seesAroundPillar()
+    {
+        return true;
+    }
+
+    @Test
     public void testEmpty()
     {
         final TestBoard b = new TestBoard(false);
@@ -31,6 +46,7 @@ public abstract class LosTest extends TestCase
         assertTrue(a.exists(b, 10, 10, 15, 10, false));
     }
 
+    @Test
     public void testFull()
     {
         final TestBoard b = new TestBoard(true);
@@ -45,6 +61,7 @@ public abstract class LosTest extends TestCase
         assertFalse(a.exists(b, 10, 10, 15, 10, false));
     }
 
+    @Test
     public void testLine()
     {
         final TestBoard b = new TestBoard(true);
@@ -64,6 +81,7 @@ public abstract class LosTest extends TestCase
         assertFalse(a.exists(b, 10, 10, 15, 10, false));
     }
 
+    @Test
     public void testAcrossPillar()
     {
         final TestBoard b = new TestBoard(false);
@@ -73,10 +91,11 @@ public abstract class LosTest extends TestCase
         // b.print(4, 14, 4, 14);
         // System.out.println();
 
-        assertTrue(a.exists(b, 9, 9, 10, 11, false));
+        assertEquals(seesAroundPillar(), a.exists(b, 9, 9, 10, 11, false));
         assertFalse(a.exists(b, 9, 9, 11, 11, false));
     }
 
+    @Test
     public void testDiagonalWall()
     {
         final TestBoard b = new TestBoard(false);

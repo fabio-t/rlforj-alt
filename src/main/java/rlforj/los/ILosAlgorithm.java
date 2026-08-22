@@ -35,9 +35,14 @@ public interface ILosAlgorithm
 
     /**
      * Obtain the path of the projection calculated during the last call
-     * to {@link ILosAlgorithm#exists}.
+     * to {@link ILosAlgorithm#exists} with {@code savePath} set to true.
+     * <p>
+     * If line of sight was established, the path always includes the start
+     * and end points. If it was not, the path is the partial line up to the
+     * first obstacle encountered.
      *
-     * @return null if no los was established so far, or a list of points if a los found
+     * @return the last computed path, or null if {@link ILosAlgorithm#exists}
+     * was never called with {@code savePath} set to true
      */
     List<Point> getPath();
 }

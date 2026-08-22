@@ -20,6 +20,7 @@ package rlforj.util;
  *
  * @param <T> The type
  */
+@SuppressWarnings("unchecked")
 public class SimpleHeap<T extends HeapNode>
 {
     Object[] queue; // package-level for testing purpose
@@ -82,7 +83,7 @@ public class SimpleHeap<T extends HeapNode>
             int       child = (k << 1) + 1; // assume left child is least
             T         c     = (T) queue[child];
             final int right = child + 1;
-            if (right < size && c.compareTo(queue[right]) > 0)
+            if (right < size && c.compareTo((T) queue[right]) > 0)
                 c = (T) queue[child = right];
             if (key.compareTo(c) <= 0)
                 break;

@@ -6,21 +6,25 @@
 
 package rlforj.los.test;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import rlforj.los.IFovAlgorithm;
 import rlforj.math.Point;
 
 import java.util.Random;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Testing FOV algorithms
  *
  * @author sdatta
  */
-public abstract class FovTest extends TestCase
+public abstract class FovTest
 {
-    IFovAlgorithm a;
+    protected IFovAlgorithm a;
 
+    @Test
     public void testEmpty()
     {
         final TestBoard b = new TestBoard(false);
@@ -36,6 +40,7 @@ public abstract class FovTest extends TestCase
         assertTrue(b.visited.contains(new Point(15, 10)));
     }
 
+    @Test
     public void testFull()
     {
         final TestBoard b = new TestBoard(true);
@@ -51,6 +56,7 @@ public abstract class FovTest extends TestCase
         assertFalse(b.visited.contains(new Point(15, 10)));
     }
 
+    @Test
     public void testLine()
     {
         final TestBoard b = new TestBoard(true);
@@ -71,6 +77,7 @@ public abstract class FovTest extends TestCase
         assertFalse(b.visited.contains(new Point(15, 10)));
     }
 
+    @Test
     public void testAcrossPillar()
     {
         final TestBoard b = new TestBoard(false);
@@ -85,6 +92,7 @@ public abstract class FovTest extends TestCase
         assertFalse(b.visited.contains(new Point(11, 11)));
     }
 
+    @Test
     public void testDiagonalWall()
     {
         final TestBoard b = new TestBoard(false);
@@ -99,6 +107,7 @@ public abstract class FovTest extends TestCase
         assertTrue(b.visited.contains(new Point(11, 10)));
     }
 
+    @Test
     public void testLarge()
     {
         final TestBoard b = new TestBoard(false);
@@ -113,11 +122,10 @@ public abstract class FovTest extends TestCase
         a.visitFoV(b, 100, 100, 40);
         final long t2 = System.currentTimeMillis();
 
-        System.out.println("Large Test took " + (t2 - t1));
-        System.out.println("Chk b4 visit " + b.chkb4visit.size());
-        System.out.println("Chk b4 visit fails for circular fov in PrecisePermissive");
-        // System.out.println(b.chkb4visit);
-        System.out.println("Error visit " + b.visiterr.size());
+        System.out.println("Large Test took " + (t2 - t1) + "ms");
+
+        // each cell must be visited at most once
+        assertTrue(b.visiterr.isEmpty(), "Cells visited more than once: " + b.visiterr);
     }
 
 }

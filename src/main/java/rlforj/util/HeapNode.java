@@ -23,7 +23,7 @@ package rlforj.util;
  *
  * @author sidatta
  */
-public interface HeapNode extends Comparable
+public interface HeapNode extends Comparable<HeapNode>
 {
     int getHeapIndex();
 

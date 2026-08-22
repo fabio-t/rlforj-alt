@@ -6,26 +6,24 @@
 
 package rlforj.util.test;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 import rlforj.util.MathUtils;
 
-public class MathUtilsTest extends TestCase
-{
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+public class MathUtilsTest
+{
+    @Test
     public void testISqrt()
     {
         final int LIM = 1000000;
 
-        final long start = System.currentTimeMillis();
         for (int i = 0; i < LIM; i++)
         {
             final int j = MathUtils.isqrt(i);
             final int k = (int) Math.floor(Math.sqrt(i));
 
-            assertTrue("Sqrt of " + i + " supposed to be " + k + " but is " + j, j == k);
+            assertEquals(k, j, "Sqrt of " + i + " supposed to be " + k + " but is " + j);
         }
-        final long end = System.currentTimeMillis();
-
-        System.out.println("Time taken " + (end - start));
     }
 }

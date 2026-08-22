@@ -10,8 +10,8 @@ import rlforj.IBoard;
 import rlforj.math.Point;
 import rlforj.util.BresenhamLine;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 /**
  * Bresenham LOS.
@@ -25,7 +25,7 @@ import java.util.Vector;
 public class BresOpportunisticLos implements ILosAlgorithm
 {
 
-    private Vector<Point> path;
+    private List<Point> path;
 
     public boolean exists(final IBoard b, final int startX, final int startY, final int endX, final int endY,
                           final boolean savePath)
@@ -37,7 +37,7 @@ public class BresOpportunisticLos implements ILosAlgorithm
         final int len = (adx > ady ? adx : ady) + 1;
 
         if (savePath)
-            path = new Vector<>(len);
+            path = new ArrayList<>(len);
 
         final int[] px = new int[len];
         final int[] py = new int[len];
@@ -53,6 +53,18 @@ public class BresOpportunisticLos implements ILosAlgorithm
         boolean alternatePath = false;
         for (int i = 0; i < len; i++)
         {
+            // the start cell never blocks its own line of sight
+            if (i == 0)
+            {
+                if (savePath)
+                    path.add(new Point(px[0], py[0]));
+                if (px[0] == endX && py[0] == endY)
+                {
+                    los = true;
+                    break;
+                }
+                continue;
+            }
             // Have we reached the end ? In that case quit
             if (px[i] == endX && py[i] == endY)
             {
