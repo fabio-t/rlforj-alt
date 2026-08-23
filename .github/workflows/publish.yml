@@ -1,8 +1,15 @@
 name: Publish
 
-# A version tag push (e.g. 0.4.0) creates the GitHub release and publishes
-# to GitHub Packages. Publishing also runs for releases created by hand.
+# Three ways to cut a release, all ending published on GitHub Packages:
+# - run this workflow manually with the version to release (creates tag + GitHub release)
+# - push a version tag, e.g. 0.4.0 (creates the GitHub release)
+# - publish a GitHub release by hand
 on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release (must match the version in build.gradle.kts, e.g. 0.4.0)"
+        required: true
   push:
     tags: [ '[0-9]+.[0-9]+.[0-9]+' ]
   release:
@@ -26,7 +33,13 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Create GitHub release
+      - name: Create GitHub release (and tag)
+        if: github.event_name == 'workflow_dispatch'
+        run: gh release create "${{ inputs.version }}" --target "$GITHUB_SHA" --title "${{ inputs.version }}" --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create GitHub release from tag
         if: github.event_name == 'push'
         run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
         env:
