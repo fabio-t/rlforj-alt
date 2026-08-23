@@ -1,11 +1,15 @@
 name: Publish
 
+# A version tag push (e.g. 0.4.0) creates the GitHub release and publishes
+# to GitHub Packages. Publishing also runs for releases created by hand.
 on:
+  push:
+    tags: [ '[0-9]+.[0-9]+.[0-9]+' ]
   release:
     types: [ published ]
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -21,6 +25,12 @@ jobs:
           java-version: 21
 
       - uses: gradle/actions/setup-gradle@v4
+
+      - name: Create GitHub release
+        if: github.event_name == 'push'
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish to GitHub Packages
         run: ./gradlew publish
